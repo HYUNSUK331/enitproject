@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "849117762158",
+    "project_id": "enitproject",
+    "storage_bucket": "enitproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:849117762158:android:c19010673e73696c3b4c7f",
+        "android_client_info": {
+          "package_name": "com.example.enitproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "849117762158-civtt6pbnmigbh47eabpc6tse381kic0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvfpIoDWnhk09OCh2B0c8_URsSdAott2U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "849117762158-civtt6pbnmigbh47eabpc6tse381kic0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
