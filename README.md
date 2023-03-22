@@ -1,4 +1,4 @@
-#   쥬랑 (JJulang), **엔잇**
+#   쥬랑 (JJulang), **ENIT**
 
 <a href="http://google.co.kr/">
   <img width="150" src="https://img.shields.io/badge/앱 배포 링크-ffffff?style=for-the-badge&logo=one&logoColor=black"></a>
