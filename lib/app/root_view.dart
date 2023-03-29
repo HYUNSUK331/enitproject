@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../screen/home_screen.dart';
 
 class RootView extends StatelessWidget {
   const RootView({super.key});
@@ -13,7 +14,7 @@ class RootView extends StatelessWidget {
         hoverColor: Colors.transparent,
         focusColor: Colors.transparent,
       ),
-      home: Text("준비"),
+      home: HomeScreen(),
 
     );
   }
