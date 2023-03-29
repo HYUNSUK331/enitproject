@@ -1,6 +1,7 @@
 import 'package:enitproject/app/tabs_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../screen/home_screen.dart';
 
 class RootView extends StatelessWidget {
   const RootView({super.key});
@@ -8,6 +9,7 @@ class RootView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+
         theme: ThemeData(
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
@@ -15,6 +17,7 @@ class RootView extends StatelessWidget {
           focusColor: Colors.transparent,
         ),
         home: TabsView()
+
     );
   }
 }

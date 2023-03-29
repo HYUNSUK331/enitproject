@@ -1,4 +1,3 @@
-
 import 'package:enitproject/app/root_view.dart';
 import 'package:enitproject/const/const.dart';
 import 'package:enitproject/firebase_options.dart';
@@ -6,6 +5,7 @@ import 'package:enitproject/screen/story/story_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 void main() async{
 
@@ -14,8 +14,6 @@ void main() async{
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   Get.put(StoryController());
-
-
 
   //easyLoading setup
   configLoading();

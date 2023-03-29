@@ -28,4 +28,3 @@ void configLoading() {
     ..userInteractions = false
     ..dismissOnTap = false;
 }
-
