@@ -3,14 +3,14 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class MapView extends StatefulWidget {
-  const MapView({Key? key}) : super(key: key);
+class MapHomeScreen extends StatefulWidget {
+  const MapHomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<MapView> createState() => _MapViewState();
+  State<MapHomeScreen> createState() => _MapHomeScreenState();
 }
 
-class _MapViewState extends State<MapView> {
+class _MapHomeScreenState extends State<MapHomeScreen> {
   bool choolCheckDone = false;
   GoogleMapController? mapController;
 
