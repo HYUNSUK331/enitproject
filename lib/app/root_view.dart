@@ -14,15 +14,7 @@ class RootView extends StatelessWidget {
           hoverColor: Colors.transparent,
           focusColor: Colors.transparent,
         ),
-        home: FutureBuilder(
-          future:,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return const TabsView();
-            }
-            return const CircularProgressIndicator();
-          },
-        )
+        home: TabsView()
     );
   }
 }

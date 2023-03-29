@@ -13,7 +13,6 @@ const KEY_STORY_PLAY_LIST_KEY = 'story_play_list_key';
 const KEY_TITLE = 'title';
 
 
-
 void configLoading() {
   EasyLoading.instance
     ..displayDuration = const Duration(milliseconds: 2000)
