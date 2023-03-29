@@ -1,0 +1,18 @@
+[
+  {
+    "id": "story_1",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTb_fOV3Ixs99EYLvHH7fSeKRx4doeBjwyJKQ&usqp=CAU",
+    "path": "assets/music/story_1.mp3",
+    "name": "콜드플레이",
+    "title": "viva La Vida",
+    "length": "3분 17초"
+  },
+  {
+    "id": "story_2",
+    "image": "https://postfiles.pstatic.net/MjAyMjEyMjVfNyAg/MDAxNjcxOTM5ODI3NjA2.L6Pehe5Dqt5NFkn1KqHmEzC00oSBkjppLZoakMrmp_sg.D4iNmBSw8rgLyQVSWPgC0xUZikXXwogD9zoPHs57K8Ig.JPEG.lalayou_makeup/output_2313407086.jpg?type=w966",
+    "path": "assets/music/story_2.mp3",
+    "name": "아이유",
+    "title": "Love Y",
+    "length": "4분 12초"
+  }
+]

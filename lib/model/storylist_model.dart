@@ -24,5 +24,6 @@ class StoryListModel{
         storyPlayListKey = map[KEY_STORY_PLAY_LIST_KEY],
         title = map[KEY_TITLE];
 
-  StoryListModel.fromSnapshot(DocumentSnapshot snapshot) : this.fromMap(snapshot.data() as Map<String, dynamic>);
+        StoryListModel.fromSnapshot(DocumentSnapshot snapshot) : this.fromMap(snapshot.data() as Map<String, dynamic>);
+
 }

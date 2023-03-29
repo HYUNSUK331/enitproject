@@ -9,11 +9,10 @@ import 'package:get/get_core/src/get_main.dart';
 
 void main() async{
 
-  //비동기로 데이터를 다룬다음 runapp할 경우 사용
+  //비동기로 데이터를 다룬 다음 runapp할 경우 사용
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  //Get.put();
   Get.put(StoryController());
 
   //easyLoading setup
