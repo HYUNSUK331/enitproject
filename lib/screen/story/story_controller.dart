@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-
 import '../../service/storylist_network_repository.dart';
 
 class StoryController extends GetxController{
@@ -33,7 +32,7 @@ class StoryController extends GetxController{
     await storyListNetworkRepository.getStoryListModel().then((value) => {
       storyList(value)
     });
-
+    
     audioPlayer.onDurationChanged.listen((newDuration) {
       //duration = newDuration;
       duration(newDuration);
@@ -52,8 +51,7 @@ class StoryController extends GetxController{
     audioPlayer.dispose();
     super.onReady();
   }
-
-
+  
   void updateLike(String storyListKey, int index) async {
     await storyListNetworkRepository.updateStoryListLike(storyListKey, true).then((value) async =>
     {

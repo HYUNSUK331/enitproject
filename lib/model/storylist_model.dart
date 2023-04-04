@@ -12,6 +12,8 @@ class StoryListModel{
   String? script;
   String? storyPlayListKey;
   String? title;
+  double? latitude;
+  double? longitude;
 
   StoryListModel.fromMap(Map<String,dynamic>map)
       : addressDetail = map[KEY_ADDRESS_DETAIL],
@@ -22,7 +24,9 @@ class StoryListModel{
         pinAddress = map[KEY_PIN_ADDRESS],
         script = map[KEY_SCRIPT],
         storyPlayListKey = map[KEY_STORY_PLAY_LIST_KEY],
-        title = map[KEY_TITLE];
+        title = map[KEY_TITLE],
+        latitude = map[KEY_LATITUDE],
+        longitude = map[KEY_LONGITUDE];
 
         StoryListModel.fromSnapshot(DocumentSnapshot snapshot) : this.fromMap(snapshot.data() as Map<String, dynamic>);
 

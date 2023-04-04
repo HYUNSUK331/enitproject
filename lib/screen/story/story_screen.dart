@@ -1,4 +1,3 @@
-
 import 'package:enitproject/screen/story/story_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -30,6 +29,7 @@ class StoryScreen extends GetView<StoryController> {
                 color: Colors.black,
                 iconSize: 35.0,
                 onPressed: (){
+                
                   Navigator.maybePop(context);
                 },
                 ),
@@ -37,6 +37,7 @@ class StoryScreen extends GetView<StoryController> {
           actions: [
             Padding(
               padding: const EdgeInsets.all(10.0),
+              
               child: Obx(() => controller.storyList[storyIndex].isLike?
               IconButton(
                   onPressed: () => {
@@ -77,6 +78,7 @@ class StoryScreen extends GetView<StoryController> {
                   child: Column(
                     children: [
                       Text(
+                      
                         '${controller.storyList[storyIndex].title}',
                         style: TextStyle(
                           fontSize: 40.0,
@@ -91,6 +93,7 @@ class StoryScreen extends GetView<StoryController> {
                             '${controller.storyList[storyIndex].addressDetail}',
                             style: TextStyle(
                                 fontSize: 16.0,
+
                                 fontWeight: FontWeight.w500
                             ),
                           ),
