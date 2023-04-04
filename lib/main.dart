@@ -1,4 +1,4 @@
-import 'package:enitproject/app/root_view.dart';
+import 'package:enitproject/app/root_screen.dart';
 import 'package:enitproject/const/const.dart';
 import 'package:enitproject/firebase_options.dart';
 import 'package:enitproject/screen/story/story_controller.dart';
