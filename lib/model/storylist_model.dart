@@ -28,7 +28,6 @@ class StoryListModel{
         latitude = map[KEY_LATITUDE],
         longitude = map[KEY_LONGITUDE];
 
-
         StoryListModel.fromSnapshot(DocumentSnapshot snapshot) : this.fromMap(snapshot.data() as Map<String, dynamic>);
 
 }

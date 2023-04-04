@@ -12,7 +12,7 @@ const KEY_SCRIPT = 'script';
 const KEY_STORY_PLAY_LIST_KEY = 'story_play_list_key';
 const KEY_TITLE = 'title';
 const KEY_LATITUDE = 'latitude';
-const KEY_LONGITUDE = 'latitude';
+const KEY_LONGITUDE = 'longitude';
 
 
 

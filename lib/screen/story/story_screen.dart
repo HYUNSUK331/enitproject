@@ -1,11 +1,15 @@
 import 'package:enitproject/screen/story/story_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:just_audio/just_audio.dart';
 import '../../const/color.dart';
 
 class StoryScreen extends GetView<StoryController> {
-  const StoryScreen({Key? key}) : super(key: key);
+  final int storyIndex;
+  const StoryScreen({
+    required this.storyIndex,
+    Key? key
+  }) : super(key: key);
 
   @override
 
@@ -25,21 +29,38 @@ class StoryScreen extends GetView<StoryController> {
                 color: Colors.black,
                 iconSize: 35.0,
                 onPressed: (){
-                  Navigator.pop(context);
+                
+                  Navigator.maybePop(context);
                 },
                 ),
           ),
           actions: [
             Padding(
               padding: const EdgeInsets.all(10.0),
-              child: IconButton(
-                icon: Icon(Icons.favorite_border),
-                color: Colors.grey,
-                iconSize: 35.0,
-                onPressed: (){
-                  //관심목록 담기
-                },
-                  ),
+              
+              child: Obx(() => controller.storyList[storyIndex].isLike?
+              IconButton(
+                  onPressed: () => {
+                    controller.updateUnLike('${controller.storyList[storyIndex].storyPlayListKey}', storyIndex)
+                  },
+                  icon: const Icon(
+                    Icons.favorite,
+                    color: GREEN_DARK_COLOR,
+                    size: 35.0,
+                  )
+              )
+                  :
+              IconButton(
+                  onPressed: ()=>{
+                    controller.updateLike('${controller.storyList[storyIndex].storyPlayListKey}',storyIndex)
+                  },
+                  icon: const Icon(
+                    Icons.favorite_border,
+                    color: Colors.grey,
+                    size: 35.0,
+                  )
+              )
+              ),
             )
           ],
         ),
@@ -57,20 +78,22 @@ class StoryScreen extends GetView<StoryController> {
                   child: Column(
                     children: [
                       Text(
-                        '${controller.storyList[0].title}',
+                      
+                        '${controller.storyList[storyIndex].title}',
                         style: TextStyle(
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.w700,
+                          fontSize: 40.0,
+                          fontWeight: FontWeight.w800,
                         ),
                       ),
-                      SizedBox(height: 5.0,),
+                      SizedBox(height: 10.0,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${controller.storyList[0].addressDetail}',
+                            '${controller.storyList[storyIndex].addressDetail}',
                             style: TextStyle(
-                                fontSize: 13.0,
+                                fontSize: 16.0,
+
                                 fontWeight: FontWeight.w500
                             ),
                           ),
@@ -89,26 +112,62 @@ class StoryScreen extends GetView<StoryController> {
                     ],
                   ),
                 ),
-                SizedBox(height: 10.0,),
+                SizedBox(height: 15.0,),
                 Image.network(
-                  '${controller.storyList[0].image}',
+                  '${controller.storyList[storyIndex].image}',
                   width: double.infinity,
                   fit: BoxFit.contain,
                 ),
                 SizedBox(height: 15.0,),
+                Slider(
+                    min: 0,
+                      max: controller.duration.inSeconds.toDouble(),
+                      value: controller.position.inSeconds.toDouble(),
+                      onChanged: (value) async{
+                      final position = Duration(seconds: value.toInt());
+                      await controller.audioPlayer.seek(position);
 
-                IconButton(
-                  icon: Icon(
-                    Icons.headphones,
-                    color: GREEN_DARK_COLOR,
-                    size: 30.0,
+                      await controller.audioPlayer.resume();
+                      },
                   ),
-                  onPressed: controller.audioPlayer.play,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('${controller.position}'),
+                      Text('${controller.duration - controller.position}'),
+                    ],
+                  ),
+                CircleAvatar(
+                  backgroundColor: GREEN_DARK_COLOR,
+                  radius: 40,
+                  child: Obx(() => controller.isPlaying.value?
+                    IconButton(
+                      icon: Icon(
+                        Icons.pause,
+                        color: Colors.white,
+                        size: 35.0,
+                      ),
+                      onPressed: () async{
+                        controller.updatePause();
+                      },
+                    )
+                    :
+                    IconButton(
+                        onPressed: () async{
+                          controller.updatePlay(storyIndex);
+                        },
+                        icon: Icon(
+                          Icons.play_arrow,
+                          color: Colors.white,
+                          size: 30.0,
+                        ),
+                    )
+                  ),
                 ),
-                SizedBox(height: 15.0,),
+                SizedBox(height: 20.0,),
                 Container(
                   child: Text(
-                    '${controller.storyList[0].script}',
+                    '${controller.storyList[storyIndex].script}',
                     style: TextStyle(
                       fontSize: 15.0
                     ),

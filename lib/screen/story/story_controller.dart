@@ -1,11 +1,11 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:enitproject/model/storylist_model.dart';
+import 'package:enitproject/screen/preview/preview_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:just_audio/just_audio.dart';
-
 import '../../service/storylist_network_repository.dart';
 
 class StoryController extends GetxController{
@@ -19,13 +19,30 @@ class StoryController extends GetxController{
   //오디오 플레이어
   final audioPlayer = AudioPlayer();
 
+  RxBool isPlaying = RxBool(false);
+  // Duration duration = Duration.zero;
+  // Duration position = Duration.zero;
+
+
+  Rx<Duration> duration = Rx<Duration>(Duration.zero);
+  Rx<Duration> position = Rx<Duration>(Duration.zero);
+
   @override
   void onInit() async{
     await storyListNetworkRepository.getStoryListModel().then((value) => {
       storyList(value)
     });
-    _init();
     
+    audioPlayer.onDurationChanged.listen((newDuration) {
+      //duration = newDuration;
+      duration(newDuration);
+    });
+
+    audioPlayer.onPositionChanged.listen((newPosition) {
+      //position = newPosition;
+      position(newPosition);
+    });
+
     super.onInit();
   }
 
@@ -34,20 +51,39 @@ class StoryController extends GetxController{
     audioPlayer.dispose();
     super.onReady();
   }
+  
+  void updateLike(String storyListKey, int index) async {
+    await storyListNetworkRepository.updateStoryListLike(storyListKey, true).then((value) async =>
+    {
+      storyList[index].isLike = true,
+      storyList.refresh(),
+      PreviewController.to.previewStoryList[index].isLike = true,
+      PreviewController.to.previewStoryList.refresh()
 
-  Future<void> _init() async {
-    // Listen to errors during playback.
-    audioPlayer.playbackEventStream.listen((event) {},
-        onError: (Object e, StackTrace stackTrace) {
-          print('A stream error occurred: $e');
-        });
-    // Try to load audio from a source and catch any errors.
-    try {
-      await audioPlayer.setAudioSource(AudioSource.asset('assets/audio/story_1.mp3'));
-    } catch (e) {
-      print("Error loading audio source: $e");
-    }
+    });
+  }
+  void updateUnLike(String storyListKey, int index) async {
+    await storyListNetworkRepository.updateStoryListLike(storyListKey, false).then((value) async =>
+    {
+      storyList[index].isLike = false,
+      storyList.refresh(),
+      PreviewController.to.previewStoryList[index].isLike = false,
+      PreviewController.to.previewStoryList.refresh()
+
+    });
   }
 
+  void updatePause() async{
+    await audioPlayer.pause();
+    isPlaying(false);
+    isPlaying.refresh();
+  }
+
+  void updatePlay(int index) async{
+    String? mp3Path = storyList[index].mp3Path;
+    await audioPlayer.play(AssetSource(mp3Path!));
+    isPlaying(true);
+    isPlaying.refresh();
+  }
 
 }

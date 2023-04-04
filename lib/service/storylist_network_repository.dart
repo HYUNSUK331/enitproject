@@ -17,6 +17,16 @@ class StoryListNetworkRepository {
     return resultList;
   }
 
+  //좋아요 업데이트
+  Future<String> updateStoryListLike(String storyListKey, bool isLike) async{
+    final DocumentReference storyListCollRef = FirebaseFirestore.instance.collection(COLLECTION_STORYPLAYLIST).doc(storyListKey);
+
+    await FirebaseFirestore.instance.runTransaction((tx) async {
+      tx.update(storyListCollRef, {KEY_LIKE: isLike});
+    });
+    return storyListKey;
+  }
+
 }
 
 StoryListNetworkRepository storyListNetworkRepository = StoryListNetworkRepository();
