@@ -1,8 +1,11 @@
 
-import 'package:enitproject/screen/favorite/favorite_view.dart';
+import 'package:enitproject/screen/favorite/favorite_screen.dart';
+import 'package:enitproject/screen/map_home/home_view.dart';
 import 'package:enitproject/screen/map_home/map_home_screen.dart';
 import 'package:enitproject/screen/story/story_screen.dart';
 import 'package:flutter/material.dart';
+
+import '../screen/map_home/map_home_controller.dart';
 
 
 
@@ -18,7 +21,7 @@ class _TabsViewState extends State<TabsView> {
   static List<Widget> pages = <Widget>[
     Navigator(
       onGenerateRoute: (routeSettings){
-        return MaterialPageRoute(builder: (context) => const MapHomeScreen());
+        return MaterialPageRoute(builder: (context) => const HomeView());
       },
     )
   ];
@@ -44,7 +47,7 @@ class _TabsViewState extends State<TabsView> {
             children: [
               Navigator(
                 onGenerateRoute: (routeSettings){
-                  return MaterialPageRoute(builder: (context) => const MapHomeScreen());
+                  return MaterialPageRoute(builder: (context) => const HomeView());
                 },
               ),
               StoryScreen(),
