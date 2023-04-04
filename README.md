@@ -1,4 +1,4 @@
-#   쥬랑 (JJulang), **엔잇**
+#   쥬랑 (JJulang), **ENIT**
 
 <a href="http://google.co.kr/">
   <img width="150" src="https://img.shields.io/badge/앱 배포 링크-ffffff?style=for-the-badge&logo=one&logoColor=black"></a>
@@ -7,7 +7,7 @@
 
 ## ▪️ 프로젝트 기간
 
-#### `2023.03.01 ~ 2023.06.01`
+#### `2023.03.01 ~ 2023.06.02`
 
 ## ▪️ 프로젝트 설명
    
@@ -19,7 +19,7 @@
 
 ### ▫️ 핵심 기능
 
-* ??
+* 지도
 
 ### ▫️ 서비스 특징
 
