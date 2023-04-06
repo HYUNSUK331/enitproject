@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import '../../const/color.dart';
+import '../bottom_popup_player/bottom_popup_player_screen.dart';
 
 class StoryScreen extends GetView<StoryController> {
   final int storyIndex;
@@ -155,6 +156,7 @@ class StoryScreen extends GetView<StoryController> {
                     IconButton(
                         onPressed: () async{
                           controller.updatePlay(storyIndex);
+                          BottomPopupPlayer(storyIndex: storyIndex);
                         },
                         icon: Icon(
                           Icons.play_arrow,

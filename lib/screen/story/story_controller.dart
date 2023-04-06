@@ -77,6 +77,8 @@ class StoryController extends GetxController{
     await audioPlayer.pause();
     isPlaying(false);
     isPlaying.refresh();
+    PreviewController.to.isPlaying(false);
+    PreviewController.to.isPlaying.refresh();
   }
 
   void updatePlay(int index) async{
@@ -84,6 +86,8 @@ class StoryController extends GetxController{
     await audioPlayer.play(AssetSource(mp3Path!));
     isPlaying(true);
     isPlaying.refresh();
+    PreviewController.to.isPlaying(true);
+    PreviewController.to.isPlaying.refresh();
   }
 
 }
