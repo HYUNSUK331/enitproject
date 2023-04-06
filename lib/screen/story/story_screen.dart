@@ -119,24 +119,24 @@ class StoryScreen extends GetView<StoryController> {
                   fit: BoxFit.contain,
                 ),
                 SizedBox(height: 15.0,),
-                Slider(
-                    min: 0,
-                      max: controller.duration.inSeconds.toDouble(),
-                      value: controller.position.inSeconds.toDouble(),
-                      onChanged: (value) async{
-                      final position = Duration(seconds: value.toInt());
-                      await controller.audioPlayer.seek(position);
-
-                      await controller.audioPlayer.resume();
-                      },
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('${controller.position}'),
-                      Text('${controller.duration - controller.position}'),
-                    ],
-                  ),
+                // Slider(
+                //     min: 0,
+                //       max: controller.duration.inSeconds.toDouble(),
+                //       value: controller.position.inSeconds.toDouble(),
+                //       onChanged: (value) async{
+                //       final position = Duration(seconds: value.toInt());
+                //       await controller.audioPlayer.seek(position);
+                //
+                //       await controller.audioPlayer.resume();
+                //       },
+                //   ),
+                //   Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       Text('${controller.position}'),
+                //       Text('${controller.duration - controller.position}'),
+                //     ],
+                //   ),
                 CircleAvatar(
                   backgroundColor: GREEN_DARK_COLOR,
                   radius: 40,

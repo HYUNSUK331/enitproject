@@ -10,7 +10,7 @@ class MapHomeController extends GetxController{
 
   static MapHomeController get to => Get.find();
 
-  RxList<StoryListModel> latLngList = RxList<StoryListModel>();  // 내용은 story의 모든 내용이 있지만 letlng만 가져와 사용할꺼니까 이름은 letlngList
+  RxList<StoryListModel> latLngList = <StoryListModel>[].obs;  // 내용은 story의 모든 내용이 있지만 letlng만 가져와 사용할꺼니까 이름은 letlngList
 
   @override
   void onInit() async{
@@ -30,8 +30,12 @@ class MapHomeController extends GetxController{
     super.onClose();
   }
 
+
+
+
   bool choolCheckDone = false;
   GoogleMapController? mapController;
+
 
   static double lat =  33.49766527106121;
   static double lng =  126.53094118653355;
@@ -45,49 +49,7 @@ class MapHomeController extends GetxController{
 
   );
 
-  static final double okDistence = 40 ;     //원 사이즈 이거 const에 넣기
-  static final Circle withinDistanceCircle = Circle(circleId: CircleId('withinDistanceCircle'),
-    center: companyLatLng,                    // 이야기 1 좌표 DB에서 가져오기
-    fillColor: Colors.blue.withOpacity(0.2),  // 진하기
-    radius: okDistence,                         // 반지름
-    strokeColor: Colors.blue,                 // 라인 색 const에넣어두기
-    strokeWidth: 1,                           // 라인 두께
-  );
-  static final Circle notWithinDistanceCircle = Circle(circleId: CircleId('norWithinDistanceCircle'),
-    center: companyLatLng,                    // 이야기 1 좌표 DB에서 가져오기
-    fillColor: Colors.red.withOpacity(0.2),  // 진하기
-    radius: okDistence,                         // 반지름
-    strokeColor: Colors.red,                 // 라인 색 const에넣어두기
-    strokeWidth: 1,                           // 라인 두께
-  );
-  static final Circle checkDoneCircle = Circle(circleId: CircleId('checkDoneCircle'),
-    center: companyLatLng,                    // 이야기 1 좌표 DB에서 가져오기
-    fillColor: Colors.green.withOpacity(0.2),  // 진하기
-    radius: okDistence,                         // 반지름
-    strokeColor: Colors.green,                 // 라인 색 const에넣어두기
-    strokeWidth: 1,                           // 라인 두께
-  );
-
-
-
-  void markerShow(int index){
-
-    latLnglistIndex = index;
-    latLngList.refresh();
-  }
-
-
-  static final Marker marker = Marker(   // 여기를 for문으로 전부 가져와보자
-    markerId: MarkerId('marker'),
-    position: companyLatLng,
-  );
-
-
-
-
-
-
-  onMapCreated(GoogleMapController controller){
+  void onMapCreated(GoogleMapController controller){
     mapController = controller;
   }
 
@@ -148,4 +110,6 @@ class MapHomeController extends GetxController{
       ],
     );
   }
+
+
 }
