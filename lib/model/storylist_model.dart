@@ -6,7 +6,7 @@ class StoryListModel{
   String? addressDetail;
   String? addressSearch;
   String? image;
-  bool isLike = true;
+  bool isLike = false;
   String? mp3Path;
   dynamic? pinAddress;
   String? script;
@@ -14,6 +14,7 @@ class StoryListModel{
   String? title;
   double? latitude;
   double? longitude;
+  bool changeStoryColor = false;
 
   StoryListModel.fromMap(Map<String,dynamic>map)
       : addressDetail = map[KEY_ADDRESS_DETAIL],

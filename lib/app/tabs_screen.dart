@@ -49,7 +49,7 @@ class _TabsViewState extends State<TabsView> {
             children: [
               Navigator(
                 onGenerateRoute: (routeSettings){
-                  return MaterialPageRoute(builder: (context) => const MapHomeScreen());
+                  return MaterialPageRoute(builder: (context) => const HomeView());
                 },
               ),
               PreviewScreen(),
