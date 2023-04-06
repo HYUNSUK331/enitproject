@@ -16,6 +16,7 @@ const KEY_LONGITUDE = 'longitude';
 
 
 
+
 void configLoading() {
   EasyLoading.instance
     ..displayDuration = const Duration(milliseconds: 2000)

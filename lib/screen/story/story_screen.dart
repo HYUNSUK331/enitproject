@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import '../../const/color.dart';
+import '../bottom_popup_player/bottom_popup_player_screen.dart';
 
 class StoryScreen extends GetView<StoryController> {
   final int storyIndex;
@@ -119,24 +120,24 @@ class StoryScreen extends GetView<StoryController> {
                   fit: BoxFit.contain,
                 ),
                 SizedBox(height: 15.0,),
-                Slider(
-                    min: 0,
-                      max: controller.duration.inSeconds.toDouble(),
-                      value: controller.position.inSeconds.toDouble(),
-                      onChanged: (value) async{
-                      final position = Duration(seconds: value.toInt());
-                      await controller.audioPlayer.seek(position);
-
-                      await controller.audioPlayer.resume();
-                      },
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('${controller.position}'),
-                      Text('${controller.duration - controller.position}'),
-                    ],
-                  ),
+                // Slider(
+                //     min: 0,
+                //       max: controller.duration.inSeconds.toDouble(),
+                //       value: controller.position.inSeconds.toDouble(),
+                //       onChanged: (value) async{
+                //       final position = Duration(seconds: value.toInt());
+                //       await controller.audioPlayer.seek(position);
+                //
+                //       await controller.audioPlayer.resume();
+                //       },
+                //   ),
+                //   Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       Text('${controller.position}'),
+                //       Text('${controller.duration - controller.position}'),
+                //     ],
+                //   ),
                 CircleAvatar(
                   backgroundColor: GREEN_DARK_COLOR,
                   radius: 40,
@@ -155,6 +156,7 @@ class StoryScreen extends GetView<StoryController> {
                     IconButton(
                         onPressed: () async{
                           controller.updatePlay(storyIndex);
+                          BottomPopupPlayer(storyIndex: storyIndex);
                         },
                         icon: Icon(
                           Icons.play_arrow,

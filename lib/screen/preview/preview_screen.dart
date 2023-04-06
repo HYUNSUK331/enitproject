@@ -26,7 +26,7 @@ class PreviewScreen extends GetView<PreviewController> {
             color: Colors.black,
             iconSize: 35.0,
             onPressed: (){
-              Navigator.pop(context);
+              //Navigator.pop(context);
             },
           ),
         ),
@@ -40,7 +40,7 @@ class PreviewScreen extends GetView<PreviewController> {
 
       body: Padding(
         padding: const EdgeInsets.symmetric(
-            horizontal: 20.0
+            horizontal: 15.0
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,46 +54,54 @@ class PreviewScreen extends GetView<PreviewController> {
               ),
             ),
             SizedBox(height: 20,),
-            Container(
-              width: double.infinity,
-              height: 690,
+            Expanded(
               child: ListView.builder(
                   itemCount: controller.previewStoryList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      children: [
-                        InkWell(
-                          child: Container(
-                            width: 430, height: 100,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Image.network(
-                                  '${controller.previewStoryList[index].image}',
-                                  height: double.infinity,
-                                  fit: BoxFit.contain,
-                                ),
-                                SizedBox(width: 10,),
-                                Column(
+                    return InkWell(
+                      child: Container(
+                        height: 100,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.network(
+                                '${controller.previewStoryList[index].image}',
+                                height: double.infinity,
+                                fit: BoxFit.contain,
+                              ),
+                              SizedBox(width: 10,),
+                              Expanded(
+                                child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
                                       children: [
                                         Text(
-                                            '${controller.previewStoryList[index].title}',
+                                          '${controller.previewStoryList[index].title}',
                                           style: TextStyle(
-                                            fontSize: 20.0,
-                                            fontWeight: FontWeight.w500
+                                              fontSize: 20.0,
+                                              fontWeight: FontWeight.w500
                                           ),
                                         ),
                                         SizedBox(width: 5.0,),
+                                        Obx(() => controller.previewStoryList[index].changeStoryColor?
+                                          Badge(
+                                            badgeStyle: BadgeStyle(
+                                              badgeColor: GREEN_BRIGHT_COLOR,
+                                            ),
+                                            showBadge: true,
+                                          )
+                                            :
                                         Badge(
                                           badgeStyle: BadgeStyle(
-                                            badgeColor: GREEN_BRIGHT_COLOR,
+                                            badgeColor: LIGHT_YELLOW_COLOR,
                                           ),
                                           showBadge: true,
+                                        ),
                                         ),
                                       ],
                                     ),
@@ -101,47 +109,64 @@ class PreviewScreen extends GetView<PreviewController> {
                                     Text(
                                       '${controller.previewStoryList[index].addressDetail}',
                                       style: TextStyle(
-                                          fontSize: 15.0,
+                                        fontSize: 15.0,
                                       ),
                                     )
                                   ],
                                 ),
-                                SizedBox(width: 20,),
+                              ),
+                              SizedBox(width: 20,),
+                              Obx(() => controller.previewStoryList[index].changeStoryColor?
+                                Obx(() => controller.isPlaying.value?
+                                  IconButton(
+                                      onPressed: () async{
+                                        controller.updatePause();
+                                      },
+                                      icon: Icon(
+                                        Icons.headphones,
+                                        color: GREEN_MIDDLE_COLOR,
+                                      ),
+                                  ):
                                 IconButton(
-                                    onPressed: (){},
-                                    icon: Icon(
-                                      Icons.headphones,
-                                      color: GREEN_MIDDLE_COLOR,
-                                    ),
+                                  onPressed: () async{
+                                    controller.updatePlay(index);
+                                  },
+                                  icon: Icon(
+                                    Icons.headphones,
+                                    color: GREEN_MIDDLE_COLOR,
+                                  ),
                                 ),
-                                Obx(() => controller.previewStoryList[index].isLike?
-                                IconButton(
-                                    onPressed: () => {
-                                      controller.updateUnLike('${controller.previewStoryList[index].storyPlayListKey}', index)
-                                    },
-                                    icon: const Icon(
-                                      Icons.favorite,
-                                      color: GREEN_DARK_COLOR,),
                                 )
-                                    :
-                                IconButton(
-                                    onPressed: ()=>{
-                                      controller.updateLike('${controller.previewStoryList[index].storyPlayListKey}',index)
-                                    },
-                                    icon: const Icon(
-                                      Icons.favorite_border,
-                                      color: Colors.grey,),
-                                    padding: EdgeInsets.zero
-                                )
-                                ),
-                              ],
-                            ),
+                                  :
+                                SizedBox.shrink(),
+                              ),
+                              Obx(() => controller.previewStoryList[index].isLike?
+                              IconButton(
+                                  onPressed: () => {
+                                    controller.updateUnLike('${controller.previewStoryList[index].storyPlayListKey}', index)
+                                  },
+                                  icon: const Icon(
+                                    Icons.favorite,
+                                    color: GREEN_DARK_COLOR,),
+                              )
+                                  :
+                              IconButton(
+                                  onPressed: ()=>{
+                                    controller.updateLike('${controller.previewStoryList[index].storyPlayListKey}',index)
+                                  },
+                                  icon: const Icon(
+                                    Icons.favorite_border,
+                                    color: Colors.grey,),
+                                  padding: EdgeInsets.zero
+                              )
+                              ),
+                            ],
                           ),
-                          onTap: (){
-                            Get.to(() => StoryScreen(storyIndex: index,));
-                          },
                         ),
-                      ],
+                      ),
+                      onTap: (){
+                        Get.to(() => StoryScreen(storyIndex: index,));
+                      },
                     );
                   }
               ),
