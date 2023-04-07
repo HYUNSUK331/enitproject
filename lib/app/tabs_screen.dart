@@ -1,11 +1,12 @@
-
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import '../screen/bottom_popup_player/bottom_popup_player_controller.dart';
+import '../screen/bottom_popup_player/bottom_popup_player_screen.dart';
+import '../screen/preview/preview_controller.dart';
 import '../screen/preview/preview_screen.dart';
-import 'package:enitproject/screen/favorite/favorite_screen.dart';
 import 'package:enitproject/screen/map_home/home_view.dart';
-import 'package:enitproject/screen/map_home/map_home_screen.dart';
-import 'package:enitproject/screen/story/story_screen.dart';
 import 'package:flutter/material.dart';
-import '../screen/map_home/map_home_controller.dart';
 
 
 
@@ -17,6 +18,9 @@ class TabsView extends StatefulWidget {
 }
 
 class _TabsViewState extends State<TabsView> {
+
+  //컨트롤러 사용을 위한 선언
+  BottomPopupPlayerController bottomPopupPlayerController = Get.find();
 
   static List<Widget> pages = <Widget>[
     Navigator(
@@ -37,7 +41,7 @@ class _TabsViewState extends State<TabsView> {
     });
   }
 
-
+  late String storyKey;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +58,9 @@ class _TabsViewState extends State<TabsView> {
               ),
               PreviewScreen(),
             ],
-          )
+          ),
+          Obx(()=> bottomPopupPlayerController.isPopup.value?
+          BottomPopupPlayer(storyKey: storyKey) : SizedBox.shrink()),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

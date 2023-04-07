@@ -16,7 +16,7 @@ void main() async{
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   Get.put(StoryController());
-  Get.put(PreviewController());
+  // Get.put(PreviewController());
   Get.put(BottomPopupPlayerController());
 
   //easyLoading setup

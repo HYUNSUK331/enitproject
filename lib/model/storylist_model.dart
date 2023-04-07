@@ -1,5 +1,9 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:enitproject/const/const.dart';
+
+import '../const/color.dart';
 
 class StoryListModel{
 
@@ -14,7 +18,7 @@ class StoryListModel{
   String? title;
   double? latitude;
   double? longitude;
-  bool changeStoryColor = false;
+  Color changeStoryColor = LIGHT_YELLOW_COLOR;
 
   StoryListModel.fromMap(Map<String,dynamic>map)
       : addressDetail = map[KEY_ADDRESS_DETAIL],

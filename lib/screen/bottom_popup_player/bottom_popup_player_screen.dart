@@ -4,9 +4,9 @@ import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'bottom_popup_player_controller.dart';
 
 class BottomPopupPlayer extends GetView<BottomPopupPlayerController> {
-  final int storyIndex;
+  final String storyKey;
   const BottomPopupPlayer({
-    required this.storyIndex,
+    required this.storyKey,
     Key? key
   }) : super(key: key);
 
