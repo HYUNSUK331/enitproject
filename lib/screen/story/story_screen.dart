@@ -156,7 +156,6 @@ class StoryScreen extends GetView<StoryController> {
                     IconButton(
                         onPressed: () async{
                           controller.updatePlay(storyIndex);
-                          BottomPopupPlayer(storyIndex: storyIndex);
                         },
                         icon: Icon(
                           Icons.play_arrow,
