@@ -25,7 +25,6 @@ class PreviewScreen extends GetView<StoryController> {
           child: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             color: Colors.black,
-            iconSize: 35.0,
             onPressed: (){
               //Navigator.pop(context);
             },
@@ -68,10 +67,13 @@ class PreviewScreen extends GetView<StoryController> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Image.network(
-                                '${controller.storyList[index].image}',
-                                height: double.infinity,
-                                fit: BoxFit.contain,
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10.0),
+                                child: Image.network(
+                                  '${controller.storyList[index].image}',
+                                  width: 100, height: 100,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                               SizedBox(width: 10,),
                               Expanded(
@@ -79,6 +81,14 @@ class PreviewScreen extends GetView<StoryController> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    Text('${controller.storyList[index].addressSearch}',
+                                      style: TextStyle(
+                                        fontSize: 5.0,
+                                        fontWeight: FontWeight.w500,
+                                        color: GREEN_DARK_COLOR,
+                                      ),
+                                    ),
+                                    SizedBox(height: 10.0,),
                                     Row(
                                       children: [
                                         Text(
@@ -166,6 +176,7 @@ class PreviewScreen extends GetView<StoryController> {
                         ),
                       ),
                       onTap: (){
+                        if(controller.storyList[index].changeStoryColor == GREEN_BRIGHT_COLOR)
                         Get.to(() => StoryScreen(storyIndex: index,));
                       },
                     );

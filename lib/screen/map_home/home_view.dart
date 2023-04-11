@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import '../story/story_controller.dart';
 // 시작화면 지정하기
 
 
@@ -51,8 +53,10 @@ class HomeView extends GetView<MapHomeController> {
                           end.longitude);
                       if (distance < 40) {
                         invisibleTableRowSwitchList1[i] = Colors.red;
+                        StoryController.to.changeTrueBadgeColor(i);
                       }else{
                         invisibleTableRowSwitchList1[i] = Colors.blue;
+                        StoryController.to.changeFalseBadgeColor(i);
                       }
                     }
                   }

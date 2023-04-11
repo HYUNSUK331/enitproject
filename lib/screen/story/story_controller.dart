@@ -7,7 +7,9 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import '../../const/color.dart';
+import '../../const/const.dart';
 import '../../service/storylist_network_repository.dart';
+import '../bottom_popup_player/bottom_popup_player_controller.dart';
 
 class StoryController extends GetxController{
 
@@ -35,36 +37,49 @@ class StoryController extends GetxController{
     await storyListNetworkRepository.getStoryListModel().then((value) => {
       storyList(value)
     });
-    
+
+    audioPlayer.onPlayerStateChanged.listen((state) {
+      isPlaying.value = state == PlayerState.playing;
+    });
+
     audioPlayer.onDurationChanged.listen((newDuration) {
-      //duration = newDuration;
-      duration(newDuration);
+      duration.value = newDuration;
     });
 
     audioPlayer.onPositionChanged.listen((newPosition) {
-      //position = newPosition;
-      position(newPosition);
+      position.value = newPosition;
     });
+
+    // audioPlayer.onDurationChanged.listen((newDuration) {
+    //   //duration = newDuration;
+    //   duration(newDuration);
+    // });
+    //
+    // audioPlayer.onPositionChanged.listen((newPosition) {
+    //   //position = newPosition;
+    //   position(newPosition);
+    // });
 
     super.onInit();
   }
 
   @override
   void onReady() async{
+    audioPlayer.release();
     audioPlayer.dispose();
     super.onReady();
   }
 
-  Color changeTrueBadgeColor(int index) {
+  void changeTrueBadgeColor(int index) {
     storyList[index].changeStoryColor = GREEN_BRIGHT_COLOR;
-    storyList.refresh();
-    return GREEN_BRIGHT_COLOR;
+    //storyList.refresh();
+    //return GREEN_BRIGHT_COLOR;
   }
 
-  Color changeFalseBadgeColor(int index) {
+  void changeFalseBadgeColor(int index) {
     storyList[index].changeStoryColor = LIGHT_YELLOW_COLOR;
-    storyList.refresh();
-    return LIGHT_YELLOW_COLOR;
+    //storyList.refresh();
+    //return LIGHT_YELLOW_COLOR;
   }
 
   void updateLike(String storyListKey, int index) async {
@@ -101,6 +116,13 @@ class StoryController extends GetxController{
     await audioPlayer.play(AssetSource(mp3Path!));
     isPlaying(true);
     isPlaying.refresh();
+    BottomPopupPlayerController.to.isPopup(true);
+    // BottomPopupPlayerController.to.isPopup.refresh();
+    BottomPopupPlayerController.to.setPopupTitle = '${storyList[index].title}';
+    BottomPopupPlayerController.to.setPopupImage = '${storyList[index].image}';
+    BottomPopupPlayerController.to.setPopupAddressDetail = '${storyList[index].addressDetail}';
+    BottomPopupPlayerController.to.setPopupPath = mp3Path;
+    storyIndex = index;
     // PreviewController.to.isPlaying(true);
     // PreviewController.to.isPlaying.refresh();
   }
