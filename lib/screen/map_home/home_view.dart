@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import '../story/story_controller.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // 시작화면 지정하기
 
@@ -53,6 +54,7 @@ class HomeView extends GetView<MapHomeController> {
                       final distance = Geolocator.distanceBetween(
                           start.latitude, start.longitude, end.latitude,
                           end.longitude);
+
                       if (distance < 40
                       ) {
                         invisibleTableRowSwitchList1[i] = GREEN_BRIGHT_COLOR;  //이 로직 돌아가는중에 오류

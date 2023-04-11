@@ -14,7 +14,7 @@ const KEY_TITLE = 'title';
 const KEY_LATITUDE = 'latitude';
 const KEY_LONGITUDE = 'longitude';
 
-
+late int storyIndex;
 
 
 void configLoading() {

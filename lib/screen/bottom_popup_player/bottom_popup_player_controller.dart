@@ -9,8 +9,28 @@ class BottomPopupPlayerController extends GetxController{
   static BottomPopupPlayerController get to => Get.find();
 
   RxBool isPopup = RxBool(false);
+  RxString popupImage = RxString('String image');
+  RxString popupTitle = RxString('String title');
+  RxString popupAddressDetail = RxString('String addressDetail');
+  RxString popupPath = RxString('String path');
 
   set setIsPopup(bool value){
     isPopup(value);
+  }
+
+  set setPopupImage(String image){
+    popupImage(image);
+  }
+
+  set setPopupTitle(String title){
+    popupTitle(title);
+  }
+
+  set setPopupAddressDetail(String addressDetail){
+    popupAddressDetail(addressDetail);
+  }
+
+  set setPopupPath(String path){
+    popupPath(path);
   }
 }
