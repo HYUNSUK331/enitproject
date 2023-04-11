@@ -19,7 +19,7 @@ class StoryController extends GetxController{
   static StoryController get to => Get.find();
 
   //데이터베이스에 있는 정보 가져와서 담을 리스트 선언
-  RxList<StoryListModel> storyList = RxList<StoryListModel>();
+  RxList<StoryListModel> storyList = <StoryListModel>[].obs;
   
   //오디오 플레이어
   final audioPlayer = AudioPlayer();

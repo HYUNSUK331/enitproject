@@ -50,7 +50,7 @@ class CustomGoogleMap extends StatelessWidget {
           center: LatLng(MapHomeController.to.latLngList[i].latitude ?? 0.0, MapHomeController.to.latLngList[i].longitude ?? 0.0),
           radius: 40,
           strokeColor:circle[i],
-          fillColor: circle[i].withOpacity(0.2),
+          fillColor: circle[i].withOpacity(0.5),
           strokeWidth: 1,
         ), //Icon for Marker
         );

@@ -1,6 +1,9 @@
+import 'package:badges/badges.dart';
+import 'package:enitproject/const/color.dart';
 import 'package:enitproject/screen/map_home/map_home_component/map_home_googlemap.dart';
 import 'package:enitproject/screen/map_home/map_home_controller.dart';
 import 'package:enitproject/screen/map_home/map_pin_list.dart';
+import 'package:enitproject/screen/story/story_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -15,7 +18,7 @@ class HomeView extends GetView<MapHomeController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(MapHomeController()); // 페이지 마다 불러오기
+    Get.put(MapHomeController()); // 페이지 마다 불러오기  두번 불러와도 가능한가?
     MapHomeController mapController = Get.find();
 
     RxList invisibleTableRowSwitchList1 = RxList<dynamic>();
@@ -51,12 +54,15 @@ class HomeView extends GetView<MapHomeController> {
                       final distance = Geolocator.distanceBetween(
                           start.latitude, start.longitude, end.latitude,
                           end.longitude);
-                      if (distance < 40) {
-                        invisibleTableRowSwitchList1[i] = Colors.red;
-                        StoryController.to.changeTrueBadgeColor(i);
+
+                      if (distance < 40
+                      ) {
+                        invisibleTableRowSwitchList1[i] = GREEN_BRIGHT_COLOR;  //이 로직 돌아가는중에 오류
+                        StoryController?.to.changeTrueBadgeColor(i);
+
                       }else{
-                        invisibleTableRowSwitchList1[i] = Colors.blue;
-                        StoryController.to.changeFalseBadgeColor(i);
+                        invisibleTableRowSwitchList1[i] = LIGHT_YELLOW_COLOR;
+                        StoryController?.to.changeFalseBadgeColor(i);
                       }
                     }
                   }
@@ -78,6 +84,7 @@ class HomeView extends GetView<MapHomeController> {
     );
   }
 
+
  //###################################################################################3
   Widget _buildContainer() {
     return Align(
@@ -85,18 +92,12 @@ class HomeView extends GetView<MapHomeController> {
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 20.0),
         height: 150.0,
-        child: ListView(
+        child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          children: <Widget>[
-            for(int i = 0; i < MapHomeController.to.latLngList.length; i++ )
-            SizedBox(width: 10.0),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: _boxes(
-                  "https://images.unsplash.com/photo-1504940892017-d23b9053d5d4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-                  33.49766527106121, 126.53094118653355,"Gramercy Tavern"),
-            ),
-          ],
+          itemCount: MapHomeController.to.latLngList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return MapHomeItem(index: index);
+          },
         ),
       ),
     );
@@ -107,23 +108,48 @@ class HomeView extends GetView<MapHomeController> {
 
 
 
-  Widget _boxes(String _image, double lat,double long,String restaurantName) {
-    return  GestureDetector(
-      onTap:()async{
-          if(controller.mapController == null){
-            return;
-          }
-          final location = await Geolocator.getCurrentPosition();
 
-          controller.mapController!.animateCamera(CameraUpdate.newLatLng(
-            LatLng(location.latitude, location.longitude
+}
+
+class MapHomeItem extends GetView<MapHomeController> {
+
+  final int index;
+
+  const MapHomeItem({Key? key, required this.index}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(children: <Widget>[
+      SizedBox(width: 10.0),
+      // for(int i = 0; i < MapHomeController.to.latLngList.length; i++)
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: _boxes(
+            MapHomeController.to.latLngList[index].image.toString(),
+            MapHomeController.to.latLngList[index].latitude!.toDouble(),
+            MapHomeController.to.latLngList[index].longitude!.toDouble(),
+            MapHomeController.to.latLngList[index].title.toString(),
+          ),
+        ),
+    ],
+    );
+  }
+
+  Widget _boxes(String _image, double lat, double long, String restaurantName) {
+    return GestureDetector(
+      onTap: () async {
+        if (controller.mapController == null) {
+          return;
+        }
+        controller.mapController!.animateCamera(
+          CameraUpdate.newLatLng( // story 클릭 시 그 위치로 이동시키기
+            LatLng(lat, long
             ),
           ),
-          );
+        );
       },
 
-
-      child:Container(
+      child: Container(
         child: new FittedBox(
           child: Material(
               color: Colors.white,
@@ -171,54 +197,30 @@ class HomeView extends GetView<MapHomeController> {
                     fontWeight: FontWeight.bold),
               )),
         ),
-        SizedBox(height:5.0),
+        Obx(() =>
+        StoryController.to.storyList[index].changeStoryColor ==
+            GREEN_BRIGHT_COLOR ?
+        Badge(
+          badgeStyle: BadgeStyle(
+            badgeColor: GREEN_BRIGHT_COLOR,
+          ),
+          showBadge: true,
+
+        )
+            :
+        Badge(
+          badgeStyle: BadgeStyle(
+            badgeColor: LIGHT_YELLOW_COLOR,
+          ),
+          showBadge: true,
+        ),
+        ),
+        Text("${MapHomeController.to.latLngList.length}"),
+        SizedBox(height: 5.0),
         Container(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Container(
-                    child: Text(
-                      "4.1",
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: 18.0,
-                      ),
-                    )),
-                Container(
-                  child: Icon(
-                    FontAwesomeIcons.solidStar,
-                    color: Colors.amber,
-                    size: 15.0,
-                  ),
-                ),
-                Container(
-                  child: Icon(
-                    FontAwesomeIcons.solidStar,
-                    color: Colors.amber,
-                    size: 15.0,
-                  ),
-                ),
-                Container(
-                  child: Icon(
-                    FontAwesomeIcons.solidStar,
-                    color: Colors.amber,
-                    size: 15.0,
-                  ),
-                ),
-                Container(
-                  child: Icon(
-                    FontAwesomeIcons.solidStar,
-                    color: Colors.amber,
-                    size: 15.0,
-                  ),
-                ),
-                Container(
-                  child: Icon(
-                    FontAwesomeIcons.solidStarHalf,
-                    color: Colors.amber,
-                    size: 15.0,
-                  ),
-                ),
                 Container(
                     child: Text(
                       "(946)",
@@ -229,16 +231,7 @@ class HomeView extends GetView<MapHomeController> {
                     )),
               ],
             )),
-        SizedBox(height:5.0),
-        Container(
-            child: Text(
-              "American \u00B7 \u0024\u0024 \u00B7 1.6 mi",
-              style: TextStyle(
-                color: Colors.black54,
-                fontSize: 18.0,
-              ),
-            )),
-        SizedBox(height:5.0),
+        SizedBox(height: 5.0),
         Container(
             child: Text(
               "Closed \u00B7 Opens 17:00 Thu",
@@ -250,8 +243,4 @@ class HomeView extends GetView<MapHomeController> {
       ],
     );
   }
-
-
-
-
 }
