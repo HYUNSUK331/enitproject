@@ -130,12 +130,12 @@ class MapHomeController extends GetxController{
         child: ListView(
           scrollDirection: Axis.horizontal,
           children: <Widget>[
-            for(int i = 0; i < MapHomeController.to.latLngList.length; i++ )
+            for(int i = 0; i < latLngList.length; i++ )
               SizedBox(width: 10.0),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: _boxes(
-                  "https://images.unsplash.com/photo-1504940892017-d23b9053d5d4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+                  latLngList[1].image.toString(),
                   33.49766527106121, 126.53094118653355,"Gramercy Tavern"),
             ),
           ],
@@ -223,41 +223,7 @@ class MapHomeController extends GetxController{
                         fontSize: 18.0,
                       ),
                     )),
-                Container(
-                  child: Icon(
-                    FontAwesomeIcons.solidStar,
-                    color: Colors.amber,
-                    size: 15.0,
-                  ),
-                ),
-                Container(
-                  child: Icon(
-                    FontAwesomeIcons.solidStar,
-                    color: Colors.amber,
-                    size: 15.0,
-                  ),
-                ),
-                Container(
-                  child: Icon(
-                    FontAwesomeIcons.solidStar,
-                    color: Colors.amber,
-                    size: 15.0,
-                  ),
-                ),
-                Container(
-                  child: Icon(
-                    FontAwesomeIcons.solidStar,
-                    color: Colors.amber,
-                    size: 15.0,
-                  ),
-                ),
-                Container(
-                  child: Icon(
-                    FontAwesomeIcons.solidStarHalf,
-                    color: Colors.amber,
-                    size: 15.0,
-                  ),
-                ),
+
                 Container(
                     child: Text(
                       "(946)",

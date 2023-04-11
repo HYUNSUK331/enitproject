@@ -17,7 +17,7 @@ class StoryController extends GetxController{
   static StoryController get to => Get.find();
 
   //데이터베이스에 있는 정보 가져와서 담을 리스트 선언
-  RxList<StoryListModel> storyList = RxList<StoryListModel>();
+  RxList<StoryListModel> storyList = <StoryListModel>[].obs;
   
   //오디오 플레이어
   final audioPlayer = AudioPlayer();
@@ -55,16 +55,12 @@ class StoryController extends GetxController{
     super.onReady();
   }
 
-  Color changeTrueBadgeColor(int index) {
+  void changeTrueBadgeColor(int index) {
     storyList[index].changeStoryColor = GREEN_BRIGHT_COLOR;
-    storyList.refresh();
-    return GREEN_BRIGHT_COLOR;
   }
 
-  Color changeFalseBadgeColor(int index) {
+  void changeFalseBadgeColor(int index) {
     storyList[index].changeStoryColor = LIGHT_YELLOW_COLOR;
-    storyList.refresh();
-    return LIGHT_YELLOW_COLOR;
   }
 
   void updateLike(String storyListKey, int index) async {
