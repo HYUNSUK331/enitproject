@@ -35,7 +35,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-       <!--local notification 재부팅 및 업데이트 시에도 작동하기 위해 설정-->
+<!--       &lt;!&ndash;local notification 재부팅 및 업데이트 시에도 작동하기 위해 설정&ndash;&gt;-->
        <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
        <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
            <intent-filter>
@@ -43,9 +43,9 @@
                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
-           </intent-filter>
+           </intent-filter>-->
        </receiver>
-       <!--local notification 재부팅 및 업데이트 시에도 작동하기 위해 설정-->
+<!--       &lt;!&ndash;local notification 재부팅 및 업데이트 시에도 작동하기 위해 설정&ndash;&gt;-->
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data

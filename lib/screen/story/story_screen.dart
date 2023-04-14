@@ -1,5 +1,6 @@
 import 'package:enitproject/screen/story/story_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_getx_widget.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import '../../const/color.dart';
@@ -67,14 +68,13 @@ class StoryScreen extends GetView<StoryController> {
           ],
         ),
 
-
-        body: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20.0
-          ),
-          child: Stack(
-            children: [
-              SingleChildScrollView(
+        body: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 20.0
+              ),
+              child: SingleChildScrollView(
                 child: Column(
                   children: [
                     SizedBox(height: 20.0,),
@@ -123,50 +123,57 @@ class StoryScreen extends GetView<StoryController> {
                       fit: BoxFit.contain,
                     ),
                     SizedBox(height: 15.0,),
-                    // Slider(
-                    //     min: 0,
-                    //       max: controller.duration.value.inSeconds.toDouble(),
-                    //       value: controller.position.value.inSeconds.toDouble(),
-                    //       onChanged: (value) async{
-                    //       final position = Duration(seconds: value.toInt());
-                    //       await controller.audioPlayer.seek(position);
-                    //
-                    //       await controller.audioPlayer.resume();
-                    //       },
-                    //   ),
-                    //   Row(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //     children: [
-                    //       Text('${controller.position}'),
-                    //       Text('${controller.duration.value - controller.position.value}'),
-                    //     ],
-                    //   ),
+                    GetX<StoryController>(builder: (controller) {
+                      return Row(
+                        children: [
+                          Text(
+                            controller.getPositionAsFormatSting,
+                            style: TextStyle(
+                              fontSize: 15,
+                            ),
+                          ),
+                          Expanded(
+                            child: Slider(
+                                activeColor: GREEN_MIDDLE_COLOR,
+                                inactiveColor: Color(0xFFEFEFEF),
+                                value: controller.getPositionAsDouble,
+                                min: 0.0,
+                                max: controller.getDurationAsDouble,
+                                onChanged: (double value) {
+                                  controller.setPositionValue = value;
+                                }),
+                          ),
+                          Obx(() => Text(
+                              controller.getDurationAsFormatSting,
+                              style: TextStyle(
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    }),
                     CircleAvatar(
                       backgroundColor: GREEN_DARK_COLOR,
                       radius: 40,
-                      child: Obx(() => controller.isPlaying.value?
-                      IconButton(
-                        icon: Icon(
-                          Icons.pause,
-                          color: Colors.white,
-                          size: 35.0,
-                        ),
-                        onPressed: () async{
-                          controller.updatePause();
-                        },
-                      )
-                          :
-                      IconButton(
-                        onPressed: () async{
-                          controller.updatePlay(storyIndex);
-                        },
-                        icon: Icon(
+                      child: IconButton(
+                        icon: Obx(() => controller.isPlaying.value?
+                        Icon(
+                            Icons.pause,
+                            color: Colors.white,
+                            size: 35.0,
+                          )
+                            :
+                        Icon(
                           Icons.play_arrow,
                           color: Colors.white,
                           size: 30.0,
+                        )
                         ),
+                        onPressed: () async{
+                          controller.updatePlay(storyIndex);
+                        },
                       )
-                      ),
                     ),
                     SizedBox(height: 20.0,),
                     Container(
@@ -177,17 +184,18 @@ class StoryScreen extends GetView<StoryController> {
                         ),
                       ),
                     ),
+                    SizedBox(height: 110,),
                   ],
                 ),
               ),
-              Obx(()=> BottomPopupPlayerController.to.isPopup.value?
-              Positioned(
-                  bottom: 0, left: 0, right: 0,
-                  child: BottomPopupPlayer(storyIndex: storyIndex,)
-              ) :
-              SizedBox.shrink()),
-            ]
-          ),
+            ),
+            Obx(()=> BottomPopupPlayerController.to.isPopup.value?
+            Positioned(
+                bottom: 12, left: 10, right: 10,
+                child: BottomPopupPlayer(storyIndex: storyIndex,)
+            ) :
+            SizedBox.shrink()),
+          ]
         ),
       ),
     );
