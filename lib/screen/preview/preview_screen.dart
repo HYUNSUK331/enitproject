@@ -1,5 +1,5 @@
 import 'package:badges/badges.dart';
-import 'package:enitproject/screen/preview/preview_controller.dart';
+import 'package:enitproject/screen/bottom_popup_player/bottom_popup_player_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -81,14 +81,17 @@ class PreviewScreen extends GetView<StoryController> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('${controller.storyList[index].addressSearch}',
-                                      style: TextStyle(
-                                        fontSize: 5.0,
-                                        fontWeight: FontWeight.w500,
-                                        color: GREEN_DARK_COLOR,
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                                      child: Text('${controller.storyList[index].addressSearch}',
+                                        style: TextStyle(
+                                          fontSize: 13.0,
+                                          fontWeight: FontWeight.w500,
+                                          color: GREEN_DARK_COLOR,
+                                        ),
                                       ),
                                     ),
-                                    SizedBox(height: 10.0,),
+                                    SizedBox(height: 5.0,),
                                     Row(
                                       children: [
                                         Text(
@@ -126,28 +129,24 @@ class PreviewScreen extends GetView<StoryController> {
                                   ],
                                 ),
                               ),
-                              SizedBox(width: 20,),
+                              SizedBox(width: 5,),
                               Obx(() => controller.storyList[index].changeStoryColor == GREEN_BRIGHT_COLOR?
-                                Obx(() => controller.isPlaying.value?
-                                  IconButton(
-                                      onPressed: () async{
-                                        controller.updatePause();
-                                      },
-                                      icon: Icon(
-                                        Icons.headphones,
-                                        color: GREEN_MIDDLE_COLOR,
-                                      ),
-                                  ):
-                                IconButton(
-                                  onPressed: () async{
-                                    controller.updatePlay(index);
-                                  },
-                                  icon: Icon(
-                                    Icons.headphones,
-                                    color: GREEN_MIDDLE_COLOR,
-                                  ),
-                                ),
+                              IconButton(
+                                onPressed: () async{
+                                  controller.updatePlay(index);
+                                },
+                                icon: Obx(() => controller.isPlaying.value?
+                                Icon(
+                                  Icons.headphones,
+                                  color: GREEN_MIDDLE_COLOR,
                                 )
+                                    :
+                                Icon(
+                                  Icons.headphones,
+                                  color: GREEN_MIDDLE_COLOR,
+                                )
+                                ),
+                              )
                                   :
                                 SizedBox.shrink(),
                               ),
@@ -182,6 +181,9 @@ class PreviewScreen extends GetView<StoryController> {
                     );
                   }
               ),
+            ),
+            Obx(() => BottomPopupPlayerController.to.isPopup.value?
+            SizedBox(height: 90,) : SizedBox.shrink()
             )
           ],
         ),

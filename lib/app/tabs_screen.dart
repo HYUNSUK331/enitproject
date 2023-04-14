@@ -1,10 +1,8 @@
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import '../const/const.dart';
 import '../screen/bottom_popup_player/bottom_popup_player_controller.dart';
 import '../screen/bottom_popup_player/bottom_popup_player_screen.dart';
-import '../screen/preview/preview_controller.dart';
 import '../screen/preview/preview_screen.dart';
 import 'package:enitproject/screen/map_home/home_view.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +59,7 @@ class _TabsViewState extends State<TabsView> {
               child: BottomPopupPlayer(storyIndex: storyIndex,)
           )
               : SizedBox.shrink()),
-        ],
+        ]
       ),
       bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selecIndex,

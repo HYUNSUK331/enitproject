@@ -3,7 +3,6 @@ import 'package:enitproject/const/const.dart';
 import 'package:enitproject/firebase_options.dart';
 import 'package:enitproject/screen/bottom_popup_player/bottom_popup_player_controller.dart';
 import 'package:enitproject/screen/map_home/map_home_controller.dart';
-import 'package:enitproject/screen/preview/preview_controller.dart';
 import 'package:enitproject/screen/story/story_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +17,6 @@ void main() async{
   await Notification;
 
   Get.put(StoryController());
-  // Get.put(PreviewController());
   Get.put(BottomPopupPlayerController());
   Get.put(MapHomeController());
   //easyLoading setup

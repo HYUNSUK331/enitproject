@@ -36,7 +36,7 @@ class BottomPopupPlayer extends GetView<BottomPopupPlayerController> {
                   width: 70, height: 70,
                   padding: EdgeInsets.fromLTRB(3, 3, 0, 3),
                   child: Obx(()=> Image.network(
-                    '${controller.popupImage}', width: 100, height: 100, fit: BoxFit.contain,),
+                    '${StoryController.to.storyList[storyIndex].image}', width: 100, height: 100, fit: BoxFit.contain,),
                   ),
                 ),
                 Expanded(
@@ -50,7 +50,7 @@ class BottomPopupPlayer extends GetView<BottomPopupPlayerController> {
                         Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Obx(()=> Text(
-                              '${controller.popupTitle}',
+                              '${StoryController.to.storyList[storyIndex].title}',
                               style: TextStyle(
                                   fontSize: 20,
                                   color: Colors.white,
@@ -61,7 +61,7 @@ class BottomPopupPlayer extends GetView<BottomPopupPlayerController> {
                         Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Obx(()=> Text(
-                              '${controller.popupAddressDetail}',
+                              '${StoryController.to.storyList[storyIndex].addressDetail}',
                               style: TextStyle(
                                   fontSize: 15,
                                   color: Colors.white,)
@@ -72,28 +72,21 @@ class BottomPopupPlayer extends GetView<BottomPopupPlayerController> {
                     ),
                   ),
                 ),
-                Obx(() => StoryController.to.isPlaying.value?
                 IconButton(
-                  icon: Icon(
-                    Icons.pause,
-                    color: Colors.white,
-                    size: 35.0,
-                  ),
-                  onPressed: () async{
-                    StoryController.to.updatePause();
-                  },
-                )
-                    :
-                IconButton(
-                  onPressed: () async{
-                    StoryController.to.updatePlay(storyIndex);
-                  },
-                  icon: Icon(
-                    Icons.play_arrow,
-                    color: Colors.white,
-                    size: 30.0,
-                  ),
-                )
+                    onPressed: (){
+                      StoryController.to.updatePlay(storyIndex);
+                    },
+                    icon: Obx(() => StoryController.to.isPlaying.value?
+                    Icon(
+                      Icons.pause,
+                      color: Colors.white,
+                      size: 35.0,
+                    ) : Icon(
+                      Icons.play_arrow,
+                      color: Colors.white,
+                      size: 30.0,
+                    )
+                    )
                 ),
                 Obx(() => StoryController.to.storyList[storyIndex].isLike?
                 IconButton(
@@ -138,6 +131,10 @@ class BottomPopupPlayer extends GetView<BottomPopupPlayerController> {
       ),
       onTap: (){
         Get.to(() => StoryScreen(storyIndex: storyIndex,));
+      },
+      onTapCancel: () {
+        if(StoryController.to.isPlaying.value == false)
+        controller.isPopup(false);
       },
     );
   }
