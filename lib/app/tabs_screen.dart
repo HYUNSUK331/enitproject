@@ -1,11 +1,11 @@
-
+import 'package:get/get.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import '../const/const.dart';
+import '../screen/bottom_popup_player/bottom_popup_player_controller.dart';
+import '../screen/bottom_popup_player/bottom_popup_player_screen.dart';
 import '../screen/preview/preview_screen.dart';
-import 'package:enitproject/screen/favorite/favorite_screen.dart';
 import 'package:enitproject/screen/map_home/home_view.dart';
-import 'package:enitproject/screen/map_home/map_home_screen.dart';
-import 'package:enitproject/screen/story/story_screen.dart';
 import 'package:flutter/material.dart';
-import '../screen/map_home/map_home_controller.dart';
 
 
 
@@ -37,8 +37,6 @@ class _TabsViewState extends State<TabsView> {
     });
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,8 +52,14 @@ class _TabsViewState extends State<TabsView> {
               ),
               PreviewScreen(),
             ],
+          ),
+          Obx(()=> BottomPopupPlayerController.to.isPopup.value?
+          Positioned(
+              bottom: 5, left: 10, right: 10,
+              child: BottomPopupPlayer(storyIndex: storyIndex,)
           )
-        ],
+              : SizedBox.shrink()),
+        ]
       ),
       bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selecIndex,

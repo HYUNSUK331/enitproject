@@ -1,14 +1,15 @@
 import 'package:badges/badges.dart';
-import 'package:enitproject/screen/preview/preview_controller.dart';
+import 'package:enitproject/screen/bottom_popup_player/bottom_popup_player_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import '../../const/color.dart';
+import '../story/story_controller.dart';
 import '../story/story_screen.dart';
 
-class PreviewScreen extends GetView<PreviewController> {
+class PreviewScreen extends GetView<StoryController> {
   const PreviewScreen({Key? key}) : super(key: key);
 
   @override
@@ -24,7 +25,6 @@ class PreviewScreen extends GetView<PreviewController> {
           child: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             color: Colors.black,
-            iconSize: 35.0,
             onPressed: (){
               //Navigator.pop(context);
             },
@@ -47,7 +47,7 @@ class PreviewScreen extends GetView<PreviewController> {
           children: [
             SizedBox(height: 20,),
             Text(
-              '전체 ${controller.previewStoryList.length}건',
+              '전체 ${controller.storyList.length}건',
               style: TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.w500
@@ -56,7 +56,7 @@ class PreviewScreen extends GetView<PreviewController> {
             SizedBox(height: 20,),
             Expanded(
               child: ListView.builder(
-                  itemCount: controller.previewStoryList.length,
+                  itemCount: controller.storyList.length,
                   itemBuilder: (BuildContext context, int index) {
                     return InkWell(
                       child: Container(
@@ -67,10 +67,13 @@ class PreviewScreen extends GetView<PreviewController> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Image.network(
-                                '${controller.previewStoryList[index].image}',
-                                height: double.infinity,
-                                fit: BoxFit.contain,
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10.0),
+                                child: Image.network(
+                                  '${controller.storyList[index].image}',
+                                  width: 100, height: 100,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                               SizedBox(width: 10,),
                               Expanded(
@@ -78,17 +81,28 @@ class PreviewScreen extends GetView<PreviewController> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                                      child: Text('${controller.storyList[index].addressSearch}',
+                                        style: TextStyle(
+                                          fontSize: 13.0,
+                                          fontWeight: FontWeight.w500,
+                                          color: GREEN_DARK_COLOR,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 5.0,),
                                     Row(
                                       children: [
                                         Text(
-                                          '${controller.previewStoryList[index].title}',
+                                          '${controller.storyList[index].title}',
                                           style: TextStyle(
                                               fontSize: 20.0,
                                               fontWeight: FontWeight.w500
                                           ),
                                         ),
                                         SizedBox(width: 5.0,),
-                                        Obx(() => controller.previewStoryList[index].changeStoryColor?
+                                        Obx(() => controller.storyList[index].changeStoryColor == GREEN_BRIGHT_COLOR?
                                           Badge(
                                             badgeStyle: BadgeStyle(
                                               badgeColor: GREEN_BRIGHT_COLOR,
@@ -107,7 +121,7 @@ class PreviewScreen extends GetView<PreviewController> {
                                     ),
                                     SizedBox(height: 10.0,),
                                     Text(
-                                      '${controller.previewStoryList[index].addressDetail}',
+                                      '${controller.storyList[index].addressDetail}',
                                       style: TextStyle(
                                         fontSize: 15.0,
                                       ),
@@ -115,35 +129,31 @@ class PreviewScreen extends GetView<PreviewController> {
                                   ],
                                 ),
                               ),
-                              SizedBox(width: 20,),
-                              Obx(() => controller.previewStoryList[index].changeStoryColor?
-                                Obx(() => controller.isPlaying.value?
-                                  IconButton(
-                                      onPressed: () async{
-                                        controller.updatePause();
-                                      },
-                                      icon: Icon(
-                                        Icons.headphones,
-                                        color: GREEN_MIDDLE_COLOR,
-                                      ),
-                                  ):
-                                IconButton(
-                                  onPressed: () async{
-                                    controller.updatePlay(index);
-                                  },
-                                  icon: Icon(
-                                    Icons.headphones,
-                                    color: GREEN_MIDDLE_COLOR,
-                                  ),
-                                ),
+                              SizedBox(width: 5,),
+                              Obx(() => controller.storyList[index].changeStoryColor == GREEN_BRIGHT_COLOR?
+                              IconButton(
+                                onPressed: () async{
+                                  controller.updatePlay(index);
+                                },
+                                icon: Obx(() => controller.isPlaying.value?
+                                Icon(
+                                  Icons.headphones,
+                                  color: GREEN_MIDDLE_COLOR,
                                 )
+                                    :
+                                Icon(
+                                  Icons.headphones,
+                                  color: GREEN_MIDDLE_COLOR,
+                                )
+                                ),
+                              )
                                   :
                                 SizedBox.shrink(),
                               ),
-                              Obx(() => controller.previewStoryList[index].isLike?
+                              Obx(() => controller.storyList[index].isLike?
                               IconButton(
                                   onPressed: () => {
-                                    controller.updateUnLike('${controller.previewStoryList[index].storyPlayListKey}', index)
+                                    controller.updateUnLike('${controller.storyList[index].storyPlayListKey}', index)
                                   },
                                   icon: const Icon(
                                     Icons.favorite,
@@ -152,7 +162,7 @@ class PreviewScreen extends GetView<PreviewController> {
                                   :
                               IconButton(
                                   onPressed: ()=>{
-                                    controller.updateLike('${controller.previewStoryList[index].storyPlayListKey}',index)
+                                    controller.updateLike('${controller.storyList[index].storyPlayListKey}',index)
                                   },
                                   icon: const Icon(
                                     Icons.favorite_border,
@@ -165,11 +175,15 @@ class PreviewScreen extends GetView<PreviewController> {
                         ),
                       ),
                       onTap: (){
+                        if(controller.storyList[index].changeStoryColor == GREEN_BRIGHT_COLOR)
                         Get.to(() => StoryScreen(storyIndex: index,));
                       },
                     );
                   }
               ),
+            ),
+            Obx(() => BottomPopupPlayerController.to.isPopup.value?
+            SizedBox(height: 90,) : SizedBox.shrink()
             )
           ],
         ),
