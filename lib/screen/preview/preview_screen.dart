@@ -138,12 +138,12 @@ class PreviewScreen extends GetView<StoryController> {
                                 icon: Obx(() => controller.isPlaying.value?
                                 Icon(
                                   Icons.headphones,
-                                  color: GREEN_MIDDLE_COLOR,
+                                  color: GREEN_MID_COLOR,
                                 )
                                     :
                                 Icon(
                                   Icons.headphones,
-                                  color: GREEN_MIDDLE_COLOR,
+                                  color: GREEN_MID_COLOR,
                                 )
                                 ),
                               )

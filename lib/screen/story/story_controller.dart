@@ -8,7 +8,6 @@ import '../../const/color.dart';
 import '../../const/const.dart';
 import '../../service/storylist_network_repository.dart';
 import '../bottom_popup_player/bottom_popup_player_controller.dart';
-import 'package:audio_session/audio_session.dart';
 
 class StoryController extends GetxController{
 
@@ -22,6 +21,7 @@ class StoryController extends GetxController{
   
   //오디오 플레이어
   final Rx<AudioPlayer> _audioPlayer = AudioPlayer().obs;
+  final Rx<AudioCache> playerCache = AudioCache().obs;
 
   final Rx<bool> isPlaying = false.obs;
 
@@ -85,6 +85,10 @@ class StoryController extends GetxController{
         storyIndex = index;
     }
   }
+
+  // void canclePlay(){
+  //   playerCache.
+  // }
 
   String _format(Duration d) {
     String minute =
