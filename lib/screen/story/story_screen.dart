@@ -134,7 +134,7 @@ class StoryScreen extends GetView<StoryController> {
                           ),
                           Expanded(
                             child: Slider(
-                                activeColor: GREEN_MIDDLE_COLOR,
+                                activeColor: GREEN_MID_COLOR,
                                 inactiveColor: Color(0xFFEFEFEF),
                                 value: controller.getPositionAsDouble,
                                 min: 0.0,
