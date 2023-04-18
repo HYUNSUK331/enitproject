@@ -19,6 +19,7 @@ class StoryListModel{
   double? latitude;
   double? longitude;
   Color changeStoryColor = GREEN_BRIGHT_COLOR;
+  bool? circleColor;
 
   StoryListModel.fromMap(Map<String,dynamic>map)
       : addressDetail = map[KEY_ADDRESS_DETAIL],
@@ -31,8 +32,8 @@ class StoryListModel{
         storyPlayListKey = map[KEY_STORY_PLAY_LIST_KEY],
         title = map[KEY_TITLE],
         latitude = map[KEY_LATITUDE],
-        longitude = map[KEY_LONGITUDE];
-
+        longitude = map[KEY_LONGITUDE],
+        circleColor = map[KEY_CIRCLECOLOR];
         StoryListModel.fromSnapshot(DocumentSnapshot snapshot) : this.fromMap(snapshot.data() as Map<String, dynamic>);
 
 }

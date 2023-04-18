@@ -1,6 +1,7 @@
 import 'package:enitproject/app/root_screen.dart';
 import 'package:enitproject/const/const.dart';
 import 'package:enitproject/firebase_options.dart';
+import 'package:enitproject/notification.dart';
 import 'package:enitproject/screen/bottom_popup_player/bottom_popup_player_controller.dart';
 import 'package:enitproject/screen/map_home/map_home_controller.dart';
 import 'package:enitproject/screen/story/story_controller.dart';
@@ -14,12 +15,12 @@ void main() async{
   //비동기로 데이터를 다룬 다음 runapp할 경우 사용
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await Notification;
+  // notification 초기화
+  await initNotification();
 
   Get.put(StoryController());
   Get.put(BottomPopupPlayerController());
   Get.put(MapHomeController());
-  //easyLoading setup
   configLoading();
 
   runApp(RootView());
