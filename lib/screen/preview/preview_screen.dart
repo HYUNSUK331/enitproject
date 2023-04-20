@@ -131,27 +131,27 @@ class PreviewScreen extends GetView<StoryController> {
                               ),
                               SizedBox(width: 5,),
                               Obx(() => controller.storyList[index].changeStoryColor == GREEN_BRIGHT_COLOR?
-                              IconButton(
-                                onPressed: () async{
-                                  controller.updatePlay(index);
-                                },
-                                icon: Obx(() => controller.isPlaying.value?
-                                Icon(
-                                  Icons.headphones,
-                                  color: GREEN_MID_COLOR,
-                                )
+                                IconButton(
+                                  onPressed: () async{
+                                    controller.updatePlay(index);
+                                  },
+                                  icon: Obx(() => controller.isPlaying.value?
+                                   Icon(
+                                    Icons.headphones,
+                                    color: GREEN_MID_COLOR,
+                                 )
                                     :
-                                Icon(
-                                  Icons.headphones,
-                                  color: GREEN_MID_COLOR,
-                                )
-                                ),
+                                    Icon(
+                                      Icons.headphones,
+                                      color: GREEN_MID_COLOR,
+                                  )
+                                  ),
                               )
                                   :
                                 SizedBox.shrink(),
                               ),
                               Obx(() => controller.storyList[index].isLike?
-                              IconButton(
+                                IconButton(
                                   onPressed: () => {
                                     controller.updateUnLike('${controller.storyList[index].storyPlayListKey}', index)
                                   },
@@ -160,7 +160,7 @@ class PreviewScreen extends GetView<StoryController> {
                                     color: GREEN_DARK_COLOR,),
                               )
                                   :
-                              IconButton(
+                                IconButton(
                                   onPressed: ()=>{
                                     controller.updateLike('${controller.storyList[index].storyPlayListKey}',index)
                                   },

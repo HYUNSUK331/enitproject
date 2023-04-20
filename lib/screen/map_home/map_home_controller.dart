@@ -1,4 +1,5 @@
-import 'package:enitproject/const/const.dart';
+
+
 import 'package:enitproject/model/storylist_model.dart';
 import 'package:enitproject/service/storylist_network_repository.dart';
 import 'package:flutter/material.dart';
@@ -7,13 +8,35 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
 
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 class MapHomeController extends GetxController{
 
   static MapHomeController get to => Get.find();
 
   RxList<StoryListModel> latLngList = <StoryListModel>[].obs;  // 내용은 story의 모든 내용이 있지만 letlng만 가져와 사용할꺼니까 이름은 letlngList
+   Rx<double> initSize = 1.0.obs;  // 이게 변하는 시점에 초기화 필요
+
+  handleTimeout(context) {  // 알림 띄우고 다시는 안 띄우는 함수 만들기
+    showDialog(context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context){
+          return AlertDialog(
+            title: Text('플레이리스트 이름을 입력하세요'),
+            content: Container(
+              width: 200, height: 70, padding: EdgeInsets.all(10),
+              child: Text("이야기를 확인하시겠습니까?"
+              ),
+            ),
+            actions: [
+              TextButton(onPressed: (){
+                print("호랑이요@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+              }, child: Text('확인', style: TextStyle(fontSize: 15, color: Colors.deepPurple[800])))
+            ],
+          );
+        });
+  }
+
+
+
 
   @override
   void onInit() async{
@@ -32,8 +55,6 @@ class MapHomeController extends GetxController{
   void onClose() {
     super.onClose();
   }
-
-
 
 
   bool choolCheckDone = false;
@@ -255,5 +276,9 @@ class MapHomeController extends GetxController{
       ],
     );
   }
+
+
+
+
 
 }

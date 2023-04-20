@@ -55,13 +55,11 @@ class CustomGoogleMap extends StatelessWidget {
         ), //Icon for Marker
         );
       }
-
       return circles;
     }
 
 
-    return Expanded(
-      flex: 2,
+    return Positioned(
       child: GoogleMap(
         mapType: MapType.normal,
         initialCameraPosition: MapHomeController.initialPosition,
