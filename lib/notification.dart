@@ -16,7 +16,7 @@ initNotification() async {
     requestBadgePermission: true,
     requestSoundPermission: true,
   );
-
+ 
   //print("!!!!!!!!!!!!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2");
   // 위에서 설정한 내용으로 초기화 진행
   var initializationSettings = InitializationSettings(
