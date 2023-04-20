@@ -1,3 +1,4 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:enitproject/app/root_screen.dart';
 import 'package:enitproject/const/const.dart';
 import 'package:enitproject/firebase_options.dart';
@@ -22,6 +23,10 @@ void main() async{
   Get.put(BottomPopupPlayerController());
   Get.put(MapHomeController());
   configLoading();
+
+  AssetsAudioPlayer.setupNotificationsOpenAction((notification) {
+    return true;
+  });
 
   runApp(RootView());
 }
