@@ -1,3 +1,4 @@
+// import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:enitproject/model/storylist_model.dart';
 import 'package:get/get.dart';
@@ -22,6 +23,7 @@ class StoryController extends GetxController{
   //오디오 플레이어
   final Rx<AudioPlayer> _audioPlayer = AudioPlayer().obs;
   final Rx<AudioCache> playerCache = AudioCache().obs;
+  //late Rx<AssetsAudioPlayer> _assetsAudioPlayer = AssetsAudioPlayer().obs;
 
   final Rx<bool> isPlaying = false.obs;
 
@@ -42,7 +44,7 @@ class StoryController extends GetxController{
       isPlaying.value = (event == PlayerState.playing) ? true : false;
     });
 
-    //_handleInterruptions(audioSession, storyIDkey);
+    //_assetsAudioPlayer.value = AssetsAudioPlayer.newPlayer();
 
     super.onInit();
   }
@@ -78,17 +80,19 @@ class StoryController extends GetxController{
   void updatePlay(int index) async {
     if (isPlaying.value) {
       _audioPlayer.value.pause();
+      //_assetsAudioPlayer.value.pause();
     } else {
       String? mp3Path = storyList[index].mp3Path;
       await _audioPlayer.value.play(AssetSource(mp3Path!));
+      // await _assetsAudioPlayer.value.open(
+      //   Audio('assets/${mp3Path}'),
+      //   showNotification: true,
+      // );
+
         BottomPopupPlayerController.to.isPopup(true);
         storyIndex = index;
     }
   }
-
-  // void canclePlay(){
-  //   playerCache.
-  // }
 
   String _format(Duration d) {
     String minute =
@@ -98,6 +102,7 @@ class StoryController extends GetxController{
     return ("$minute:$second");
   }
 
+  //set setPositionValue(double value) => _assetsAudioPlayer.value.seek(Duration(seconds: value.toInt()));
   set setPositionValue(double value) => _audioPlayer.value.seek(Duration(seconds: value.toInt()));
   double get getDurationAsDouble => _duration.value.inSeconds.toDouble();
   String get getDurationAsFormatSting => _format(_duration.value);
