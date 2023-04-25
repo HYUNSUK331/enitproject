@@ -102,21 +102,21 @@ class PreviewScreen extends GetView<StoryController> {
                                           ),
                                         ),
                                         SizedBox(width: 5.0,),
-                                        Obx(() => controller.storyList[index].changeStoryColor == GREEN_BRIGHT_COLOR?
-                                          Badge(
-                                            badgeStyle: BadgeStyle(
-                                              badgeColor: GREEN_BRIGHT_COLOR,
-                                            ),
-                                            showBadge: true,
-                                          )
-                                            :
-                                        Badge(
-                                          badgeStyle: BadgeStyle(
-                                            badgeColor: LIGHT_YELLOW_COLOR,
-                                          ),
-                                          showBadge: true,
-                                        ),
-                                        ),
+                                        // Obx(() => controller.storyList[index].changeStoryColor == GREEN_BRIGHT_COLOR?
+                                        //   Badge(
+                                        //     badgeStyle: BadgeStyle(
+                                        //       badgeColor: GREEN_BRIGHT_COLOR,
+                                        //     ),
+                                        //     showBadge: true,
+                                        //   )
+                                        //     :
+                                        // Badge(
+                                        //   badgeStyle: BadgeStyle(
+                                        //     badgeColor: LIGHT_YELLOW_COLOR,
+                                        //   ),
+                                        //   showBadge: true,
+                                        // ),
+                                        // ),
                                       ],
                                     ),
                                     SizedBox(height: 10.0,),

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:badges/badges.dart';
 import 'package:enitproject/const/color.dart';
-import 'package:enitproject/notification.dart';
+import 'package:enitproject/utils/notification.dart';
 import 'package:enitproject/screen/map_home/map_home_component/map_home_googlemap.dart';
 import 'package:enitproject/screen/map_home/map_home_component/map_home_items.dart';
 import 'package:enitproject/screen/map_home/map_home_controller.dart';
@@ -18,27 +18,45 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
 class HomeView extends GetView<MapHomeController> {
-  const HomeView({super.key});
+  const HomeView({Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
-    bool boolcheck = true;
-    Get.put(MapHomeController()); // 페이지 마다 불러오기  두번 불러와도 가능한가?
-    MapHomeController mapController = Get.find();
-
-    RxList invisibleTableRowSwitchList1 = RxList<dynamic>();
-    void buildInvisibleTableRowSwitch(int switchLength) {
-      invisibleTableRowSwitchList1 =
-      RxList<Color>.generate(switchLength, (int index) => Colors.black);
-    }
     // 지역에 들어오고 0.3초 후에 알림 띄우기
     return Scaffold(
-      appBar: mapController.renderAppBar(), // 앱바를 컨트롤러에서 가져왔음;;
+      appBar: AppBar(
+        title: const Text(
+          'JJurang',
+          style: TextStyle(
+            color: Colors.blue,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        elevation: 0.0,
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        actions: [
+          IconButton(onPressed: ()async{
+            if(controller.mapController == null){
+              return;
+            }
+            final location = await Geolocator.getCurrentPosition();
+            controller.mapController?.animateCamera(CameraUpdate.newLatLng(
+              LatLng(location.latitude, location.longitude
+              ),
+            ),
+            );
+          },
+            icon:const Icon(Icons.my_location, color: Colors.blue,),
+          )
+        ],
+      ), // 앱바를 컨트롤러에서 가져왔음;;
       body: FutureBuilder( // 여기 바디에 스크롤 추가해보기
-        future: mapController.checkPermission(),
+        future: controller.checkPermission(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -47,59 +65,13 @@ class HomeView extends GetView<MapHomeController> {
             return StreamBuilder<Position>(
                 stream: Geolocator.getPositionStream(),
                 builder: (context, snapshot) {
-                  // print(snapshot.data); 위치 정보를 계속가져온다. 계속 업데이트 되는데 이걸 계속 다른페이지에 보내주면 힘들다
-
-                  buildInvisibleTableRowSwitch(
-                      MapHomeController.to.latLngList.length); // boollist
-                  for (int i = 0; i <
-                      MapHomeController.to.latLngList.length; i++) {
-                    LatLng companyLat = LatLng(
-                        MapHomeController.to.latLngList[i].latitude ?? 0.0,
-                        MapHomeController.to.latLngList[i].longitude ?? 0.0);
-
-                    if (snapshot.hasData) {
-                      final start = snapshot.data!;
-                      final end = companyLat;
-
-                      final distance = Geolocator.distanceBetween(
-                          start.latitude, start.longitude, end.latitude,
-                          end.longitude);
-
-                      if (distance < 40) { // 범위에 들어오면!
-                        // 여기서 로컬 list에서 bool 값 확인하고 노란색이면 아래 실행
-                        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1"); // 모달창 띄우는 명령어
-                        invisibleTableRowSwitchList1[i] =
-                            GREEN_BRIGHT_COLOR; //이 로직 돌아가는중에 오류
-                        StoryController?.to.changeTrueBadgeColor(
-                            i); //여기도 스쳐 지나가듯 초록색 보여주기
-                        // 여기에 플레이 모달창 띄우기
-
-                        if (boolcheck == true &&
-                            MapHomeController.to.latLngList[i].circleColor ==
-                                true) { // 이건 한번만나오게 설정 완료
-                          showNotification(); // 알림보여주는 메인
-                          boolcheck = false;
-                        }
-                        //만약 파란색이라면 내용 실행
-                      } else
-                      if (MapHomeController.to.latLngList[i].circleColor ==
-                          false) {
-                        print("###############################");
-                        invisibleTableRowSwitchList1[i] =
-                            LIGHT_BLUE_COLOR;
-                      }
-                      else { // list에 나온 색깔 보여주기!! yellow or blue
-                        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-                        invisibleTableRowSwitchList1[i] =
-                            LIGHT_YELLOW_COLOR;
-                        StoryController?.to.changeFalseBadgeColor(i);
-                      }
-                    }
-                  }
+                  controller.buildInvisibleTableRowSwitch();
+                  if(snapshot.hasData) controller.updateMarker(snapshot.data);
                   return Stack(
                       children: [
-                          CustomGoogleMap(onMapCreated: mapController.onMapCreated,
-                              circle: invisibleTableRowSwitchList1),
+                          CustomGoogleMap(
+                              onMapCreated: controller.onMapCreated,
+                              circle: controller.invisibleTableRowSwitchList1),
                         // 굳이 여기서 안 받아도 된다. 아래 class에서 해결하기
                         _buildContainer2(),
                       ],
@@ -132,35 +104,46 @@ class HomeView extends GetView<MapHomeController> {
   }
 
   Widget _buildContainer2() {
-    return Obx(() =>
-        DraggableScrollableSheet(
-          maxChildSize: Get
-              .find<MapHomeController>()
-              .initSize
-              .value,
+    return Obx(() => DraggableScrollableSheet(
+          maxChildSize: controller.initSize.value,
           initialChildSize: 0.3,
-          builder: (context, controller) =>
+          builder: (context, sheetController) =>
               Container(
                 color: Colors.white70,
                   child: ListView.builder(
-                    controller: controller,
-                    itemCount: MapHomeController.to.latLngList.length,
+                    controller: sheetController,
+                    itemCount: controller.latLngList.length,
                     itemBuilder: (BuildContext context, int index) {
-                      if (Get
-                          .find<MapHomeController>()
-                          .initSize
-                          .value == 0.3) {
-                        Get
-                            .find<MapHomeController>()
-                            .initSize
-                            .value = 1.0;
-                      } // 여기 에러 나는데 이거 바꾸기
+                      // if (controller.initSize.value == 0.3) {
+                      //   controller.initSize.value = 1.0;
+                      // } // 여기 에러 나는데 이거 바꾸기
                       return MapHomeItem2(index: index);
                     },
                   ),
 
               ),
         ));
+  }
+
+
+  handleTimeout(context) {  // 알림 띄우고 다시는 안 띄우는 함수 만들기
+    showDialog(context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context){
+          return AlertDialog(
+            title: Text('플레이리스트 이름을 입력하세요'),
+            content: Container(
+              width: 200, height: 70, padding: EdgeInsets.all(10),
+              child: Text("이야기를 확인하시겠습니까?"
+              ),
+            ),
+            actions: [
+              TextButton(onPressed: (){
+                print("호랑이요@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+              }, child: Text('확인', style: TextStyle(fontSize: 15, color: Colors.deepPurple[800])))
+            ],
+          );
+        });
   }
 
 
