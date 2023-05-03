@@ -19,18 +19,21 @@ void main() async{
   //비동기로 데이터를 다룬 다음 runapp할 경우 사용
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  // notification 초기화
+  /// 알림창 초기화
   await NotificationUtils.initNotification();
 
+  /// controller
   Get.put(StoryController());
   Get.put(BottomPopupPlayerController());
+  Get.put(MapHomeController());
 
-
+  /// 인증을 위한 컨트롤러
   Get.put(AuthService());
+  /// 특정위젯의 rebuild를 피하게 해주는 기능
   Get.put(SplashService());
 
 
-
+  /// 로딩표시
   configLoading();
 
   AssetsAudioPlayer.setupNotificationsOpenAction((notification) {

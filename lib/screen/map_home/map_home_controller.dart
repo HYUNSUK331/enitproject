@@ -18,38 +18,41 @@ class MapHomeController extends GetxController{
 
   bool boolCheck = true;
   RxList invisibleTableRowSwitchList1 = RxList<dynamic>();
-  void buildInvisibleTableRowSwitch() {
+  void buildInvisibleTableRowSwitch() {  // 색을 담아줄 rxlist
     invisibleTableRowSwitchList1 = RxList<Color>.generate(latLngList.length, (int index) => Colors.black);
   }
+  /// 원의 색을 정해주는 기능
+  /// 색들은 db에 저장되어있음 삭제하고 다시 다운 받아도 기기가 같으면 서클 색상은 같다.
+  /// 이거를 유저에 따른 색상변경으로 변경시켜주기..? 그럼 로그인 안 한사람은...?
   void updateMarker(data){
-    // print(snapshot.data); 위치 정보를 계속가져온다. 계속 업데이트 되는데 이걸 계속 다른페이지에 보내주면 힘들다
-    for (int i = 0; i < MapHomeController.to.latLngList.length; i++) {
-      LatLng companyLat = LatLng(MapHomeController.to.latLngList[i].latitude ?? 0.0, MapHomeController.to.latLngList[i].longitude ?? 0.0);
+    // print(snapshot.data); 위치 정보를 계속가져온다. 계속 업데이트 되는데 이걸 계속 다른페이지에 보내주면 힘들다.
+    for (int i = 0; i < MapHomeController.to.latLngList.length; i++) {  // 이야기의 수만큼 반복한다.
+      LatLng storyLat = LatLng(MapHomeController.to.latLngList[i].latitude ?? 0.0, MapHomeController.to.latLngList[i].longitude ?? 0.0); // 이야기가 있는 좌표
 
-      final start = data;
-      final end = companyLat;
+      final start = data;  //내 위치
+      final end = storyLat;  // 이야기 위치
 
-      final distance = Geolocator.distanceBetween(
+      final distance = Geolocator.distanceBetween( // 내위치와 이야기의 위치 사이
           start.latitude, start.longitude, end.latitude,
           end.longitude);
 
       if (distance < 40) { // 범위에 들어오면!
         // 여기서 로컬 list에서 bool 값 확인하고 노란색이면 아래 실행
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1"); // 모달창 띄우는 명령어
-        invisibleTableRowSwitchList1[i] = GREEN_BRIGHT_COLOR; //이 로직 돌아가는중에 오류
-        StoryController?.to.changeTrueBadgeColor(i); //여기도 스쳐 지나가듯 초록색 보여주기
-        // 여기에 플레이 모달창 띄우기
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
+        invisibleTableRowSwitchList1[i] = GREEN_BRIGHT_COLOR; // 초록색으로 변경해줘
+        StoryController?.to.changeTrueBadgeColor(i); // 처음에 DB에서 가져와 로컬에 저장한 리스트 -> 이 릿리스트도 초록색으로 변경해주기
 
+        /// 원에 들어오면 알림 띄우기
         if (boolCheck == true &&
             MapHomeController.to.latLngList[i].circleColor ==
                 true) { // 이건 한번만나오게 설정 완료
           NotificationUtils.showNotification(); // 알림보여주는 메인
-          boolCheck = false;
+          boolCheck = false;  // 다시 들어오면 알림 안 뜨게 하기
         }
-        //만약 파란색이라면 내용 실행
-      } else
-      if (MapHomeController.to.latLngList[i].circleColor ==
-          false) {
+
+
+      } else if (MapHomeController.to.latLngList[i].circleColor ==  // 한번이라도 들어왔으면 원 색상을 파랑으로 변경해주기
+           false) {
         print("###############################");
         invisibleTableRowSwitchList1[i] =
             LIGHT_BLUE_COLOR;
@@ -63,7 +66,7 @@ class MapHomeController extends GetxController{
     }
   }
 
-
+  /// 구글맵 사용
   void onMapCreated(GoogleMapController controller){
     mapController = controller;
   }
@@ -97,6 +100,7 @@ class MapHomeController extends GetxController{
   );
 
 
+  /// 위치 권한 받아오기
   Future<String> checkPermission() async{    // 처음에 권한 받아오는 과정
     final isLocationEnabled = await Geolocator.isLocationServiceEnabled(); // 위치권한을 받아오려고 하는 것
 

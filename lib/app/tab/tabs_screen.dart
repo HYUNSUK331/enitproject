@@ -14,12 +14,12 @@ import 'package:flutter/material.dart';
 class TabsView extends StatefulWidget {
   const TabsView({Key? key}) : super(key: key);
 
-  @override
+  @override  // 상속받은 메서드를 재저으이 할 때 사용
   State<TabsView> createState() => _TabsViewState();
 }
 
 class _TabsViewState extends State<TabsView> {
-  int _selecIndex = 0;
+  int _selecIndex = 0;  // tap bar에서 선택하는 거 보여주기
 
   void _onTap(int index) {
     setState(() {

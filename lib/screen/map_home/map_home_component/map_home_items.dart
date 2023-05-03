@@ -174,7 +174,7 @@ class MapHomeItem2 extends GetView<MapHomeController> {
     );
   }
 
-
+  /// 리스트에 가로 한 줄
   Widget _boxes(String _image, double lat, double long, String restaurantName,String addressSearch, String addressDetail) {
     return GestureDetector(  // 박스 클릭 했을 때 나오는 모습
       onTap: () {
@@ -227,7 +227,7 @@ class MapHomeItem2 extends GetView<MapHomeController> {
       ),
     );
   }
-
+  /// 제목, 주소
   Widget myDetailsContainer2(String restaurantName, String addressSearch, String addressDetail) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -251,23 +251,23 @@ class MapHomeItem2 extends GetView<MapHomeController> {
                     fontWeight: FontWeight.w500),
               ),
             SizedBox(width: 5.0,),
-        //   Obx(() =>
-        //   StoryController.to.storyList[index].changeStoryColor ==
-        //     GREEN_BRIGHT_COLOR ?
-        //     Badge(
-        //       badgeStyle: BadgeStyle(
-        //         badgeColor: GREEN_BRIGHT_COLOR,
-        //       ),
-        //     showBadge: true,
-        //  )
-        //     :
-        //     Badge(
-        //       badgeStyle: BadgeStyle(
-        //         badgeColor: LIGHT_YELLOW_COLOR,
-        //   ),
-        //   showBadge: true,
-        //   ),
-        // ),
+          Obx(() =>
+          StoryController.to.storyList[index].changeStoryColor ==
+            GREEN_BRIGHT_COLOR ?
+            Badge(
+              badgeStyle: BadgeStyle(
+                badgeColor: GREEN_BRIGHT_COLOR,
+              ),
+            showBadge: true,
+         )
+            :
+            Badge(
+              badgeStyle: BadgeStyle(
+                badgeColor: LIGHT_YELLOW_COLOR,
+          ),
+          showBadge: true,
+          ),
+        ),
         ],
         ),
         SizedBox(height: 5.0),

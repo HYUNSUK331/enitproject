@@ -9,12 +9,15 @@ import 'package:google_sign_in/google_sign_in.dart';
 class AuthService extends GetxService {
   static AuthService get to => Get.find();
 
-  //current Logged in userModel
-  Rxn<UserModel> userModel = Rxn<UserModel>();
+  /// current Logged in userModel
+  Rxn<UserModel> userModel = Rxn<UserModel>();  // n은 널을 뜻함 / 초기값이 없으면 null
 
-  //checked login
+  /// checked login
   RxBool isLoggedIn = false.obs;
 
+  /// 로그인 관련
+  /// 발생하는 에러코드를 캐치해서 메세지로 출력해준다.
+  /// 메세지는 하단에서 올라옴
   Future<bool> login(String email, String pwd) async {
     EasyLoading.show();
     UserCredential authResult = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: pwd).catchError((error) {
@@ -51,7 +54,7 @@ class AuthService extends GetxService {
     AuthService.to.userModel.value = await userRepository.getUserModel(authResult.user!.uid);
     return true;
   }
-
+  /// 구글 로그인 관련
   Future<bool> signInWithGoogle(BuildContext context) async {
     EasyLoading.show();
     try {
@@ -91,7 +94,7 @@ class AuthService extends GetxService {
 
 
   }
-
+  /// 회원가입 관련
   Future<bool> signup(String email, String pwd, String name) async {
     EasyLoading.show();
     UserCredential authResult = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: pwd).catchError((error) {

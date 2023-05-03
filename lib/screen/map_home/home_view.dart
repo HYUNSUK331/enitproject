@@ -1,29 +1,20 @@
 import 'dart:async';
-
-import 'package:badges/badges.dart';
-import 'package:enitproject/const/color.dart';
-import 'package:enitproject/utils/notification.dart';
 import 'package:enitproject/screen/map_home/map_home_component/map_home_googlemap.dart';
 import 'package:enitproject/screen/map_home/map_home_component/map_home_items.dart';
 import 'package:enitproject/screen/map_home/map_home_controller.dart';
-import 'package:enitproject/screen/map_home/map_pin_list.dart';
-import 'package:enitproject/screen/story/story_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import '../story/story_controller.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-// 시작화면 지정하기
 
 
+/// 처음 나오는 지도 화면
 class HomeView extends GetView<MapHomeController> {
   const HomeView({Key? key}) : super(key: key);
 
 
   @override
   Widget build(BuildContext context) {
-    // 지역에 들어오고 0.3초 후에 알림 띄우기
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -37,8 +28,9 @@ class HomeView extends GetView<MapHomeController> {
         centerTitle: true,
         backgroundColor: Colors.white,
         actions: [
+          /// 현재위치로 화면 이동
           IconButton(onPressed: ()async{
-            if(controller.mapController == null){
+            if(controller.mapController == null){  // null 이면 return
               return;
             }
             final location = await Geolocator.getCurrentPosition();
@@ -51,28 +43,31 @@ class HomeView extends GetView<MapHomeController> {
             icon:const Icon(Icons.my_location, color: Colors.blue,),
           )
         ],
-      ), // 앱바를 컨트롤러에서 가져왔음;;
-      body: FutureBuilder( // 여기 바디에 스크롤 추가해보기
-        future: controller.checkPermission(),
+      ),
+      /// 위치 권한 받기
+      body: FutureBuilder(
+        future: controller.checkPermission(), // 위치 권한 받아오기
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+          if (snapshot.connectionState == ConnectionState.waiting) { // 데이커를 다 받기전까지
             return const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(),  // 대기중 서클 띄워라
             );
           }
 
           if (snapshot.data == '위치 권한이 허가 되었습니다.') {
-            return StreamBuilder<Position>(
+            return StreamBuilder<Position>(  // 데이터를 여러번 받아올때 사용
                 stream: Geolocator.getPositionStream(),
                 builder: (context, snapshot) {
-                  controller.buildInvisibleTableRowSwitch();
+                  controller.buildInvisibleTableRowSwitch(); // rxlist로 색이 담긴 리스트
+                  ///핵심기능 서클 색 변경하고 알림띄우기
                   if(snapshot.hasData) controller.updateMarker(snapshot.data);
                   return Stack(
                       children: [
+                        ///구글맵
                           CustomGoogleMap(
                               onMapCreated: controller.onMapCreated,
-                              circle: controller.invisibleTableRowSwitchList1),
-                        // 굳이 여기서 안 받아도 된다. 아래 class에서 해결하기
+                              circle: controller.invisibleTableRowSwitchList1),// 서클 색 설정
+                        ///이야기 리스트
                         _buildContainer2(),
                       ],
                   );
@@ -89,26 +84,27 @@ class HomeView extends GetView<MapHomeController> {
 
 
   //###################################################################################
-  Widget _buildContainer() {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 20.0),
-      height: 150.0,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: MapHomeController.to.latLngList.length,
-        itemBuilder: (BuildContext context, int index) {
-          return MapHomeItem(index: index);
-        },
-      ),
-    );
-  }
+  // Widget _buildContainer() {
+  //   return Container(
+  //     margin: EdgeInsets.symmetric(vertical: 20.0),
+  //     height: 150.0,
+  //     child: ListView.builder(
+  //       scrollDirection: Axis.horizontal,
+  //       itemCount: MapHomeController.to.latLngList.length,
+  //       itemBuilder: (BuildContext context, int index) {
+  //         return MapHomeItem(index: index);
+  //       },
+  //     ),
+  //   );
+  // }
 
+  /// story list
   Widget _buildContainer2() {
-    return Obx(() => DraggableScrollableSheet(
+    return Obx(() => DraggableScrollableSheet(  //obx 적용해서 불들어오면 바로바로 보이게 하기 / DraggableScrollableSheet -> 아래서 위로 끌어올리는 리스트
           maxChildSize: controller.initSize.value,
-          initialChildSize: 0.3,
+          initialChildSize: 0.3,  // 초기 사이즈
           builder: (context, sheetController) =>
-              Container(
+              Container(  // DraggableScrollableSheet에 들어갈 리스트
                 color: Colors.white70,
                   child: ListView.builder(
                     controller: sheetController,
@@ -126,25 +122,25 @@ class HomeView extends GetView<MapHomeController> {
   }
 
 
-  handleTimeout(context) {  // 알림 띄우고 다시는 안 띄우는 함수 만들기
-    showDialog(context: context,
-        barrierDismissible: true,
-        builder: (BuildContext context){
-          return AlertDialog(
-            title: Text('플레이리스트 이름을 입력하세요'),
-            content: Container(
-              width: 200, height: 70, padding: EdgeInsets.all(10),
-              child: Text("이야기를 확인하시겠습니까?"
-              ),
-            ),
-            actions: [
-              TextButton(onPressed: (){
-                print("호랑이요@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-              }, child: Text('확인', style: TextStyle(fontSize: 15, color: Colors.deepPurple[800])))
-            ],
-          );
-        });
-  }
+  // handleTimeout(context) {  // 알림 띄우고 다시는 안 띄우는 함수 만들기
+  //   showDialog(context: context,
+  //       barrierDismissible: true,
+  //       builder: (BuildContext context){
+  //         return AlertDialog(
+  //           title: Text('플레이리스트 이름을 입력하세요'),
+  //           content: Container(
+  //             width: 200, height: 70, padding: EdgeInsets.all(10),
+  //             child: Text("이야기를 확인하시겠습니까?"
+  //             ),
+  //           ),
+  //           actions: [
+  //             TextButton(onPressed: (){
+  //               print("호랑이요@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+  //             }, child: Text('확인', style: TextStyle(fontSize: 15, color: Colors.deepPurple[800])))
+  //           ],
+  //         );
+  //       });
+  // }
 
 
 // Widget _buildContainer1() {   스크롤 만들기 실패

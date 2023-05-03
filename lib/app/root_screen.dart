@@ -41,26 +41,26 @@ import 'package:get/get.dart';
 class RootView extends StatelessWidget {
   const RootView({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
+    // MaterialApp 에 Get 적용
     return GetMaterialApp(
         builder: EasyLoading.init(),
         home: FutureBuilder(
-            future: SplashService.to.init(),
+            future: SplashService.to.init(),  //SplashService의 init을 할 동안
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return Scaffold(body: AuthService.to.isLoggedIn.value ? toTabsView() :toLoginView());
+              if (snapshot.connectionState == ConnectionState.done) {  // 로딩이 끝나면
+                return Scaffold(body: AuthService.to.isLoggedIn.value ? toTabsView() :toLoginView());  // isLoggedIn이 true라면(로그인이 되었다면) toTabsView 로 아니면 toLoginView로 이동
               }
-              return const SplashScreen();
+              return const SplashScreen();   // 아직 완료가 안되었다면 로딩서클 보여줘라
             }));
   }
   toTabsView(){
-    Get.put<MapHomeController>(MapHomeController());
+    Get.put<MapHomeController>(MapHomeController()); // 들어가기전에 maphomecontroller 가져오기
     return const TabsView();
   }
   toLoginView(){
-    Get.put(LoginController());
+    Get.put(LoginController());   // 들어가기전에 logincontroller 가져오기
     return const LoginView();
   }
 }

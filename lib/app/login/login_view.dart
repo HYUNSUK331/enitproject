@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'login_controller.dart';
 
+/// 로그인 화면
 class LoginView extends GetView<LoginController> {
   const LoginView({Key? key}) : super(key: key);
 
@@ -16,22 +17,22 @@ class LoginView extends GetView<LoginController> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         children: [
           TextFormField(
-            keyboardType: TextInputType.emailAddress,
+            keyboardType: TextInputType.emailAddress,  //이메일 타입 알아서 검사해주는 친구
             controller: controller.emailController,
             decoration: const InputDecoration(label: Text('Email')),
           ),
           const SizedBox(height: 16),
           TextFormField(
-            obscureText: true,
+            obscureText: true, // 글자를 암호화 해주는 명령어
             controller: controller.passwordController,
             decoration: const InputDecoration(label: Text('Password')),
           ),
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () async {
-              await AuthService.to.login(controller.emailController.text, controller.passwordController.text).then((value) => {
+              await AuthService.to.login(controller.emailController.text, controller.passwordController.text).then((value) => {  // 버튼을 눌렀을 때 해당 내용이 맞지 않으면 출력할 text들이 AuthService 내부에 정의 되어있다.
                     value
-                        ? Get.to(()=>const TabsView(), binding: TabsBinding())
+                        ? Get.to(()=>const TabsView(), binding: TabsBinding())  //로그인 되면 TabsView로 이동 아니면 error 띄우기
                         : ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("error"), duration: Duration(milliseconds: 1000)))
                   });
             },
@@ -42,7 +43,7 @@ class LoginView extends GetView<LoginController> {
             onPressed: () async {
               await AuthService.to.signInWithGoogle(context).then((value) => {
                 value
-                    ? Get.to(()=>const TabsView(), binding: TabsBinding())
+                    ? Get.to(()=>const TabsView(), binding: TabsBinding())   //로그인 되면 TabsView로 이동 아니면 error 띄우기
                     : ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("error"), duration: Duration(milliseconds: 1000)))
               });
             },
