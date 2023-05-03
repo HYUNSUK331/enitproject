@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "849117762158-civtt6pbnmigbh47eabpc6tse381kic0.apps.googleusercontent.com",
+          "client_id": "849117762158-0u27n38r8k4aolqir5fi8lja34m0l5j3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.enitproject",
+            "certificate_hash": "3cd1412b0cd161ca402bcfe8baad9d3b7d996fa7"
+          }
+        },
+        {
+          "client_id": "849117762158-jm2dga16o3ml8vfk9j1iu9g0jr27hg0p.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -29,6 +37,49 @@
             {
               "client_id": "849117762158-civtt6pbnmigbh47eabpc6tse381kic0.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "849117762158-lmqq0oglcitjrq1qig9fqg4lqp0taqmn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.testenitproject"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:849117762158:android:f195aa5a230085aa3b4c7f",
+        "android_client_info": {
+          "package_name": "com.example.testenitproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "849117762158-jm2dga16o3ml8vfk9j1iu9g0jr27hg0p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvfpIoDWnhk09OCh2B0c8_URsSdAott2U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "849117762158-civtt6pbnmigbh47eabpc6tse381kic0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "849117762158-lmqq0oglcitjrq1qig9fqg4lqp0taqmn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.testenitproject"
+              }
             }
           ]
         }

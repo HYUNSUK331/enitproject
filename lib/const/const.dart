@@ -14,6 +14,13 @@ const KEY_TITLE = 'title';
 const KEY_LATITUDE = 'latitude';
 const KEY_LONGITUDE = 'longitude';
 const KEY_CIRCLECOLOR = 'circlecolor';
+
+
+const COLLECTION_USER = 'users';
+const KEY_USER_KEY = 'userKey';
+const KEY_USER_EMAIL = 'email';
+const KEY_USER_NAME = 'name';
+
 late int storyIndex;
 
 
