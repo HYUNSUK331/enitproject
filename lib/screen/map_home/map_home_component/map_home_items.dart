@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart' as badges;
 import 'package:badges/badges.dart';
 import 'package:enitproject/const/color.dart';
 import 'package:enitproject/screen/map_home/map_home_controller.dart';
@@ -94,24 +95,26 @@ class MapHomeItem extends GetView<MapHomeController> {
                     fontWeight: FontWeight.bold),
               )),
         ),
-        // Obx(() =>
-        // StoryController.to.storyList[index].changeStoryColor ==
-        //     GREEN_BRIGHT_COLOR ?
-        // Badge(
-        //   badgeStyle: BadgeStyle(
-        //     badgeColor: GREEN_BRIGHT_COLOR,
-        //   ),
-        //   showBadge: true,
-        //
-        // )
-        //     :
-        // Badge(
-        //   badgeStyle: BadgeStyle(
-        //     badgeColor: LIGHT_YELLOW_COLOR,
-        //   ),
-        //   showBadge: true,
-        // ),
-        // ),
+
+        Obx(() =>
+        StoryController.to.storyList[index].changeStoryColor ==
+            GREEN_BRIGHT_COLOR ?
+        badges.Badge(
+          badgeStyle: BadgeStyle(
+            badgeColor: GREEN_BRIGHT_COLOR,
+          ),
+          showBadge: true,
+
+        )
+            :
+        badges.Badge(
+          badgeStyle: BadgeStyle(
+            badgeColor: LIGHT_YELLOW_COLOR,
+          ),
+          showBadge: true,
+        ),
+        ),
+
         Text("${MapHomeController.to.latLngList.length}"),
         SizedBox(height: 5.0),
         Container(
@@ -254,14 +257,14 @@ class MapHomeItem2 extends GetView<MapHomeController> {
           Obx(() =>
           StoryController.to.storyList[index].changeStoryColor ==
             GREEN_BRIGHT_COLOR ?
-            Badge(
+          badges.Badge(
               badgeStyle: BadgeStyle(
                 badgeColor: GREEN_BRIGHT_COLOR,
               ),
             showBadge: true,
          )
             :
-            Badge(
+          badges.Badge(
               badgeStyle: BadgeStyle(
                 badgeColor: LIGHT_YELLOW_COLOR,
           ),

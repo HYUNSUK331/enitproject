@@ -1,6 +1,9 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:badges/badges.dart';
 import 'package:enitproject/screen/bottom_popup_player/bottom_popup_player_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -23,7 +26,7 @@ class PreviewScreen extends GetView<StoryController> {
         leading: Padding(
           padding: const EdgeInsets.all(10.0),
           child: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
+            icon: SvgPicture.asset('assets/icon/back_black.svg'),
             color: Colors.black,
             onPressed: (){
               //Navigator.pop(context);
@@ -102,21 +105,22 @@ class PreviewScreen extends GetView<StoryController> {
                                           ),
                                         ),
                                         SizedBox(width: 5.0,),
-                                        // Obx(() => controller.storyList[index].changeStoryColor == GREEN_BRIGHT_COLOR?
-                                        //   Badge(
-                                        //     badgeStyle: BadgeStyle(
-                                        //       badgeColor: GREEN_BRIGHT_COLOR,
-                                        //     ),
-                                        //     showBadge: true,
-                                        //   )
-                                        //     :
-                                        // Badge(
-                                        //   badgeStyle: BadgeStyle(
-                                        //     badgeColor: LIGHT_YELLOW_COLOR,
-                                        //   ),
-                                        //   showBadge: true,
-                                        // ),
-                                        // ),
+                                        Obx(() => controller.storyList[index].changeStoryColor == GREEN_BRIGHT_COLOR?
+                                        badges.Badge(
+                                            badgeStyle: BadgeStyle(
+                                              badgeColor: GREEN_BRIGHT_COLOR,
+                                            ),
+                                            showBadge: true,
+                                          )
+                                            :
+                                        badges.Badge(
+                                          badgeStyle: BadgeStyle(
+                                            badgeColor: LIGHT_YELLOW_COLOR,
+                                          ),
+                                          showBadge: true,
+                                        ),
+                                        ),
+
                                       ],
                                     ),
                                     SizedBox(height: 10.0,),
@@ -130,33 +134,12 @@ class PreviewScreen extends GetView<StoryController> {
                                 ),
                               ),
                               SizedBox(width: 5,),
-                              Obx(() => controller.storyList[index].changeStoryColor == GREEN_BRIGHT_COLOR?
-                                IconButton(
-                                  onPressed: () async{
-                                    controller.updatePlay(index);
-                                  },
-                                  icon: Obx(() => controller.isPlaying.value?
-                                   Icon(
-                                    Icons.headphones,
-                                    color: GREEN_MID_COLOR,
-                                 )
-                                    :
-                                    Icon(
-                                      Icons.headphones,
-                                      color: GREEN_MID_COLOR,
-                                  )
-                                  ),
-                              )
-                                  :
-                                SizedBox.shrink(),
-                              ),
                               Obx(() => controller.storyList[index].isLike?
                                 IconButton(
                                   onPressed: () => {
                                     controller.updateUnLike('${controller.storyList[index].storyPlayListKey}', index)
                                   },
-                                  icon: const Icon(
-                                    Icons.favorite,
+                                  icon: SvgPicture.asset('assets/icon/heart_green.svg',
                                     color: GREEN_DARK_COLOR,),
                               )
                                   :
@@ -164,8 +147,7 @@ class PreviewScreen extends GetView<StoryController> {
                                   onPressed: ()=>{
                                     controller.updateLike('${controller.storyList[index].storyPlayListKey}',index)
                                   },
-                                  icon: const Icon(
-                                    Icons.favorite_border,
+                                  icon: SvgPicture.asset('assets/icon/heart_gray_line.svg',
                                     color: Colors.grey,),
                                   padding: EdgeInsets.zero
                               )
@@ -176,7 +158,10 @@ class PreviewScreen extends GetView<StoryController> {
                       ),
                       onTap: (){
                         if(controller.storyList[index].changeStoryColor == GREEN_BRIGHT_COLOR)
-                        Get.to(() => StoryScreen(storyIndex: index,));
+                        {
+                          Get.to(() => StoryScreen(storyIndex: index,));
+                          controller.setOpenPlay(index);
+                        }
                       },
                     );
                   }
