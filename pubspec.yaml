@@ -45,10 +45,10 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_maps_flutter: ^2.2.5
   geolocator: ^9.0.2
-  badges: ^3.0.3
+  badges: ^3.1.1
   audioplayers: ^4.0.1
   assets_audio_player: ^3.0.6
-  flutter_svg: ^1.1.6
+  flutter_svg: ^2.0.5
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -68,6 +68,7 @@ flutter:
   assets:
     - assets/
     - assets/story/
+    - assets/icon/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
