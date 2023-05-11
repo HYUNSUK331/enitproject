@@ -120,6 +120,7 @@ class PreviewScreen extends GetView<StoryController> {
                                           showBadge: true,
                                         ),
                                         ),
+
                                       ],
                                     ),
                                     SizedBox(height: 10.0,),

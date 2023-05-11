@@ -14,7 +14,7 @@ class TestButton extends StatelessWidget {   // 테스트용
 }
 
 
-class CustomGoogleMap extends StatelessWidget {
+class CustomGoogleMap extends GetView<MapHomeController> {
   final MapCreatedCallback onMapCreated;
   final RxList circle;
   const CustomGoogleMap({required this.onMapCreated,required this.circle,Key? key}) : super(key: key);
@@ -68,6 +68,10 @@ class CustomGoogleMap extends StatelessWidget {
         circles: getcircles(),
         markers: getmarkers(),
         onMapCreated: onMapCreated,
+          onCameraIdle: ()=>{
+            controller.initSize.value = 1
+          }
+
       ),
     );
   }

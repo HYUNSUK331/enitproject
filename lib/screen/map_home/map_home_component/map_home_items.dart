@@ -95,6 +95,7 @@ class MapHomeItem extends GetView<MapHomeController> {
                     fontWeight: FontWeight.bold),
               )),
         ),
+
         Obx(() =>
         StoryController.to.storyList[index].changeStoryColor ==
             GREEN_BRIGHT_COLOR ?
@@ -113,6 +114,7 @@ class MapHomeItem extends GetView<MapHomeController> {
           showBadge: true,
         ),
         ),
+
         Text("${MapHomeController.to.latLngList.length}"),
         SizedBox(height: 5.0),
         Container(
@@ -175,10 +177,10 @@ class MapHomeItem2 extends GetView<MapHomeController> {
     );
   }
 
-
+  /// 리스트에 가로 한 줄
   Widget _boxes(String _image, double lat, double long, String restaurantName,String addressSearch, String addressDetail) {
     return GestureDetector(  // 박스 클릭 했을 때 나오는 모습
-      onTap: () async {
+      onTap: () {
         if (controller.mapController == null) {
           return;
         }
@@ -186,11 +188,10 @@ class MapHomeItem2 extends GetView<MapHomeController> {
           CameraUpdate.newLatLng( // story 클릭 시 그 위치로 이동시키기
             LatLng(lat, long
             ),
-
           ),
 
         );
-        MapHomeController.to.initSize.value = 0.3;
+        controller.initSize.value = 0.3;
       },
 
       child: Container(
@@ -229,7 +230,7 @@ class MapHomeItem2 extends GetView<MapHomeController> {
       ),
     );
   }
-
+  /// 제목, 주소
   Widget myDetailsContainer2(String restaurantName, String addressSearch, String addressDetail) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -63,6 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '849117762158',
     projectId: 'enitproject',
     storageBucket: 'enitproject.appspot.com',
+    androidClientId: '849117762158-0u27n38r8k4aolqir5fi8lja34m0l5j3.apps.googleusercontent.com',
     iosClientId: '849117762158-o8akorq0566nfuj1n9mfbl0jpnphop4f.apps.googleusercontent.com',
     iosBundleId: 'com.example.enitproject',
   );
