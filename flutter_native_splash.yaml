@@ -1,0 +1,4 @@
+# 로고 설정
+flutter_native_splash:
+  color: "#07BEB8"
+  image: assets/story/pin.png
