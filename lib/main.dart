@@ -13,14 +13,20 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
-void main() async{
+Future<void> main() async{
 
   //비동기로 데이터를 다룬 다음 runapp할 경우 사용
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   /// 알림창 초기화
   await NotificationUtils.initNotification();
+
+  /// 로딩화면 설정
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  await Future.delayed(const Duration(seconds: 3));  //3초 그냥 딜레이 주기
 
   /// controller
   Get.put(StoryController());
@@ -42,3 +48,4 @@ void main() async{
 
   runApp(const RootView());
 }
+

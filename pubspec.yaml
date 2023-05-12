@@ -40,6 +40,8 @@ dependencies:
   font_awesome_flutter: ^10.4.0
   flutter_local_notifications: ^13.0.0
   shared_preferences: ^2.1.0
+  # 로딩화면
+  flutter_native_splash: ^2.2.18
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

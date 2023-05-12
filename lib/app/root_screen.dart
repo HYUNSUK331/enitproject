@@ -37,6 +37,7 @@ import 'package:enitproject/service/splash_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class RootView extends StatelessWidget {
   const RootView({Key? key}) : super(key: key);
@@ -55,11 +56,15 @@ class RootView extends StatelessWidget {
               return const SplashScreen();   // 아직 완료가 안되었다면 로딩서클 보여줘라
             }));
   }
+
+
   toTabsView(){
+    FlutterNativeSplash.remove(); // 로딩화면 종료
     Get.put<MapHomeController>(MapHomeController()); // 들어가기전에 maphomecontroller 가져오기
     return const TabsView();
   }
   toLoginView(){
+    FlutterNativeSplash.remove(); // 로딩화면 종료
     Get.put(LoginController());   // 들어가기전에 logincontroller 가져오기
     return const LoginView();
   }
