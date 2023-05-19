@@ -26,158 +26,170 @@ class StoryScreen extends GetView<StoryController> {
         backgroundColor: Colors.white,
 
 
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(80.0),
-          child: AppBar(
-            backgroundColor: Colors.white,
-            elevation: 0.0,
-            leading: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: IconButton(
-                  icon: SvgPicture.asset('assets/icon/back_black.svg',
-                    color: Colors.black,
-                  ),
-                  iconSize: 70,
-                  onPressed: (){
-                    Navigator.maybePop(context);
-                  },
-                  ),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0.0,
+          leading: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10.0,
             ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-
-                child: Obx(() => controller.storyList[storyIndex].isLike?
-                IconButton(
-                    onPressed: () => {
-                      controller.updateUnLike('${controller.storyList[storyIndex].storyPlayListKey}', storyIndex)
-                    },
-                    icon: SvgPicture.asset('assets/icon/heart_green.svg',
-                      color: GREEN_DARK_COLOR,
-                    ),
-                  iconSize: 70,
-                )
-                    :
-                IconButton(
-                    onPressed: ()=>{
-                      controller.updateLike('${controller.storyList[storyIndex].storyPlayListKey}',storyIndex)
-                    },
-                    icon: SvgPicture.asset('assets/icon/heart_gray_line.svg',
-                      color: Colors.grey,
-                    ),
-                  iconSize: 70,
-                )
+            child: IconButton(
+                icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+                onPressed: (){
+                  Navigator.maybePop(context);
+                },
+              iconSize: 35,
                 ),
-              )
-            ],
           ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 10.0,
+              ),
+              child: Obx(() => controller.storyList[storyIndex].isLike?
+              IconButton(
+                  onPressed: () => {
+                    controller.updateUnLike('${controller.storyList[storyIndex].storyPlayListKey}', storyIndex)
+                  },
+                  icon: SvgPicture.asset('assets/icon/heart_green.svg',
+                    color: GREEN_MID_COLOR,
+                  ),
+                iconSize: 40,
+              )
+                  :
+              IconButton(
+                  onPressed: ()=>{
+                    controller.updateLike('${controller.storyList[storyIndex].storyPlayListKey}',storyIndex)
+                  },
+                  icon: SvgPicture.asset('assets/icon/heart_gray_line.svg',
+                    color: Colors.grey,
+                  ),
+                iconSize: 70,
+              )
+              ),
+            )
+          ],
         ),
 
         body: Stack(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0
-              ),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    // SizedBox(height: 20.0,),
-                    Container(
-                      child: Column(
-                        children: [
-                          Text(
-                            '${controller.storyList[storyIndex].title}',
-                            style: TextStyle(
-                              fontSize: 40.0,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                          SizedBox(height: 10.0,),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15.0
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          child: Column(
                             children: [
                               Text(
-                                '${controller.storyList[storyIndex].addressDetail}',
+                                '${controller.storyList[storyIndex].title}',
                                 style: TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w500
+                                  fontSize: 40.0,
+                                  fontWeight: FontWeight.w800,
                                 ),
                               ),
-                              TextButton(
-                                child: Text(
-                                  '지도보기',
-                                  style: TextStyle(
-                                    fontSize: 15.0,
-                                    color: GREEN_DARK_COLOR,
+                              SizedBox(height: 10.0,),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    '${controller.storyList[storyIndex].addressDetail}',
+                                    style: TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.w500
+                                    ),
                                   ),
-                                ),
-                                onPressed: (){},
+                                  TextButton(
+                                    child: Text(
+                                      '지도보기',
+                                      style: TextStyle(
+                                        fontSize: 15.0,
+                                        color: GREEN_MID_COLOR,
+                                      ),
+                                    ),
+                                    onPressed: (){},
+                                  )
+                                ],
                               )
                             ],
-                          )
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 15.0,),
-                    Image.network(
-                      '${controller.storyList[storyIndex].image}',
-                      width: double.infinity,
-                      fit: BoxFit.contain,
-                    ),
-                    SizedBox(height: 15.0,),
-                    controller.assetsAudioPlayer.value.builderRealtimePlayingInfos(
-                        builder: (context, RealtimePlayingInfos? infos) {
-                          if (infos == null) {
-                            return SizedBox();
-                          }
-                          //print('infos: $infos');
-                          return Column(
-                            children: [
-                              PositionSeekWidget(
-                                currentPosition: infos.currentPosition,
-                                duration: infos.duration,
-                                seekTo: (to) {
-                                  controller.assetsAudioPlayer.value.seek(to);
-                                },
-                              ),
-                            ],
-                          );
-                        }),
-                    controller.assetsAudioPlayer.value.builderLoopMode(
-                      builder: (context, loopMode) {
-                        return PlayerBuilder.isPlaying(
-                            player: controller.assetsAudioPlayer.value,
-                            builder: (context, isPlaying) {
-                              return PlayingControls(
-                                loopMode: loopMode,
-                                isPlaying: isPlaying,
-                                isPlaylist: true,
-                                onStop: () {
-                                  controller.assetsAudioPlayer.value.stop();
-                                },
-                                toggleLoop: () {
-                                  controller.assetsAudioPlayer.value.toggleLoop();
-                                },
-                                onPlay: () {
-                                  controller.assetsAudioPlayer.value.playOrPause();
-                                },
+                          ),
+                        ),
+                        SizedBox(height: 15.0,),
+                        Image.network(
+                          '${controller.storyList[storyIndex].image}',
+                          width: double.infinity,
+                          fit: BoxFit.contain,
+                        ),
+                        SizedBox(height: 15.0,),
+                        controller.assetsAudioPlayer.value.builderRealtimePlayingInfos(
+                            builder: (context, RealtimePlayingInfos? infos) {
+                              if (infos == null) {
+                                return SizedBox();
+                              }
+                              //print('infos: $infos');
+                              return Column(
+                                children: [
+                                  PositionSeekWidget(
+                                    currentPosition: infos.currentPosition,
+                                    duration: infos.duration,
+                                    seekTo: (to) {
+                                      controller.assetsAudioPlayer.value.seek(to);
+                                    },
+                                  ),
+                                ],
                               );
-                            });
-                      },
+                            }),
+                        controller.assetsAudioPlayer.value.builderLoopMode(
+                          builder: (context, loopMode) {
+                            return PlayerBuilder.isPlaying(
+                                player: controller.assetsAudioPlayer.value,
+                                builder: (context, isPlaying) {
+                                  return PlayingControls(
+                                    loopMode: loopMode,
+                                    isPlaying: isPlaying,
+                                    isPlaylist: true,
+                                    onStop: () {
+                                      controller.assetsAudioPlayer.value.stop();
+                                    },
+                                    toggleLoop: () {
+                                      controller.assetsAudioPlayer.value.toggleLoop();
+                                    },
+                                    onPlay: () {
+                                      controller.assetsAudioPlayer.value.playOrPause();
+                                    },
+                                  );
+                                });
+                          },
+                        ),
+                        SizedBox(height: 20.0,),
+                      ],
                     ),
-                    SizedBox(height: 20.0,),
-                    Container(
+                  ),
+                  Container(
+                    width: double.infinity, height: 360,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(40),
+                            topRight: Radius.circular(40)
+                        ),
+                        color: GREEN_MID_COLOR
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 30, 20, 110),
                       child: Text(
                         '${controller.storyList[storyIndex].script}',
                         style: TextStyle(
-                            fontSize: 15.0
+                            fontSize: 15.0,
+                            color: Colors.white,
                         ),
                       ),
                     ),
-                    SizedBox(height: 110,),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             Obx(()=> BottomPopupPlayerController.to.isPopup.value?

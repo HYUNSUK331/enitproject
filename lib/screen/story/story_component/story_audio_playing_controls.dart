@@ -72,8 +72,8 @@ class PlayingControls extends GetView<StoryController> {
           onPressed: onPlay,
           icon:
           isPlaying
-              ? SvgPicture.asset('assets/icon/pause_green.svg',color: GREEN_DARK_COLOR,)
-              : SvgPicture.asset('assets/icon/play_green.svg',color: GREEN_DARK_COLOR,),
+              ? SvgPicture.asset('assets/icon/pause_green.svg',color: GREEN_MID_COLOR,)
+              : SvgPicture.asset('assets/icon/play_green.svg',color: GREEN_MID_COLOR,),
         ),
       ],
     );

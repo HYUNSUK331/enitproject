@@ -55,7 +55,7 @@ class _PositionSeekWidgetState extends State<PositionSeekWidget> {
               max: widget.duration.inMilliseconds.toDouble(),
               value: percent * widget.duration.inMilliseconds.toDouble(),
               inactiveColor: Color(0xFFEFEFEF),
-              activeColor: GREEN_DARK_COLOR,
+              activeColor: GREEN_MID_COLOR,
               onChangeEnd: (newValue) {
                 setState(() {
                   listenOnlyUserInterraction = false;

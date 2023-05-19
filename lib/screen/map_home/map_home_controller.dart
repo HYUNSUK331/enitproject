@@ -55,7 +55,8 @@ class MapHomeController extends GetxController{
            false) {
         print("###############################");
         invisibleTableRowSwitchList1[i] =
-            LIGHT_BLUE_COLOR;
+            GREEN_DARK_COLOR
+        ;
       }
       else { // list에 나온 색깔 보여주기!! yellow or blue
         print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");

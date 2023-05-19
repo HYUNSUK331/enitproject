@@ -7,6 +7,10 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../const/color.dart';
+import '../story/story_controller.dart';
+import '../story/story_screen.dart';
+
 
 /// 처음 나오는 지도 화면
 class HomeView extends GetView<MapHomeController> {
@@ -16,34 +20,34 @@ class HomeView extends GetView<MapHomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'JJurang',
-          style: TextStyle(
-            color: Colors.blue,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        elevation: 0.0,
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        actions: [
-          /// 현재위치로 화면 이동
-          IconButton(onPressed: ()async{
-            if(controller.mapController == null){  // null 이면 return
-              return;
-            }
-            final location = await Geolocator.getCurrentPosition();
-            controller.mapController?.animateCamera(CameraUpdate.newLatLng(
-              LatLng(location.latitude, location.longitude
-              ),
-            ),
-            );
-          },
-            icon:const Icon(Icons.my_location, color: Colors.blue,),
-          )
-        ],
-      ),
+      // appBar: AppBar(
+      //   title: const Text(
+      //     'JJurang',
+      //     style: TextStyle(
+      //       color: Colors.blue,
+      //       fontWeight: FontWeight.w700,
+      //     ),
+      //   ),
+      //   elevation: 0.0,
+      //   centerTitle: true,
+      //   backgroundColor: Colors.white,
+      //   actions: [
+      //     /// 현재위치로 화면 이동
+      //     IconButton(onPressed: ()async{
+      //       if(controller.mapController == null){  // null 이면 return
+      //         return;
+      //       }
+      //       final location = await Geolocator.getCurrentPosition();
+      //       controller.mapController?.animateCamera(CameraUpdate.newLatLng(
+      //         LatLng(location.latitude, location.longitude
+      //         ),
+      //       ),
+      //       );
+      //     },
+      //       icon:const Icon(Icons.my_location, color: Colors.blue,),
+      //     )
+      //   ],
+      // ),
       /// 위치 권한 받기
       body: FutureBuilder(
         future: controller.checkPermission(), // 위치 권한 받아오기
@@ -64,9 +68,25 @@ class HomeView extends GetView<MapHomeController> {
                   return Stack(
                       children: [
                         ///구글맵
-                          CustomGoogleMap(
+                        CustomGoogleMap(
                               onMapCreated: controller.onMapCreated,
-                              circle: controller.invisibleTableRowSwitchList1),// 서클 색 설정
+                              circle: controller.invisibleTableRowSwitchList1), // 서클 색 설정
+                        Positioned(
+                          right: 10.0,bottom: 270,
+                            child:  /// 현재위치로 화면 이동
+                            IconButton(onPressed: ()async{
+                              if(controller.mapController == null){  // null 이면 return
+                                return;
+                              }
+                              final location = await Geolocator.getCurrentPosition();
+                              controller.mapController?.animateCamera(CameraUpdate.newLatLng(
+                                LatLng(location.latitude, location.longitude
+                                ),
+                              ),
+                              );
+                            },
+                              icon:const Icon(Icons.my_location, color: GREEN_DARK_COLOR,size: 30,),
+                            ),),
                         ///이야기 리스트
                         _buildContainer2(),
                       ],
@@ -105,7 +125,13 @@ class HomeView extends GetView<MapHomeController> {
           initialChildSize: 0.3,  // 초기 사이즈
           builder: (context, sheetController) =>
               Container(  // DraggableScrollableSheet에 들어갈 리스트
-                color: Colors.white70,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40)
+                  ),
+                ),
                   child: ListView.builder(
                     controller: sheetController,
                     itemCount: controller.latLngList.length,
@@ -113,10 +139,18 @@ class HomeView extends GetView<MapHomeController> {
                       // if (controller.initSize.value == 0.3) {
                       //   controller.initSize.value = 1.0;
                       // } // 여기 에러 나는데 이거 바꾸기
-                      return MapHomeItem2(index: index);
+                      return InkWell(
+                          child: MapHomeItem2(index: index),
+                        onDoubleTap: (){
+                          if(StoryController.to.storyList[index].changeStoryColor == GREEN_BRIGHT_COLOR)
+                          {
+                            Get.to(() => StoryScreen(storyIndex: index,),);
+                            StoryController.to.setOpenPlay(index);
+                          }
+                        },
+                      );
                     },
                   ),
-
               ),
         ));
   }

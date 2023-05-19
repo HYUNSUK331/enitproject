@@ -33,88 +33,91 @@ class BottomPopupPlayer extends GetView<BottomPopupPlayerController> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Container(
-                  width: 70, height: 70,
-                  padding: EdgeInsets.fromLTRB(3, 3, 0, 3),
-                  child: Obx(()=> Image.network(
-                    '${StoryController.to.storyList[storyIndex].image}', width: 100, height: 100, fit: BoxFit.contain,),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    height: 65,
-                    padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Obx(()=> Text(
-                              '${StoryController.to.storyList[storyIndex].title}',
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600)
-                          )
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Obx(()=> Text(
-                              '${StoryController.to.storyList[storyIndex].addressDetail}',
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.white,)
-                          )
-                          ),
-                        ),
-                      ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Container(
+                    width: 70, height: 70,
+                    padding: EdgeInsets.symmetric(vertical: 3),
+                    child: Obx(()=> Image.network(
+                      '${StoryController.to.storyList[storyIndex].image}', width: 100, height: 100, fit: BoxFit.contain,),
                     ),
                   ),
-                ),
-                StoryController.to.assetsAudioPlayer.value.builderLoopMode(
-                  builder: (context, loopMode) {
-                    return PlayerBuilder.isPlaying(
-                        player: StoryController.to.assetsAudioPlayer.value,
-                        builder: (context, isPlaying) {
-                          return BottomPopupPlayingControls(
-                            loopMode: loopMode,
-                            isPlaying: isPlaying,
-                            isPlaylist: true,
-                            onStop: () {
-                              StoryController.to.assetsAudioPlayer.value.stop();
-                            },
-                            onPlay: () {
-                              StoryController.to.assetsAudioPlayer.value.playOrPause();
-                            },
-                          );
-                        });
-                  },
-                ),
-                Obx(() => StoryController.to.storyList[storyIndex].isLike?
-                IconButton(
-                  onPressed: () => {
-                    StoryController.to.updateUnLike('${StoryController.to.storyList[storyIndex].storyPlayListKey}', storyIndex)
-                  },
-                  icon: SvgPicture.asset('assets/icon/heart_black.svg',
-                    color: GREEN_DARK_COLOR,),
-                )
-                    :
-                IconButton(
-                    onPressed: ()=>{
-                      StoryController.to.updateLike('${StoryController.to.storyList[storyIndex].storyPlayListKey}',storyIndex)
+                  Expanded(
+                    child: Container(
+                      height: 65,
+                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Obx(()=> Text(
+                                '${StoryController.to.storyList[storyIndex].title}',
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600)
+                            )
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                            child: Obx(()=> Text(
+                                '${StoryController.to.storyList[storyIndex].addressDetail}',
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.white,)
+                            )
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  StoryController.to.assetsAudioPlayer.value.builderLoopMode(
+                    builder: (context, loopMode) {
+                      return PlayerBuilder.isPlaying(
+                          player: StoryController.to.assetsAudioPlayer.value,
+                          builder: (context, isPlaying) {
+                            return BottomPopupPlayingControls(
+                              loopMode: loopMode,
+                              isPlaying: isPlaying,
+                              isPlaylist: true,
+                              onStop: () {
+                                StoryController.to.assetsAudioPlayer.value.stop();
+                              },
+                              onPlay: () {
+                                StoryController.to.assetsAudioPlayer.value.playOrPause();
+                              },
+                            );
+                          });
                     },
-                    icon: SvgPicture.asset('assets/icon/heart_white_line.svg',
+                  ),
+                  Obx(() => StoryController.to.storyList[storyIndex].isLike?
+                  IconButton(
+                    onPressed: () => {
+                      StoryController.to.updateUnLike('${StoryController.to.storyList[storyIndex].storyPlayListKey}', storyIndex)
+                    },
+                    icon: SvgPicture.asset('assets/icon/heart_black.svg',
                       color: Colors.white,),
-                    padding: EdgeInsets.zero
-                )
-                ),
-            ],
+                  )
+                      :
+                  IconButton(
+                      onPressed: ()=>{
+                        StoryController.to.updateLike('${StoryController.to.storyList[storyIndex].storyPlayListKey}',storyIndex)
+                      },
+                      icon: SvgPicture.asset('assets/icon/heart_white_line.svg',
+                        color: Colors.white,),
+                      padding: EdgeInsets.zero
+                  )
+                  ),
+              ],
           ),
+            ),
           ],
         ),
       ),

@@ -3,6 +3,7 @@ import 'package:enitproject/app/login/login_controller.dart';
 import 'package:enitproject/app/root_screen.dart';
 import 'package:enitproject/const/const.dart';
 import 'package:enitproject/firebase_options.dart';
+import 'package:enitproject/screen/favorite/favorite_controller.dart';
 import 'package:enitproject/service/auth_service.dart';
 import 'package:enitproject/service/splash_service.dart';
 import 'package:enitproject/utils/notification.dart';
@@ -24,6 +25,7 @@ void main() async{
 
   /// controller
   Get.put(StoryController());
+  Get.put(FavoriteController());
   Get.put(BottomPopupPlayerController());
   Get.put(MapHomeController());
 

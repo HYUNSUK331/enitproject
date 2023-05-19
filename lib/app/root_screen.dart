@@ -53,7 +53,10 @@ class RootView extends StatelessWidget {
                 return Scaffold(body: AuthService.to.isLoggedIn.value ? toTabsView() :toLoginView());  // isLoggedIn이 true라면(로그인이 되었다면) toTabsView 로 아니면 toLoginView로 이동
               }
               return const SplashScreen();   // 아직 완료가 안되었다면 로딩서클 보여줘라
-            }));
+            }
+            ),
+      theme: ThemeData(fontFamily: 'Pretendard'),
+    );
   }
   toTabsView(){
     Get.put<MapHomeController>(MapHomeController()); // 들어가기전에 maphomecontroller 가져오기
