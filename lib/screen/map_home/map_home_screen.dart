@@ -17,6 +17,17 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
   static final LatLng companyLatLng =
   LatLng(33.49766527106121, 126.53094118653355);    // 이게 이야기의 좌표!! 우리가 작성할 필요없고 DB에서 가져오는것
 
+  Future<CameraPosition> getposition1()async{
+    final location = await Geolocator.getCurrentPosition();
+    final LatLng companyLatLng = LatLng(location.latitude,location.longitude);
+    final CameraPosition initialPosition = CameraPosition(
+        target: companyLatLng,
+        zoom: 15
+    );
+    return initialPosition;
+  }
+
+
   static final CameraPosition initialPosition = CameraPosition(  //지도 위치 초기화 및 우리가 바라볼 곳
     target: companyLatLng,
     zoom: 15,

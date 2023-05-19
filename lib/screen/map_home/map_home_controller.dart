@@ -18,7 +18,7 @@ class MapHomeController extends GetxController{
 
   bool boolCheck = true;
   RxList invisibleTableRowSwitchList1 = RxList<dynamic>();
-  void buildInvisibleTableRowSwitch() {  // 색을 담아줄 rxlist
+  void circleColorList() {  // 색을 담아줄 rxlist
     invisibleTableRowSwitchList1 = RxList<Color>.generate(latLngList.length, (int index) => Colors.black);
   }
   /// 원의 색을 정해주는 기능
@@ -67,7 +67,7 @@ class MapHomeController extends GetxController{
   }
 
   /// 구글맵 사용
-  void onMapCreated(GoogleMapController controller){
+  void onMapCreated(GoogleMapController controller){  // 처음 한번만 들어온다.
     mapController = controller;
   }
 
@@ -81,6 +81,7 @@ class MapHomeController extends GetxController{
     super.onInit();
   }
 
+
   bool choolCheckDone = false;
   GoogleMapController? mapController;
   Completer<GoogleMapController> _controller = Completer();
@@ -91,6 +92,8 @@ class MapHomeController extends GetxController{
       bearing: 45.0,)));
   }
 
+  /// 지금 시작시 우리 초기 위치
+  final location = Geolocator.getCurrentPosition();
   static double lat =  33.49766527106121;
   static double lng =  126.53094118653355;
   static final LatLng companyLatLng = LatLng(lat, lng);
@@ -98,6 +101,8 @@ class MapHomeController extends GetxController{
     target: companyLatLng,
     zoom: 15,
   );
+
+
 
 
   /// 위치 권한 받아오기
