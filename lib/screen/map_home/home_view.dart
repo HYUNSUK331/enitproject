@@ -39,6 +39,7 @@ class HomeView extends GetView<MapHomeController> {
               ),
             ),
             );
+           print("^^^^^^^^^^^^^^^^^^^^^^^^^^${location.latitude},${location.latitude},$location^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
           },
             icon:const Icon(Icons.my_location, color: Colors.blue,),
           )
@@ -58,8 +59,9 @@ class HomeView extends GetView<MapHomeController> {
             return StreamBuilder<Position>(  // 데이터를 여러번 받아올때 사용
                 stream: Geolocator.getPositionStream(),
                 builder: (context, snapshot) {
-                  controller.buildInvisibleTableRowSwitch(); // rxlist로 색이 담긴 리스트
-                  ///핵심기능 서클 색 변경하고 알림띄우기
+                  controller.circleColorList(); // rxlist로 색이 담긴 리스트
+                  ///핵심기능
+                  ///서클 색 변경하고 알림띄우기
                   if(snapshot.hasData) controller.updateMarker(snapshot.data);
                   return Stack(
                       children: [
@@ -116,7 +118,6 @@ class HomeView extends GetView<MapHomeController> {
                       return MapHomeItem2(index: index);
                     },
                   ),
-
               ),
         ));
   }

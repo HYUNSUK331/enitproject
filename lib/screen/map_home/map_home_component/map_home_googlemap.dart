@@ -1,5 +1,6 @@
 import 'package:enitproject/screen/map_home/map_home_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -57,12 +58,30 @@ class CustomGoogleMap extends GetView<MapHomeController> {
       }
       return circles;
     }
+    //-----------------------------------------------------------
+    Future<CameraPosition> getposition1()async{
+      final location = await Geolocator.getCurrentPosition();
+      final LatLng companyLatLng = LatLng(location.latitude,location.longitude);
+      final CameraPosition initialPosition = CameraPosition(
+        target: companyLatLng,
+        zoom: 15
+      );
+      return initialPosition;
+    }
 
+    final location = Geolocator.getCurrentPosition();
+    double lat =  33.49766527106121;
+    double lng =  126.53094118653355;
+    final LatLng companyLatLng = LatLng(lat, lng);
+    final CameraPosition initialPosition = CameraPosition(  //지도 위치 초기화 및 우리가 바라볼 곳
+      target: companyLatLng,
+      zoom: 15,
+    );
 
     return Positioned(
       child: GoogleMap(
         mapType: MapType.normal,
-        initialCameraPosition: MapHomeController.initialPosition,
+        initialCameraPosition: initialPosition,
         myLocationEnabled: true,
         myLocationButtonEnabled: false,
         circles: getcircles(),

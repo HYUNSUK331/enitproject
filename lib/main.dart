@@ -26,7 +26,7 @@ Future<void> main() async{
   /// 로딩화면 설정
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  await Future.delayed(const Duration(seconds: 3));  //3초 그냥 딜레이 주기
+  await Future.delayed(const Duration(seconds: 1));  //1초 그냥 딜레이 주기 / 안줘도 될듯...?
 
   /// controller
   Get.put(StoryController());

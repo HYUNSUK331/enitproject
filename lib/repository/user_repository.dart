@@ -4,7 +4,15 @@ import 'package:enitproject/model/user_model.dart';
 
 class UserRepository {
   /// 회원가입
-  Future<void> attemptCreateUser(String userKey, String email, String name,) async {
+  Future<void> attemptCreateUser(String userKey, String email, String name,String phoneNum) async {
+    final DocumentReference userRef = FirebaseFirestore.instance.collection(COLLECTION_USER).doc(userKey);
+    DocumentSnapshot snapshot = await userRef.get();
+    if (!snapshot.exists) {
+      return await userRef.set({KEY_USER_KEY:userKey, KEY_USER_EMAIL : email, KEY_USER_NAME : name, KEY_PHONE_NUM : phoneNum});
+    }
+  }
+
+  Future<void> googleAttemptCreateUser(String userKey, String email, String name,) async {
     final DocumentReference userRef = FirebaseFirestore.instance.collection(COLLECTION_USER).doc(userKey);
     DocumentSnapshot snapshot = await userRef.get();
     if (!snapshot.exists) {
