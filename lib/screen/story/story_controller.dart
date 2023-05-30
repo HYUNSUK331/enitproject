@@ -62,6 +62,16 @@ class StoryController extends GetxController{
     storyList[index].changeStoryColor = LIGHT_YELLOW_COLOR;
   }
 
+
+
+  void updateFav(String storyListKey, int index) async {
+    await storyListNetworkRepository.updateStoryListLike(storyListKey, true).then((value) async =>
+    {
+      storyList[index].isLike = true,
+      storyList.refresh(),
+    });
+  }
+
   void updateLike(String storyListKey, int index) async {
     await storyListNetworkRepository.updateStoryListLike(storyListKey, true).then((value) async =>
     {
@@ -69,6 +79,7 @@ class StoryController extends GetxController{
       storyList.refresh(),
     });
   }
+
   void updateUnLike(String storyListKey, int index) async {
     await storyListNetworkRepository.updateStoryListLike(storyListKey, false).then((value) async =>
     {

@@ -16,6 +16,7 @@ class HomeView extends GetView<MapHomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         title: const Text(
           'JJurang',
