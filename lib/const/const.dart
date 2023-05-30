@@ -19,6 +19,7 @@ const KEY_CIRCLECOLOR = 'circlecolor';
 const COLLECTION_USER = 'users';
 const KEY_USER_KEY = 'userKey';
 const KEY_USER_EMAIL = 'email';
+const KEY_FAVORITE_LIST = "favorite_list";
 const KEY_USER_NAME = 'name';
 const KEY_PHONE_NUM = 'phone_num';
 

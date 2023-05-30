@@ -51,7 +51,8 @@ class RootView extends StatelessWidget {
             future: SplashService.to.init(),  //SplashService의 init을 할 동안
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {  // 로딩이 끝나면
-                return Scaffold(body: AuthService.to.isLoggedIn.value ? toTabsView() :toLoginView());  // isLoggedIn이 true라면(로그인이 되었다면) toTabsView 로 아니면 toLoginView로 이동
+                return Scaffold(
+                    body: AuthService.to.isLoggedIn.value ? toTabsView() :toLoginView());  // isLoggedIn이 true라면(로그인이 되었다면) toTabsView 로 아니면 toLoginView로 이동
               }
               return const SplashScreen();   // 아직 완료가 안되었다면 로딩서클 보여줘라
             }));

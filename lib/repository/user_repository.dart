@@ -8,7 +8,7 @@ class UserRepository {
     final DocumentReference userRef = FirebaseFirestore.instance.collection(COLLECTION_USER).doc(userKey);
     DocumentSnapshot snapshot = await userRef.get();
     if (!snapshot.exists) {
-      return await userRef.set({KEY_USER_KEY:userKey, KEY_USER_EMAIL : email, KEY_USER_NAME : name, KEY_PHONE_NUM : phoneNum});
+      return await userRef.set({KEY_USER_KEY:userKey, KEY_USER_EMAIL : email, KEY_USER_NAME : name, KEY_PHONE_NUM : phoneNum, KEY_FAVORITE_LIST : []}); // 마지막에 빈 리스트 넣어주기
     }
   }
 
@@ -27,12 +27,42 @@ class UserRepository {
     return UserModel.fromSnapshot(snapshot);
   }
 
+  /// 좋아요 누르면 유저 favlist update하기
+  Future<String> updateFavList(String userKey) async {
+    final DocumentReference userRef = FirebaseFirestore.instance.collection(
+        COLLECTION_USER).doc(userKey);
 
+    await FirebaseFirestore.instance.runTransaction((tx) async {
+      tx.update(userRef, {KEY_FAVORITE_LIST: userKey});
+    });
 
+    return userKey;
+  }
 
-  // 유저 프로필 수정
+  // 유저 프로필 이름 수정
+  void updatePlayListTitle(String userKey, String name) {
+    FirebaseFirestore.instance.collection(COLLECTION_USER).doc(userKey).update({
+      KEY_USER_NAME: name,
+    });
+  }
+  // 유저 탈퇴
+  Future<void> deleteUserModel(String userKey) async {
+    await FirebaseFirestore.instance.collection(COLLECTION_USER).doc(userKey).delete();
+  }
 
-  //탈퇴
+  // user 의 모든 내용 로컬로 가져오기
+  Future<List<UserModel>> getUserListModel() async {
+    final CollectionReference playListCollRef =
+    FirebaseFirestore.instance.collection(COLLECTION_USER);
+    List<UserModel> resultUserList = [];
+    QuerySnapshot querySnapshot = await playListCollRef.get();
+
+    querySnapshot.docs.forEach((element) {
+      resultUserList.add(UserModel.fromSnapshot(element));
+    });
+    return resultUserList;
+  }
+
 }
 
 UserRepository userRepository = UserRepository();

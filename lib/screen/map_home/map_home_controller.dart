@@ -21,6 +21,7 @@ class MapHomeController extends GetxController{
   void circleColorList() {  // 색을 담아줄 rxlist
     invisibleTableRowSwitchList1 = RxList<Color>.generate(latLngList.length, (int index) => Colors.black);
   }
+
   /// 원의 색을 정해주는 기능
   /// 색들은 db에 저장되어있음 삭제하고 다시 다운 받아도 기기가 같으면 서클 색상은 같다.
   /// 이거를 유저에 따른 색상변경으로 변경시켜주기..? 그럼 로그인 안 한사람은...?
@@ -44,10 +45,11 @@ class MapHomeController extends GetxController{
 
         /// 원에 들어오면 알림 띄우기
         if (boolCheck == true &&
-            MapHomeController.to.latLngList[i].circleColor ==
-                true) { // 이건 한번만나오게 설정 완료
-          NotificationUtils.showNotification(); // 알림보여주는 메인
+            MapHomeController.to.latLngList[i].circleColor == true) { // 이건 한번만나오게 설정 완료
+          NotificationUtils.initNotification(i); // 여기 넣으면 원에 들어올 때 알람
+          NotificationUtils.showNotification(StoryController.to.storyList[i].title.toString()); // 알림 보여주는 메인
           boolCheck = false;  // 다시 들어오면 알림 안 뜨게 하기
+          MapHomeController.to.latLngList[i].circleColor = false;  // 한번 초록색으로 변하면 circleColor을 false로 변환시켜주면 기본색상이 파란색이된다.
         }
 
 

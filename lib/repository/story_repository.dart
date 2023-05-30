@@ -4,18 +4,29 @@ import 'package:enitproject/model/storylist_model.dart';
 
 class StoryRepository {
 
-  //숨김이 아닌 플리 데이터 가져오기
   Future<List<StoryListModel>> getPlayListModel() async {
-    final CollectionReference playListCollRef = FirebaseFirestore.instance
-        .collection(COLLECTION_STORYPLAYLIST);
+    final CollectionReference playListCollRef =
+        FirebaseFirestore.instance.collection(COLLECTION_STORYPLAYLIST);
     List<StoryListModel> resultStoryList = [];
-    QuerySnapshot querySnapshot = await playListCollRef
-        .get();
+    QuerySnapshot querySnapshot = await playListCollRef.get();
 
     querySnapshot.docs.forEach((element) {
       resultStoryList.add(StoryListModel.fromSnapshot(element));
     });
     return resultStoryList;
+  }
+
+  //관심목록 데이터 가져오기
+  Future<List<StoryListModel>> getFavStoryListListModel() async {
+    final CollectionReference playListCollRef =
+        FirebaseFirestore.instance.collection(COLLECTION_STORYPLAYLIST);
+    List<StoryListModel> resultPlayList = [];
+    QuerySnapshot querySnapshot = await playListCollRef.get();
+
+    querySnapshot.docs.forEach((element) {
+      resultPlayList.add(StoryListModel.fromSnapshot(element));
+    });
+    return resultPlayList;
   }
 }
 
