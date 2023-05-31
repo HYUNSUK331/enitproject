@@ -51,7 +51,7 @@ class FavoriteListScreen extends GetView<FavoriteListController> {
             ),
             Expanded(
               child: ListView.builder(
-                  itemCount: UserController.to.userList.length,
+                  itemCount:UserController.to.userList.length,
                   itemBuilder: (BuildContext context, int index2) {
                     return ListView.builder(   /// 여기서부터 고치기!!!!
                           itemCount: StoryController.to.storyList.length,
