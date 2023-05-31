@@ -1,9 +1,11 @@
 import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:enitproject/const/color.dart';
 import 'package:enitproject/screen/map_home/map_home_controller.dart';
 import 'package:enitproject/screen/story/story_controller.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -151,27 +153,28 @@ class MapHomeItem2 extends GetView<MapHomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-      SizedBox(width: 5.0),
-      // for(int i = 0; i < MapHomeController.to.latLngList.length; i++)
-
-      Expanded(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: _boxes(
-            MapHomeController.to.latLngList[index].image.toString(),
-            MapHomeController.to.latLngList[index].latitude!.toDouble(),
-            MapHomeController.to.latLngList[index].longitude!.toDouble(),
-            MapHomeController.to.latLngList[index].title.toString(),
-            MapHomeController.to.latLngList[index].addressSearch.toString(),
-            MapHomeController.to.latLngList[index].addressDetail.toString(),
+    return Padding(padding: EdgeInsets.all(5.0),
+      child: Row(
+        children: <Widget>[
+          // SizedBox(width: 5.0),
+          // for(int i = 0; i < MapHomeController.to.latLngList.length; i++)
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: _boxes(
+                MapHomeController.to.latLngList[index].image.toString(),
+                MapHomeController.to.latLngList[index].latitude!.toDouble(),
+                MapHomeController.to.latLngList[index].longitude!.toDouble(),
+                MapHomeController.to.latLngList[index].title.toString(),
+                MapHomeController.to.latLngList[index].addressSearch.toString(),
+                MapHomeController.to.latLngList[index].addressDetail.toString(),
+              ),
+            ),
           ),
-        ),
-      ),
 
-    ],
-    );
+        ],
+      )
+      ,);
   }
 
   /// 리스트에 가로 한 줄
@@ -192,36 +195,57 @@ class MapHomeItem2 extends GetView<MapHomeController> {
       },
 
       child: Container(
-
         child: new InkWell(
           child: Material( // 상자 시작
               color: Colors.white,  // 이야기 상자 색
-              elevation: 1.0,  // 그림자 진하기
-              borderRadius: BorderRadius.circular(24.0),  //라운드 지게 만드는거
-              shadowColor: Color(0x802196F3), // 그림자 색
+              elevation: 0.0,  // 그림자 진하기
+              // borderRadius: BorderRadius.circular(10.0),  //라운드 지게 만드는거
+              // shadowColor: Color(0x802196F3), // 그림자 색
               child: Row(
                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,  클래스 사이를 뛰어둔다. 지금은 사용하면 너무 틀어져
                 children: <Widget>[
                   Padding(                  // 이미지 넣어주기
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(5.0),
                     child: Container(   //이미지 사이즈 바꾸기
-                      width: 120,
-                      height: 120,
+                      width: 100,
+                      height: 100,
                       child: ClipRRect(
-                        borderRadius: new BorderRadius.circular(24.0),
+                        borderRadius: new BorderRadius.circular(10.0),
                         child: Image(
-                          fit: BoxFit.fill,
+                          fit: BoxFit.cover,
                           image: NetworkImage(_image),
                         ),
                       ),),
                   ),
-                  Container(        // 여기부터 글
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: myDetailsContainer2(restaurantName,addressSearch,addressDetail),
+                  Expanded(
+                    child: Container(        // 여기부터 글
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: myDetailsContainer2(restaurantName,addressSearch,addressDetail),
+                      ),
                     ),
                   ),
-                ],)
+                  SizedBox(width: 5,),
+                  Obx(() => StoryController.to.storyList[index].isLike?
+                  IconButton(
+                    onPressed: () => {
+                      StoryController.to.updateUnLike('${StoryController.to.storyList[index].storyPlayListKey}', index)
+                    },
+                    icon: SvgPicture.asset('assets/icon/heart_green.svg',
+                      color: GREEN_MID_COLOR,),
+                  )
+                      :
+                  IconButton(
+                      onPressed: ()=>{
+                        StoryController.to.updateLike('${StoryController.to.storyList[index].storyPlayListKey}',index)
+                      },
+                      icon: SvgPicture.asset('assets/icon/heart_gray_line.svg',
+                        color: Colors.grey,),
+                      padding: EdgeInsets.zero
+                  )
+                  ),
+                ],
+              )
           ),
         ),
       ),
@@ -232,51 +256,49 @@ class MapHomeItem2 extends GetView<MapHomeController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 2.0),
-          child: Text(addressSearch,
-            style: TextStyle(
-              fontSize: 13.0,
-              fontWeight: FontWeight.w500,
-              color: GREEN_DARK_COLOR,
-            ),
+        Text(
+          addressSearch,
+          style: TextStyle(
+            fontSize: 12.0,
+            fontWeight: FontWeight.w500,
+            color: GREEN_DARK_COLOR,
           ),
         ),
-        SizedBox(height: 5.0,),
+        SizedBox(height: 10.0,),
         Row(
           children: [
-          Text(restaurantName,
-                style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w500),
-              ),
+            Text(restaurantName,
+              style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w600),
+            ),
             SizedBox(width: 5.0,),
-          Obx(() =>
-          StoryController.to.storyList[index].changeStoryColor ==
-            GREEN_BRIGHT_COLOR ?
-            Badge(
+            Obx(() =>
+            StoryController.to.storyList[index].changeStoryColor ==
+                GREEN_BRIGHT_COLOR ?
+            badges.Badge(
               badgeStyle: BadgeStyle(
                 badgeColor: GREEN_BRIGHT_COLOR,
               ),
-            showBadge: true,
-         )
-            :
-            Badge(
+              showBadge: true,
+            )
+                :
+            badges.Badge(
               badgeStyle: BadgeStyle(
                 badgeColor: LIGHT_YELLOW_COLOR,
-          ),
-          showBadge: true,
-          ),
-        ),
-        ],
+              ),
+              showBadge: true,
+            ),
+            ),
+          ],
         ),
         SizedBox(height: 5.0),
         Text(
           addressDetail,
           style: TextStyle(
-            fontSize: 15.0,
+            fontSize: 13.0,
           ),
-        )
+        ),
 
 
         // Container(

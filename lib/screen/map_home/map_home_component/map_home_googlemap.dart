@@ -18,7 +18,10 @@ class TestButton extends StatelessWidget {   // 테스트용
 class CustomGoogleMap extends GetView<MapHomeController> {
   final MapCreatedCallback onMapCreated;
   final RxList circle;
-  const CustomGoogleMap({required this.onMapCreated,required this.circle,Key? key}) : super(key: key);
+  const CustomGoogleMap({
+    required this.onMapCreated,
+    required this.circle,
+    Key? key}) : super(key: key);
 
 
 
@@ -36,7 +39,7 @@ class CustomGoogleMap extends GetView<MapHomeController> {
           infoWindow: InfoWindow( //popup info
             title: MapHomeController.to.latLngList[i].title,  // 타이틀만 보여 줄꺼면 잘보이게 꾸미기 필요
           ),
-          icon: BitmapDescriptor.defaultMarker, //Icon for Marker
+          icon: controller.markerIcon, //Icon for Marker
         ));
       }
 

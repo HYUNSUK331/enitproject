@@ -4,6 +4,7 @@ import 'package:enitproject/model/storylist_model.dart';
 import 'package:enitproject/screen/story/story_controller.dart';
 import 'package:enitproject/service/storylist_network_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -12,6 +13,9 @@ import 'dart:async';
 class MapHomeController extends GetxController{
 
   static MapHomeController get to => Get.find();
+
+  ///커스텀 마커를 위한것
+  BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
 
   RxList<StoryListModel> latLngList = <StoryListModel>[].obs;  // 내용은 story의 모든 내용이 있지만 letlng만 가져와 사용할꺼니까 이름은 letlngList
    Rx<double> initSize = 1.0.obs;  // 이게 변하는 시점에 초기화 필요
@@ -71,13 +75,21 @@ class MapHomeController extends GetxController{
     mapController = controller;
   }
 
+  ///커스텁 구글 핀
+  addCustomIcon(){
+    BitmapDescriptor.fromAssetImage(ImageConfiguration(),
+        'assets/icon/map_pin.png').then(
+            (icon){
+          markerIcon = icon;
+        });
+  }
 
   @override
   void onInit() async{
     await storyListNetworkRepository.getStoryListModel().then((value) => {  // DB에서 위도 경도 받아올때 사용하기
       latLngList(value)
     });
-
+    addCustomIcon();
     super.onInit();
   }
 
@@ -128,9 +140,6 @@ class MapHomeController extends GetxController{
 
     return '위치 권한이 허가 되었습니다.';
   }
-
-
-
 
 
 
