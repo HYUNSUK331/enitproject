@@ -59,6 +59,7 @@ class AuthService extends GetxService {
     isLoggedIn(true);
     AuthService.to.userModel.value =
         await userRepository.getUserModel(authResult.user!.uid);
+    print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh${AuthService.to.userModel.value}");
     return true;
   }
 
