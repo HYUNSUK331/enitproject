@@ -1,9 +1,5 @@
-import 'dart:convert';
-
-import 'package:enitproject/const/const.dart';
-import 'package:enitproject/screen/map_home/map_home_controller.dart';
-import 'package:enitproject/screen/story/story_controller.dart';
-import 'package:enitproject/screen/story/story_screen.dart';
+import 'package:enitproject/app/screen/story/binding/story_binding.dart';
+import 'package:enitproject/app/screen/story/view/story_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -36,9 +32,8 @@ class NotificationUtils{
     await notifications.initialize(
       initializationSettings,
         onDidReceiveNotificationResponse: (NotificationResponse details) async { // 여기서 핸들링!
-          print(
-              'onDidReceiveNotificationResponse - payload: ${details.payload}');
-          Get.to(StoryScreen(storyIndex: storyNum),);
+          print('onDidReceiveNotificationResponse - payload: ${details.payload}');
+          Get.to(() => const StoryScreen(), binding: StoryBinding(storyIndex: storyNum,));
           //알림 누를때 함수실행하고 싶으면
           //onSelectNotification: 함수명추가
         }

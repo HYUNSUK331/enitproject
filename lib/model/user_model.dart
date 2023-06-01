@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:enitproject/const/const.dart';
 
 class UserModel {
-  String userKey;
-  String email;
-  String name;
-  String phone_num;
-  dynamic? favoritelist;
+  String? userKey;
+  String? email;
+  String? name;
+  String? phone_num;
+  dynamic favoritelist;
 
 
   UserModel.fromMap(Map<String, dynamic> map, this.userKey)
