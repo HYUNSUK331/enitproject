@@ -28,6 +28,9 @@ Future<void> main() async{
     return true;
   });
 
+
+
+
   runApp(
     GetMaterialApp.router(
       title: "JJurang",

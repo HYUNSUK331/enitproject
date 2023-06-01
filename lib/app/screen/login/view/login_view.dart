@@ -1,3 +1,4 @@
+import 'package:enitproject/app/routes/app_pages.dart';
 import 'package:enitproject/app/screen/login/controller/login_controller.dart';
 import 'package:enitproject/app/screen/signup/bindings/signup_binding.dart';
 import 'package:enitproject/app/screen/signup/view/signup_view.dart';
@@ -55,7 +56,8 @@ class LoginView extends GetView<LoginController> {
 
           TextButton(
             onPressed: () async {
-              Get.to(() => const SignupView(), binding: SignupBinding());
+              Get.rootDelegate.toNamed(Routes.SIGN_UP);
+              // Get.to(() => const SignupView(), binding: SignupBinding());
             },
             child: const Text('회원가입'),
           ),

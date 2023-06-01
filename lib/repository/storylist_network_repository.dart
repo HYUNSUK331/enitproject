@@ -11,9 +11,9 @@ class StoryListNetworkRepository {
     final CollectionReference storyListCollRef = FirebaseFirestore.instance.collection(COLLECTION_STORYPLAYLIST);
     List<StoryListModel> resultList = [];
     QuerySnapshot querySnapshot = await storyListCollRef.get();
-    querySnapshot.docs.forEach((element) {
+    for (var element in querySnapshot.docs) {
       resultList.add(StoryListModel.fromSnapshot(element));
-    });
+    }
     return resultList;
   }
 
@@ -22,9 +22,9 @@ class StoryListNetworkRepository {
     final CollectionReference storyListCollRef = FirebaseFirestore.instance.collection(COLLECTION_STORYPLAYLIST);
     List<StoryListModel> resultList = [];
     QuerySnapshot querySnapshot = await storyListCollRef.where(KEY_STORY_PLAY_LIST_KEY, isEqualTo: storyIDkey).get();
-    querySnapshot.docs.forEach((element) {
+    for (var element in querySnapshot.docs) {
       resultList.add(StoryListModel.fromSnapshot(element));
-    });
+    }
     return resultList;
   }
 

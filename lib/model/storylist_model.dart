@@ -18,7 +18,7 @@ class StoryListModel{
   String? title;
   double? latitude;
   double? longitude;
-  Color changeStoryColor = GREEN_BRIGHT_COLOR;
+  Color changeStoryColor = GREEN_DARK_COLOR;
   bool? circleColor;
 
   StoryListModel.fromMap(Map<String,dynamic>map)

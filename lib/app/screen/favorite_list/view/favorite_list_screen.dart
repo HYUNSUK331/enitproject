@@ -1,10 +1,6 @@
 import 'package:enitproject/app/screen/bottom_popup_player/controller/bottom_popup_player_controller.dart';
 import 'package:enitproject/app/screen/favorite_list/controller/favorite_list_controller.dart';
-import 'package:enitproject/app/screen/story/binding/story_binding.dart';
 import 'package:enitproject/app/screen/story/controller/story_controller.dart';
-import 'package:enitproject/app/screen/story/view/story_screen.dart';
-import 'package:enitproject/app/screen/user/controller/user_controller.dart';
-import 'package:enitproject/const/color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -15,22 +11,23 @@ class FavoriteListScreen extends GetView<FavoriteListController> {
 
   @override
   Widget build(BuildContext context) {
+    double a = 10;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.0,
         leading: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding:  const EdgeInsets.all(10),
           child: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
+            icon: const Icon(Icons.arrow_back_ios),
             color: Colors.black,
             onPressed: () {
               Navigator.pop(context);
             },
           ),
         ),
-        title: Text(
+        title: const Text(
           '좋아요',
           style: TextStyle(color: Colors.black),
         ),
@@ -40,14 +37,14 @@ class FavoriteListScreen extends GetView<FavoriteListController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Text(
               '전체 ${StoryController.to.storyList.length}건',
-              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
+              style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             /// 여기서부터 고치기!!!! 고치기

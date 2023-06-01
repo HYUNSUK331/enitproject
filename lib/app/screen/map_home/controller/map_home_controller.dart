@@ -4,6 +4,7 @@ import 'package:enitproject/const/color.dart';
 import 'package:enitproject/model/storylist_model.dart';
 import 'package:enitproject/repository/storylist_network_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -75,7 +76,9 @@ class MapHomeController extends GetxController{
 
   @override
   void onInit() async{
+    EasyLoading.show();
     await loadMore();
+    EasyLoading.dismiss();
     super.onInit();
   }
 

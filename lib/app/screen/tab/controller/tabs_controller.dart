@@ -20,8 +20,7 @@ class TabsController extends GetxController{
     switch (value) {
       case 0:
         delegate.toNamed(Routes.HOME);
-        final MapHomeController mapHomeController = Get.find();
-        mapHomeController.loadMore();
+
         break;
       case 1:
         delegate.toNamed(Routes.FAVORITE);

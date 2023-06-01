@@ -22,7 +22,6 @@ abstract class Routes {
 
 }
 
-
 abstract class _Paths {
   static const ROOT = '/';
   static const LOGIN = '/login';
