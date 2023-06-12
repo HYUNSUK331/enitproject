@@ -20,14 +20,10 @@ class TabsController extends GetxController{
     switch (value) {
       case 0:
         delegate.toNamed(Routes.HOME);
-
         break;
-
       case 1:
         delegate.toNamed(Routes.STORYLIST);
-
         break;
-
       case 2:
         delegate.toNamed(Routes.FAVORITE);
         final FavoriteController favoriteListController = Get.find();
@@ -35,11 +31,9 @@ class TabsController extends GetxController{
         userController.onInit();  /// 문제 생기면 여기 의심
         favoriteListController.loadMore2();
         break;
-
       case 3:
         delegate.toNamed(Routes.MYPAGE);
         break;
-
       default:
     }
   }

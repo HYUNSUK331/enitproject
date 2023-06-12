@@ -6,19 +6,25 @@ import 'package:enitproject/model/user_model.dart';
 
 class UserRepository {
   /// 회원가입
-  Future<void> attemptCreateUser(String userKey, String email, String name,String phoneNum) async {
+  Future<UserModel?> attemptCreateUser(String userKey, String email, String name,String phoneNum) async {
     final DocumentReference userRef = FirebaseFirestore.instance.collection(COLLECTION_USER).doc(userKey);
     DocumentSnapshot snapshot = await userRef.get();
-    if (!snapshot.exists) {
-      return await userRef.set({KEY_USER_KEY:userKey, KEY_USER_EMAIL : email, KEY_USER_NAME : name, KEY_PHONE_NUM : phoneNum, KEY_FAVORITE_LIST : []}); // 마지막에 빈 리스트 넣어주기
+    Map<String, dynamic> map ={
+        KEY_USER_KEY:userKey,
+        KEY_USER_EMAIL : email,
+        KEY_USER_NAME : name,
+        KEY_PHONE_NUM : phoneNum,
+        KEY_FAVORITE_LIST : []};
+    if (snapshot.exists) {
+      UserModel userModel = UserModel.fromMap(map);
+      return userModel;
     }
-  }
-
-  Future<void> googleAttemptCreateUser(String userKey, String email, String name,) async {
-    final DocumentReference userRef = FirebaseFirestore.instance.collection(COLLECTION_USER).doc(userKey);
-    DocumentSnapshot snapshot = await userRef.get();
-    if (!snapshot.exists) {
-      return await userRef.set({KEY_USER_KEY:userKey, KEY_USER_EMAIL : email, KEY_USER_NAME : name});
+    else{
+      await FirebaseFirestore.instance.runTransaction((tx) async {
+        tx.set(userRef, map);
+      });
+      UserModel userModel = UserModel.fromMap(map);
+      return userModel;
     }
   }
 

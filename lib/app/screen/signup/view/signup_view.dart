@@ -1,3 +1,4 @@
+import 'package:enitproject/app/routes/app_pages.dart';
 import 'package:enitproject/app/screen/signup/controller/signup_controller.dart';
 import 'package:enitproject/app/screen/tab/binding/tabs_binding.dart';
 import 'package:enitproject/app/screen/tab/view/tabs_screen.dart';
@@ -33,7 +34,9 @@ class SignupView extends GetView<SignupController> {
     final RegExp emailRegExp = RegExp(pattern.toString());  // 이메일 형식
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leading: BackButton(onPressed: ()=>{ Get.rootDelegate.popRoute()},),
+      ),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         children: [
@@ -251,9 +254,10 @@ class SignupView extends GetView<SignupController> {
                                               .clear();
                                           controller.signupEmailController
                                               .clear();
-                                          Get.to(() => const TabsView(),
-                                              binding:
-                                                  TabsBinding()); //누르면 메인화면으로 이동
+                                          Get.rootDelegate.toNamed(Routes.TAB);
+                                          // Get.to(() => const TabsView(),
+                                          //     binding:
+                                          //         TabsBinding()); //누르면 메인화면으로 이동
                                         },
                                       ),
                                     ],

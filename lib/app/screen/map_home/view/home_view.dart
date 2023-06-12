@@ -46,41 +46,65 @@ class HomeView extends GetView<MapHomeController> {
         ],
       ),
       /// 위치 권한 받기
-      body: FutureBuilder(
-        future: controller.checkPermission(), // 위치 권한 받아오기
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) { // 데이커를 다 받기전까지
-            return const Center(
-              child: CircularProgressIndicator(),  // 대기중 서클 띄워라
-            );
-          }
-
-          if (snapshot.data == '위치 권한이 허가 되었습니다.') {
-            return StreamBuilder<Position>(  // 데이터를 여러번 받아올때 사용
-                stream: Geolocator.getPositionStream(),
-                builder: (context, snapshot) {
-                  controller.circleColorList(); // rxlist로 색이 담긴 리스트
-                  ///핵심기능
-                  ///서클 색 변경하고 알림띄우기
-                  if(snapshot.hasData) controller.updateMarker(snapshot.data);
-                  return Stack(
-                      children: [
-                        ///구글맵
-                          CustomGoogleMap(
-                              onMapCreated: controller.onMapCreated,
-                              circle: controller.invisibleTableRowSwitchList1),// 서클 색 설정
-                        ///이야기 리스트
-                        _buildContainer2(),
-                      ],
-                  );
-                }
-            );
-          }
-          return Center(
-            child: Text(snapshot.data),
-          );
-        },
-      ),
+      body: Obx(() =>
+      controller.allowPermissionStr.value == '위치 권한이 허가 되었습니다.'?
+        StreamBuilder<Position>(  // 데이터를 여러번 받아올때 사용
+            stream: Geolocator.getPositionStream(),
+            builder: (context, snapshot) {
+              controller.circleColorList(); // rxlist로 색이 담긴 리스트
+              ///핵심기능
+              ///서클 색 변경하고 알림띄우기
+              if(snapshot.hasData) controller.updateMarker(snapshot.data);
+              return Stack(
+                children: [
+                  ///구글맵
+                  CustomGoogleMap(
+                      onMapCreated: controller.onMapCreated,
+                      circle: controller.invisibleTableRowSwitchList1),// 서클 색 설정
+                  ///이야기 리스트
+                  _buildContainer2(),
+                ],
+              );
+            }
+        ):
+        const Center(
+          child: CircularProgressIndicator(),  // 대기중 서클 띄워라
+        )),
+      // FutureBuilder(
+      //   future: controller.checkPermission(), // 위치 권한 받아오기
+      //   builder: (BuildContext context, AsyncSnapshot snapshot) {
+      //     if (snapshot.connectionState == ConnectionState.waiting) { // 데이커를 다 받기전까지
+      //       return const Center(
+      //         child: CircularProgressIndicator(),  // 대기중 서클 띄워라
+      //       );
+      //     }
+      //
+      //     if (snapshot.data == '위치 권한이 허가 되었습니다.') {
+      //       return StreamBuilder<Position>(  // 데이터를 여러번 받아올때 사용
+      //           stream: Geolocator.getPositionStream(),
+      //           builder: (context, snapshot) {
+      //             controller.circleColorList(); // rxlist로 색이 담긴 리스트
+      //             ///핵심기능
+      //             ///서클 색 변경하고 알림띄우기
+      //             if(snapshot.hasData) controller.updateMarker(snapshot.data);
+      //             return Stack(
+      //                 children: [
+      //                   ///구글맵
+      //                     CustomGoogleMap(
+      //                         onMapCreated: controller.onMapCreated,
+      //                         circle: controller.invisibleTableRowSwitchList1),// 서클 색 설정
+      //                   ///이야기 리스트
+      //                   _buildContainer2(),
+      //                 ],
+      //             );
+      //           }
+      //       );
+      //     }
+      //     return Center(
+      //       child: Text(snapshot.data),
+      //     );
+      //   },
+      // ),
     );
   }
 

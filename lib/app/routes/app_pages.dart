@@ -73,6 +73,7 @@ class AppPages {
               title: 'Storylist',
               binding: PreviewBinding(),
             ),
+
             /// 마이페이지
             GetPage(
               name: _Paths.MYPAGE,

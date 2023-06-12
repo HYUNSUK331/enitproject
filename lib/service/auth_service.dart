@@ -58,8 +58,7 @@ class AuthService extends GetxService {
 
     EasyLoading.dismiss();
     isLoggedIn(true);
-    AuthService.to.userModel.value =
-        await userRepository.getUserModel(authResult.user!.uid);
+    AuthService.to.userModel.value = await userRepository.getUserModel(authResult.user!.uid);
     print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh${AuthService.to.userModel.value}");
     return true;
   }
@@ -88,13 +87,11 @@ class AuthService extends GetxService {
       // Once signed in, return the UserCredential
       var value = await FirebaseAuth.instance.signInWithCredential(credential);
       isLoggedIn(true); // 로그인 했다!!!
-      await userRepository.googleAttemptCreateUser(
+      AuthService.to.userModel.value = await userRepository.attemptCreateUser(
         value.user?.uid ?? '',
         googleUser.email ?? '',
-        googleUser.displayName ?? '',
+        googleUser.displayName ?? '', ''
       );
-      AuthService.to.userModel.value =
-          await userRepository.getUserModel(value.user!.uid);
 
       EasyLoading.dismiss();
       // Get.to(()=> Tabs());
@@ -290,10 +287,9 @@ class AuthService extends GetxService {
       /// 모든 과정을 통과하면 true를 반환
       EasyLoading.dismiss();
       isLoggedIn(true);
-      await userRepository.attemptCreateUser(
+      AuthService.to.userModel.value = await userRepository.attemptCreateUser(
           authResult.user!.uid, email, name, phoneNum);
-      AuthService.to.userModel.value =
-          await userRepository.getUserModel(authResult.user!.uid);
+
 
       return true;
     }

@@ -19,6 +19,7 @@ class MapHomeController extends GetxController{
 
   bool boolCheck = true;
   RxList invisibleTableRowSwitchList1 = RxList<dynamic>();
+  RxnString allowPermissionStr = RxnString('');
 
 
   void circleColorList() {  // 색을 담아줄 rxlist
@@ -87,9 +88,14 @@ class MapHomeController extends GetxController{
   }
 
   loadMore() async{
-    await storyListNetworkRepository.getStoryListModel().then((value) => {  // DB에서 위도 경도 받아올때 사용하기
-      latLngList(value)
-    });
+    await Future.wait([
+      storyListNetworkRepository.getStoryListModel().then((value) => {  // DB에서 위도 경도 받아올때 사용하기
+        latLngList(value)
+      }),
+      checkPermission().then((value) => {
+        allowPermissionStr.value = value
+      })
+    ]);
   }
 
 
