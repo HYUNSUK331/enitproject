@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:enitproject/const/const.dart';
 import 'package:enitproject/model/user_model.dart';
@@ -27,17 +29,23 @@ class UserRepository {
     return UserModel.fromSnapshot(snapshot);
   }
 
-  /// 좋아요 누르면 유저 favlist update하기
-  Future<String> updateFavList(String userKey) async {
-    final DocumentReference userRef = FirebaseFirestore.instance.collection(
-        COLLECTION_USER).doc(userKey);
-
+  /// 좋아요 누르면 유저 favlist update하기 / 만들어 둔거
+  Future<void>  updateFavList(list, String userKey) async {
+    final DocumentReference userCollRef = FirebaseFirestore.instance.collection(COLLECTION_USER).doc(userKey);
     await FirebaseFirestore.instance.runTransaction((tx) async {
-      tx.update(userRef, {KEY_FAVORITE_LIST: userKey});
+      tx.update(userCollRef,{KEY_FAVORITE_LIST: list});
     });
-
-    return userKey;
   }
+
+  /// 지울때는 쿼리...?
+  /// 좋아요 누르면 유저 favlist update하기 / 만들어 둔거
+  Future<void>  updateFavUnList(list, String userKey) async {
+    final DocumentReference userCollRef = FirebaseFirestore.instance.collection(COLLECTION_USER).doc(userKey);
+    await FirebaseFirestore.instance.runTransaction((tx) async {
+      tx.update(userCollRef,{KEY_FAVORITE_LIST: list});
+    });
+  }
+
 
   // 유저 프로필 이름 수정
   void updatePlayListTitle(String userKey, String name) {

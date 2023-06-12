@@ -33,7 +33,7 @@ class NotificationUtils{
       initializationSettings,
         onDidReceiveNotificationResponse: (NotificationResponse details) async { // 여기서 핸들링!
           print('onDidReceiveNotificationResponse - payload: ${details.payload}');
-          Get.to(() => const StoryScreen(), binding: StoryBinding(storyIndex: storyNum,));
+          Get.to(() => StoryScreen(storyIndex: storyNum,), binding: StoryBinding(storyIndex: storyNum,));
           //알림 누를때 함수실행하고 싶으면
           //onSelectNotification: 함수명추가
         }

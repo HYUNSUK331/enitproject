@@ -16,6 +16,12 @@ class SignupView extends GetView<SignupController> {
     final _nameFormKey = GlobalKey<FormState>();
     final _passwordCheckFormKey = GlobalKey<FormState>();
     final _phoneNumFormKey = GlobalKey<FormState>();
+    // final riKey1 = const Key('__RIKEY1__');
+    // final riKey2 = const Key('__RIKEY2__');
+    // final riKey3 = const Key('__RIKEY3__');
+    // final riKey4 = const Key('__RIKEY4__');
+    // final riKey5 = const Key('__RIKEY5__');
+
 
     final validNumbers = RegExp(r'(\d+)');  //숫자
     final validAlphabet = RegExp(r'[a-zA-Z]');  //영어
@@ -177,13 +183,11 @@ class SignupView extends GetView<SignupController> {
               if (formKeyState.validate()) {
                 formKeyState.save();
               }
-
               /// pwd 입력오류 창
               final formKeyState1 = _nameFormKey.currentState!;
               if (formKeyState1.validate()) {
                 formKeyState1.save();
               }
-
               /// pwd 입력오류 창
               final formKeyState2 = _passwordFormKey.currentState!;
               if (formKeyState2.validate()) {

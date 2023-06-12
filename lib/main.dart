@@ -28,13 +28,9 @@ Future<void> main() async{
     return true;
   });
 
-
-
-
   runApp(
     GetMaterialApp.router(
-      title: "JJurang",
-      initialBinding: BindingsBuilder(() {
+      initialBinding: BindingsBuilder(() {  // 초기화 하면서 서비스를 가져온다.
           Get.put(SplashService());
           Get.put(AuthService());
         },

@@ -1,7 +1,6 @@
 import 'package:enitproject/app/screen/map_home/controller/map_home_controller.dart';
 import 'package:enitproject/app/screen/map_home/view/map_home_component/map_home_googlemap.dart';
 import 'package:enitproject/app/screen/map_home/view/map_home_component/map_home_items.dart';
-import 'package:enitproject/service/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -9,9 +8,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
 /// 처음 나오는 지도 화면
+/// 여기가 계속 처음 화면처럼 사용된다. 다시 들어올 때 마다 초기화...
 class HomeView extends GetView<MapHomeController> {
   const HomeView({Key? key}) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +107,13 @@ class HomeView extends GetView<MapHomeController> {
           initialChildSize: 0.3,  // 초기 사이즈
           builder: (context, sheetController) =>
               Container(  // DraggableScrollableSheet에 들어갈 리스트
-                color: Colors.white70,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40)
+                  ),
+                ),
                   child: ListView.builder(
                     controller: sheetController,
                     itemCount: controller.latLngList.length,

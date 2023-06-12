@@ -1,15 +1,19 @@
-import 'package:enitproject/app/screen/favorite_list/binding/favorite_list_binding.dart';
-import 'package:enitproject/app/screen/favorite_list/view/favorite_list_screen.dart';
+import 'package:enitproject/app/screen/favorite_list/binding/favorite_binding.dart';
+import 'package:enitproject/app/screen/favorite_list/view/favorite_screen.dart';
+import 'package:enitproject/app/screen/favorite_list/view/favorite_view.dart';
 import 'package:enitproject/app/screen/login/bindings/login_binding.dart';
 import 'package:enitproject/app/screen/login/view/login_view.dart';
 import 'package:enitproject/app/screen/map_home/binding/home_binding.dart';
 import 'package:enitproject/app/screen/map_home/view/home_view.dart';
 import 'package:enitproject/app/screen/mypage/binding/mypage_binding.dart';
 import 'package:enitproject/app/screen/mypage/view/mypage_screen.dart';
+import 'package:enitproject/app/screen/preview/bindings/preview_binding.dart';
+import 'package:enitproject/app/screen/preview/view/preview_screen.dart';
 import 'package:enitproject/app/screen/root/bindings/root_binding.dart';
 import 'package:enitproject/app/screen/root/view/root_screen.dart';
 import 'package:enitproject/app/screen/signup/bindings/signup_binding.dart';
 import 'package:enitproject/app/screen/signup/view/signup_view.dart';
+
 import 'package:enitproject/app/screen/tab/binding/tabs_binding.dart';
 import 'package:enitproject/app/screen/tab/view/tabs_screen.dart';
 import 'package:get/get.dart';
@@ -58,11 +62,17 @@ class AppPages {
             ///좋아요 리스트 페이지
             GetPage(
               name: _Paths.FAVORITE,
-              page: () => const FavoriteListScreen(),
+              page: () => const FavoriteView(),
               title: 'Favorite',
               binding: FavoriteListBinding(),
             ),
-
+            /// 이야기 목록
+            GetPage(
+              name: _Paths.STORYLIST,
+              page: () => const PreviewScreen(),
+              title: 'Storylist',
+              binding: PreviewBinding(),
+            ),
             /// 마이페이지
             GetPage(
               name: _Paths.MYPAGE,

@@ -47,7 +47,7 @@ class CustomGoogleMap extends GetView<MapHomeController> {
     Set<Circle> getcircles() { //markers to place on map
       for(int i=0;i< MapHomeController.to.latLngList.length;i++){
         circles.add(Circle( //add first marker
-          circleId: CircleId(MapHomeController.to.latLngList[i].storyPlayListKey ??'123'), // 타이틀만 보여 줄꺼면 잘보이게 꾸미기 필요
+          circleId: CircleId(MapHomeController.to.latLngList[i].storyPlayListKey ?? '123'), // 타이틀만 보여 줄꺼면 잘보이게 꾸미기 필요
           center: LatLng(MapHomeController.to.latLngList[i].latitude ?? 0.0, MapHomeController.to.latLngList[i].longitude ?? 0.0),
           radius: 40,
           strokeColor:circle[i],
@@ -59,15 +59,15 @@ class CustomGoogleMap extends GetView<MapHomeController> {
       return circles;
     }
     //-----------------------------------------------------------
-    Future<CameraPosition> getposition1()async{
-      final location = await Geolocator.getCurrentPosition();
-      final LatLng companyLatLng = LatLng(location.latitude,location.longitude);
-      final CameraPosition initialPosition = CameraPosition(
-        target: companyLatLng,
-        zoom: 15
-      );
-      return initialPosition;
-    }
+    // Future<CameraPosition> getposition1()async{
+    //   final location = await Geolocator.getCurrentPosition();
+    //   final LatLng companyLatLng = LatLng(location.latitude,location.longitude);
+    //   final CameraPosition initialPosition = CameraPosition(
+    //     target: companyLatLng,
+    //     zoom: 15
+    //   );
+    //   return initialPosition;
+    // }
 
     final location = Geolocator.getCurrentPosition();
     double lat =  33.49766527106121;

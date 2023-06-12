@@ -1,15 +1,20 @@
 import 'package:enitproject/app/screen/bottom_popup_player/controller/bottom_popup_player_controller.dart';
+import 'package:enitproject/app/screen/map_home/controller/map_home_controller.dart';
+import 'package:enitproject/app/screen/preview/controller/preview_controller.dart';
 import 'package:enitproject/app/screen/story/binding/story_binding.dart';
 import 'package:enitproject/app/screen/story/controller/story_controller.dart';
 import 'package:enitproject/app/screen/story/view/story_screen.dart';
+import 'package:enitproject/app/screen/user/controller/user_controller.dart';
 import 'package:enitproject/const/color.dart';
+import 'package:enitproject/service/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 
-class PreviewScreen extends GetView<StoryController> {
+class PreviewScreen extends GetView<PreviewController> {
   const PreviewScreen({Key? key}) : super(key: key);
 
   @override
@@ -47,7 +52,7 @@ class PreviewScreen extends GetView<StoryController> {
           children: [
             SizedBox(height: 20,),
             Text(
-              '전체 ${controller.storyList.length}건',
+              '전체 ${StoryController.to.storyList.length}건',
               style: TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.w500
@@ -56,7 +61,7 @@ class PreviewScreen extends GetView<StoryController> {
             SizedBox(height: 20,),
             Expanded(
               child: ListView.builder(
-                  itemCount: controller.storyList.length,
+                  itemCount: StoryController.to.storyList.length,
                   itemBuilder: (BuildContext context, int index) {
                     return InkWell(
                       child: Container(
@@ -70,7 +75,7 @@ class PreviewScreen extends GetView<StoryController> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(10.0),
                                 child: Image.network(
-                                  '${controller.storyList[index].image}',
+                                  '${StoryController.to.storyList[index].image}',
                                   width: 100, height: 100,
                                   fit: BoxFit.cover,
                                 ),
@@ -83,7 +88,7 @@ class PreviewScreen extends GetView<StoryController> {
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                                      child: Text('${controller.storyList[index].addressSearch}',
+                                      child: Text('${StoryController.to.storyList[index].addressSearch}',
                                         style: TextStyle(
                                           fontSize: 13.0,
                                           fontWeight: FontWeight.w500,
@@ -95,7 +100,7 @@ class PreviewScreen extends GetView<StoryController> {
                                     Row(
                                       children: [
                                         Text(
-                                          '${controller.storyList[index].title}',
+                                          '${StoryController.to.storyList[index].title}',
                                           style: TextStyle(
                                               fontSize: 20.0,
                                               fontWeight: FontWeight.w500
@@ -121,7 +126,7 @@ class PreviewScreen extends GetView<StoryController> {
                                     ),
                                     SizedBox(height: 10.0,),
                                     Text(
-                                      '${controller.storyList[index].addressDetail}',
+                                      '${StoryController.to.storyList[index].addressDetail}',
                                       style: TextStyle(
                                         fontSize: 15.0,
                                       ),
@@ -130,12 +135,12 @@ class PreviewScreen extends GetView<StoryController> {
                                 ),
                               ),
                               SizedBox(width: 5,),
-                              Obx(() => controller.storyList[index].changeStoryColor == GREEN_BRIGHT_COLOR?
+                              Obx(() => StoryController.to.storyList[index].changeStoryColor == GREEN_BRIGHT_COLOR?
                                 IconButton(
                                   onPressed: () async{
-                                    controller.updatePlay(index);
+                                    // StoryController.to.updatePlay(index);
                                   },
-                                  icon: Obx(() => controller.isPlaying.value?
+                                  icon: Obx(() => StoryController.to.isPlaying.value?
                                    Icon(
                                     Icons.headphones,
                                     color: GREEN_MID_COLOR,
@@ -150,22 +155,21 @@ class PreviewScreen extends GetView<StoryController> {
                                   :
                                 SizedBox.shrink(),
                               ),
-                              Obx(() => controller.storyList[index].isLike?
+                              /// 좋아요 기능
+                              Obx(() => AuthService.to.userModel.value!.favorite_list.contains(StoryController.to.storyList[index].storyPlayListKey)?  /// isLike 바라보다가 변경되면 아래 부분만 변경
                                 IconButton(
                                   onPressed: () => {
-                                    controller.updateUnLike('${controller.storyList[index].storyPlayListKey}', index)
+                                    UserController.to.updateUserUnFav('${StoryController.to.storyList[index].storyPlayListKey}', ('${AuthService.to.userModel.value?.userKey}'))
                                   },
-                                  icon: const Icon(
-                                    Icons.favorite,
-                                    color: GREEN_DARK_COLOR,),
+                                  icon: SvgPicture.asset('assets/icon/heart_green.svg',
+                                    color: GREEN_MID_COLOR,),
                               )
                                   :
                                 IconButton(
                                   onPressed: ()=>{
-                                    controller.updateLike('${controller.storyList[index].storyPlayListKey}',index)
+                                    UserController.to.updateUserFav('${StoryController.to.storyList[index].storyPlayListKey}', ('${AuthService.to.userModel.value?.userKey}'))
                                   },
-                                  icon: const Icon(
-                                    Icons.favorite_border,
+                                  icon: SvgPicture.asset('assets/icon/heart_gray_line.svg',
                                     color: Colors.grey,),
                                   padding: EdgeInsets.zero
                               )
@@ -175,8 +179,9 @@ class PreviewScreen extends GetView<StoryController> {
                         ),
                       ),
                       onTap: (){
-                        if(controller.storyList[index].changeStoryColor == GREEN_BRIGHT_COLOR)
-                          Get.to(() => const StoryScreen(), binding: StoryBinding(storyIndex: index,));
+                        if(MapHomeController.to.latLngList[index].circleColor == false) {
+                          Get.to(() => StoryScreen(storyIndex: index,), binding: StoryBinding(storyIndex: index,));
+                        }
                       },
                     );
                   }

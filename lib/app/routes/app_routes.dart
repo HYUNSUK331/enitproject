@@ -14,6 +14,9 @@ abstract class Routes {
   /// 홈
   static const HOME = _Paths.TAB + _Paths.Home;
 
+  ///이야기 페이지
+  static const STORYLIST = _Paths.TAB + _Paths.STORYLIST;
+
   /// 좋아요 리스트 페이지
   static const FAVORITE = _Paths.TAB + _Paths.FAVORITE;
 
@@ -29,6 +32,7 @@ abstract class _Paths {
 
   static const TAB = '/tab';
   static const Home = '/home';
+  static const STORYLIST = '/storylist';
   static const FAVORITE = '/favorite';
   static const MYPAGE = '/mypage';
 }

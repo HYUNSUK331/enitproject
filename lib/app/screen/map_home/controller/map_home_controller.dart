@@ -19,6 +19,8 @@ class MapHomeController extends GetxController{
 
   bool boolCheck = true;
   RxList invisibleTableRowSwitchList1 = RxList<dynamic>();
+
+
   void circleColorList() {  // 색을 담아줄 rxlist
     invisibleTableRowSwitchList1 = RxList<Color>.generate(latLngList.length, (int index) => Colors.black);
   }
@@ -42,7 +44,7 @@ class MapHomeController extends GetxController{
         // 여기서 로컬 list에서 bool 값 확인하고 노란색이면 아래 실행
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
         invisibleTableRowSwitchList1[i] = GREEN_BRIGHT_COLOR; // 초록색으로 변경해줘
-        StoryController?.to.changeTrueBadgeColor(i); // 처음에 DB에서 가져와 로컬에 저장한 리스트 -> 이 릿리스트도 초록색으로 변경해주기
+        StoryController.to.changeTrueBadgeColor(i); // 처음에 DB에서 가져와 로컬에 저장한 리스트 -> 이 릿리스트도 초록색으로 변경해주기
 
         /// 원에 들어오면 알림 띄우기
         if (boolCheck == true &&
@@ -51,6 +53,8 @@ class MapHomeController extends GetxController{
           NotificationUtils.showNotification(StoryController.to.storyList[i].title.toString()); // 알림 보여주는 메인
           boolCheck = false;  // 다시 들어오면 알림 안 뜨게 하기
           MapHomeController.to.latLngList[i].circleColor = false;  // 한번 초록색으로 변하면 circleColor을 false로 변환시켜주면 기본색상이 파란색이된다.
+          storyListNetworkRepository.updateCircleColor(MapHomeController.to.latLngList[i].storyPlayListKey.toString(), false);
+
         }
 
 

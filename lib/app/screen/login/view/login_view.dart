@@ -38,6 +38,8 @@ class LoginView extends GetView<LoginController> {
                         ? Get.to(()=>const TabsView(), binding: TabsBinding())  //로그인 되면 TabsView로 이동 아니면 error 띄우기
                         : ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("error"), duration: Duration(milliseconds: 1000)))
                   });
+              print("((((((((((((((((((((((((((()))))))))))))))))))");
+              print("(((((((((((((((((((((((((((${AuthService.to.userModel.value!.userKey.toString()}))))))))))))))))))))");
             },
             child: const Text('로그인'),
           ),

@@ -1,6 +1,9 @@
 import 'package:enitproject/app/screen/story/binding/story_binding.dart';
+import 'package:enitproject/app/screen/user/controller/user_controller.dart';
 import 'package:enitproject/const/color.dart';
+import 'package:enitproject/service/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -75,7 +78,7 @@ class BottomPopupPlayer extends GetView<BottomPopupPlayerController> {
                 ),
                 IconButton(
                     onPressed: (){
-                      StoryController.to.updatePlay(storyIndex);
+                      // StoryController.to.updatePlay(storyIndex);
                     },
                     icon: Obx(() => StoryController.to.isPlaying.value?
                     Icon(
@@ -89,28 +92,34 @@ class BottomPopupPlayer extends GetView<BottomPopupPlayerController> {
                     )
                     )
                 ),
-                Obx(() => StoryController.to.storyList[storyIndex].isLike?
+                Obx(() => AuthService.to.userModel.value!.favorite_list
+                    .contains(StoryController
+                    .to.storyList[storyIndex].storyPlayListKey)
+                    ?
+
+                /// isLike 바라보다가 변경되면 아래 부분만 변경
                 IconButton(
                   onPressed: () => {
-                    StoryController.to.updateUnLike('${StoryController.to.storyList[storyIndex].storyPlayListKey}', storyIndex)
+                    UserController.to.updateUserUnFav(
+                        '${StoryController.to.storyList[storyIndex].storyPlayListKey}',
+                        ('${AuthService.to.userModel.value?.userKey}'))
                   },
-                  icon: const Icon(
-                    Icons.favorite,
-                    size: 30.0,
-                    color: GREEN_DARK_COLOR,),
+                  icon: SvgPicture.asset(
+                    'assets/icon/heart_green.svg',
+                    color: GREEN_MID_COLOR,
+                  ),
                 )
-                    :
-                IconButton(
-                    onPressed: ()=>{
-                      StoryController.to.updateLike('${StoryController.to.storyList[storyIndex].storyPlayListKey}',storyIndex)
+                    : IconButton(
+                    onPressed: () => {
+                      UserController.to.updateUserFav(
+                          '${StoryController.to.storyList[storyIndex].storyPlayListKey}',
+                          ('${AuthService.to.userModel.value?.userKey}'))
                     },
-                    icon: const Icon(
-                      Icons.favorite_border,
-                      size: 30.0,
-                      color: Colors.white,),
-                    padding: EdgeInsets.zero
-                )
-                ),
+                    icon: SvgPicture.asset(
+                      'assets/icon/heart_gray_line.svg',
+                      color: Colors.grey,
+                    ),
+                    padding: EdgeInsets.zero)),
                 // Obx(()=> controller.isPlay.value?
                 // IconButton(onPressed: (){
                 //   controller.updatePause(playlistIndex);
@@ -131,7 +140,7 @@ class BottomPopupPlayer extends GetView<BottomPopupPlayerController> {
         ),
       ),
       onTap: (){
-        Get.to(() => const StoryScreen(), binding: StoryBinding(storyIndex: storyIndex,));
+        Get.to(() => StoryScreen(storyIndex: storyIndex,), binding: StoryBinding(storyIndex: storyIndex,));
       },
       onTapCancel: () {
         if(StoryController.to.isPlaying.value == false)

@@ -12,13 +12,13 @@ class StoryListModel{
   String? image;
   bool isLike = false;
   String? mp3Path;
-  dynamic? pinAddress;
+  dynamic pinAddress;
   String? script;
   String? storyPlayListKey;
   String? title;
   double? latitude;
   double? longitude;
-  Color changeStoryColor = GREEN_DARK_COLOR;
+  Color changeStoryColor = GREEN_BRIGHT_COLOR;
   bool? circleColor;
 
   StoryListModel.fromMap(Map<String,dynamic>map)
