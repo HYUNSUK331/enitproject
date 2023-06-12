@@ -11,6 +11,7 @@ class AuthService extends GetxService {
 
   /// current Logged in userModel
   Rxn<UserModel> userModel = Rxn<UserModel>(); // n은 널을 뜻함 / 초기값이 없으면 null
+  // storyListNetworkRepository.getStoryListModel()
 
   /// checked login
   RxBool isLoggedIn = false.obs;
@@ -73,24 +74,24 @@ class AuthService extends GetxService {
         return false;
       }
       // Obtain the auth details from the request
-      final GoogleSignInAuthentication? googleAuth =
-          await googleUser?.authentication;
-      if (googleAuth == null) {
-        EasyLoading.dismiss();
-        return false;
-      }
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      // if (googleAuth == null) {
+      //   EasyLoading.dismiss();
+      //   return false;
+      // }
       // Create a new credential
       final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
       );
       // Once signed in, return the UserCredential
       var value = await FirebaseAuth.instance.signInWithCredential(credential);
       isLoggedIn(true); // 로그인 했다!!!
       await userRepository.googleAttemptCreateUser(
         value.user?.uid ?? '',
-        googleUser?.email ?? '',
-        googleUser?.displayName ?? '',
+        googleUser.email ?? '',
+        googleUser.displayName ?? '',
       );
       AuthService.to.userModel.value =
           await userRepository.getUserModel(value.user!.uid);

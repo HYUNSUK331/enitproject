@@ -12,7 +12,7 @@ class StoryListModel{
   String? image;
   bool isLike = false;
   String? mp3Path;
-  dynamic? pinAddress;
+  dynamic pinAddress;
   String? script;
   String? storyPlayListKey;
   String? title;

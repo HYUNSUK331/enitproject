@@ -1,18 +1,14 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:enitproject/app/root_screen.dart';
-import 'package:enitproject/app/user/user_controller.dart';
+import 'package:enitproject/app/routes/app_pages.dart';
 import 'package:enitproject/const/const.dart';
 import 'package:enitproject/firebase_options.dart';
 import 'package:enitproject/service/auth_service.dart';
 import 'package:enitproject/service/splash_service.dart';
-import 'package:enitproject/screen/bottom_popup_player/bottom_popup_player_controller.dart';
-import 'package:enitproject/screen/map_home/map_home_controller.dart';
-import 'package:enitproject/screen/story/story_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 Future<void> main() async{
 
@@ -23,18 +19,6 @@ Future<void> main() async{
 
   /// 로딩화면 설정
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  await Future.delayed(const Duration(seconds: 1));  //1초 그냥 딜레이 주기 / 안줘도 될듯...?
-
-  /// controller
-  Get.put(StoryController());
-  Get.put(BottomPopupPlayerController());
-  Get.put(MapHomeController());
-  Get.put(UserController());
-  /// 인증을 위한 컨트롤러
-  Get.put(AuthService());
-  /// 특정위젯의 rebuild를 피하게 해주는 기능
-  Get.put(SplashService());
 
 
   /// 로딩표시
@@ -44,6 +28,16 @@ Future<void> main() async{
     return true;
   });
 
-  runApp(const RootView());
+  runApp(
+    GetMaterialApp.router(
+      initialBinding: BindingsBuilder(() {  // 초기화 하면서 서비스를 가져온다.
+          Get.put(SplashService());
+          Get.put(AuthService());
+        },
+      ),
+      builder: EasyLoading.init(),
+      getPages: AppPages.routes,
+    ),
+  );
 }
 
