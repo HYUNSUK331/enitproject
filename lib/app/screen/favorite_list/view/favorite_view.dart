@@ -3,9 +3,9 @@ import 'package:badges/badges.dart';
 import 'package:enitproject/app/screen/bottom_popup_player/controller/bottom_popup_player_controller.dart';
 import 'package:enitproject/app/screen/favorite_list/controller/favorite_controller.dart';
 import 'package:enitproject/app/screen/map_home/controller/map_home_controller.dart';
+import 'package:enitproject/app/screen/story/binding/story_binding.dart';
 import 'package:enitproject/app/screen/story/controller/story_controller.dart';
 import 'package:enitproject/app/screen/story/view/story_screen.dart';
-import 'package:enitproject/app/screen/user/controller/user_controller.dart';
 import 'package:enitproject/const/color.dart';
 import 'package:enitproject/service/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -24,14 +24,14 @@ class FavoriteView extends GetView<FavoriteController> {
   Widget build(BuildContext context) {
     return SafeArea(
       top: true,
-
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Padding(
           padding: const EdgeInsets.symmetric(
               horizontal: 15.0
           ),
-          child: Column(
+          child:
+            Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 30,),
@@ -41,8 +41,8 @@ class FavoriteView extends GetView<FavoriteController> {
                   SvgPicture.asset('assets/icon/heart_green.svg',
                     color: GREEN_MID_COLOR, width: 65, height: 65,
                   ),
-                  SizedBox(width: 15,),
-                  Text(
+                  const SizedBox(width: 15,),
+                  const Text(
                     'LIKE',
                     style: TextStyle(
                         color: Colors.black,
@@ -50,25 +50,27 @@ class FavoriteView extends GetView<FavoriteController> {
                         fontSize: 65
                     ),
                   ),
-                  SizedBox(width: 15,),
+                  const SizedBox(width: 15,),
+                  Obx(()=>
                   Text('${AuthService.to.userModel.value?.favorite_list.length}',
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: FONT_MID_BLACK_COLOR,
                         fontWeight: FontWeight.w700,
                         fontSize: 65
                     ),)
+                  )
                 ],
               ),
               SizedBox(height: 50,),
-
               Expanded(
                 ///하트 누르고 취소할때마다 리스트 바껴야해서 obx로 일단 해둠...
-                child: Obx(()=>
-                    ListView.builder(
+                child:
+                ListView.builder(
                         itemCount: AuthService.to.userModel.value?.favorite_list.length,
                         itemBuilder: (BuildContext context, int index) {
                           return InkWell(
-                            child: Container(
+                            child:
+                            Container(
                               height: 100,
                               child: Padding(
                                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 8.0),
@@ -112,7 +114,7 @@ class FavoriteView extends GetView<FavoriteController> {
                                               ),
                                               SizedBox(width: 5.0,),
                                               ///배지 색
-                                              Obx(() => MapHomeController.to.latLngList[index].circleColor == false?
+                                              Obx(() => AuthService.to.userModel.value!.circle_list.contains(controller.favStoryList[index].storyPlayListKey)?
                                               badges.Badge(
                                                 badgeStyle: BadgeStyle(
                                                   badgeColor: GREEN_BRIGHT_COLOR,
@@ -142,14 +144,26 @@ class FavoriteView extends GetView<FavoriteController> {
                                     ),
                                     SizedBox(width: 5,),
                                     ///좋아요 하트
+                                    Obx(() => AuthService.to.userModel.value!.favorite_list.contains(controller.favStoryList[index].storyPlayListKey)?/// isLike 바라보다가 변경되면 아래 부분만 변경
                                     IconButton(
                                       onPressed: () => {
-                                        ///하트 취소
-                                        UserController.to.updateUserUnFav('${controller.favStoryList[index].storyPlayListKey}', ('${AuthService.to.userModel.value?.userKey}'))
+                                        print("333333333333333333333333333333333333333333333333333333333333333333333333333333333333 "),
+                                        StoryService.to.updateUserUnFav('${controller.favStoryList[index].storyPlayListKey}', ('${AuthService.to.userModel.value?.userKey}'))
                                       },
                                       icon: SvgPicture.asset('assets/icon/heart_green.svg',
                                         color: GREEN_MID_COLOR,),
                                     )
+                                        :
+                                    IconButton(
+                                        onPressed: ()=>{
+                                          print("55555555555555555555555555555555555555555555555555555555555555555555555555555555555"),
+                                          StoryService.to.updateUserFav('${controller.favStoryList[index].storyPlayListKey}', ('${AuthService.to.userModel.value?.userKey}'))
+                                        },
+                                        icon: SvgPicture.asset('assets/icon/heart_gray_line.svg',
+                                          color: Colors.grey,),
+                                        padding: EdgeInsets.zero
+                                    )
+                                    ),
                                   ],
                                 ),
                               ),
@@ -158,28 +172,26 @@ class FavoriteView extends GetView<FavoriteController> {
                             onTap: (){
                               ///배지의 불이 초록색일때만
                               /// 서클 변경예정
-                              if(MapHomeController.to.latLngList[index].circleColor == false)
+                              if(controller.favStoryList[index].changeStoryColor == GREEN_BRIGHT_COLOR)
                               {
                                 Get.to(() =>
                                 ///관심목록 리스트랑 이야기 리스트의 인덱스가 달라서 'controller.storykey'로 한번 찾아줌.
-                                StoryScreen(storyIndex: controller.storykey(index),),);
-                                StoryController.to.setOpenPlay(controller.storykey(index),);
+                                StoryScreen(storyIndex: controller.storykey(index),),binding: StoryBinding(storyIndex: index,));
+                                StoryService.to.setOpenPlay(controller.storykey(index),);
                               }
                             },
                           );
                         }
                     ),
                 ),
-              ),
               ///하단 팝업 띄우기
               Obx(() => BottomPopupPlayerController.to.isPopup.value?
               SizedBox(height: 90,) : SizedBox.shrink()
               )
             ],
           ),
+          )
         ),
-
-      ),
     );
   }
 

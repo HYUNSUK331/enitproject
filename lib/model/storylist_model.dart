@@ -10,7 +10,7 @@ class StoryListModel{
   String? addressDetail;
   String? addressSearch;
   String? image;
-  bool isLike = false;
+  bool? isLike = false;
   String? mp3Path;
   dynamic pinAddress;
   String? script;

@@ -1,5 +1,5 @@
 import 'package:enitproject/app/screen/story/binding/story_binding.dart';
-import 'package:enitproject/app/screen/user/controller/user_controller.dart';
+
 import 'package:enitproject/const/color.dart';
 import 'package:enitproject/service/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +40,7 @@ class BottomPopupPlayer extends GetView<BottomPopupPlayerController> {
                   width: 70, height: 70,
                   padding: EdgeInsets.fromLTRB(3, 3, 0, 3),
                   child: Obx(()=> Image.network(
-                    '${StoryController.to.storyList[storyIndex].image}', width: 100, height: 100, fit: BoxFit.contain,),
+                    '${StoryService.to.storyList[storyIndex].image}', width: 100, height: 100, fit: BoxFit.contain,),
                   ),
                 ),
                 Expanded(
@@ -54,7 +54,7 @@ class BottomPopupPlayer extends GetView<BottomPopupPlayerController> {
                         Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Obx(()=> Text(
-                              '${StoryController.to.storyList[storyIndex].title}',
+                              '${StoryService.to.storyList[storyIndex].title}',
                               style: TextStyle(
                                   fontSize: 20,
                                   color: Colors.white,
@@ -65,7 +65,7 @@ class BottomPopupPlayer extends GetView<BottomPopupPlayerController> {
                         Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Obx(()=> Text(
-                              '${StoryController.to.storyList[storyIndex].addressDetail}',
+                              '${StoryService.to.storyList[storyIndex].addressDetail}',
                               style: TextStyle(
                                   fontSize: 15,
                                   color: Colors.white,)
@@ -80,7 +80,7 @@ class BottomPopupPlayer extends GetView<BottomPopupPlayerController> {
                     onPressed: (){
                       // StoryController.to.updatePlay(storyIndex);
                     },
-                    icon: Obx(() => StoryController.to.isPlaying.value?
+                    icon: Obx(() => StoryService.to.isPlaying.value?
                     Icon(
                       Icons.pause,
                       color: Colors.white,
@@ -93,15 +93,15 @@ class BottomPopupPlayer extends GetView<BottomPopupPlayerController> {
                     )
                 ),
                 Obx(() => AuthService.to.userModel.value!.favorite_list
-                    .contains(StoryController
+                    .contains(StoryService
                     .to.storyList[storyIndex].storyPlayListKey)
                     ?
 
                 /// isLike 바라보다가 변경되면 아래 부분만 변경
                 IconButton(
                   onPressed: () => {
-                    UserController.to.updateUserUnFav(
-                        '${StoryController.to.storyList[storyIndex].storyPlayListKey}',
+                    StoryService.to.updateUserUnFav(
+                        '${StoryService.to.storyList[storyIndex].storyPlayListKey}',
                         ('${AuthService.to.userModel.value?.userKey}'))
                   },
                   icon: SvgPicture.asset(
@@ -111,8 +111,8 @@ class BottomPopupPlayer extends GetView<BottomPopupPlayerController> {
                 )
                     : IconButton(
                     onPressed: () => {
-                      UserController.to.updateUserFav(
-                          '${StoryController.to.storyList[storyIndex].storyPlayListKey}',
+                      StoryService.to.updateUserFav(
+                          '${StoryService.to.storyList[storyIndex].storyPlayListKey}',
                           ('${AuthService.to.userModel.value?.userKey}'))
                     },
                     icon: SvgPicture.asset(
@@ -143,7 +143,7 @@ class BottomPopupPlayer extends GetView<BottomPopupPlayerController> {
         Get.to(() => StoryScreen(storyIndex: storyIndex,), binding: StoryBinding(storyIndex: storyIndex,));
       },
       onTapCancel: () {
-        if(StoryController.to.isPlaying.value == false)
+        if(StoryService.to.isPlaying.value == false)
         controller.isPopup(false);
       },
     );

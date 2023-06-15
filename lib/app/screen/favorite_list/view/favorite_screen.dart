@@ -6,6 +6,7 @@ import 'package:enitproject/app/screen/map_home/controller/map_home_controller.d
 import 'package:enitproject/app/screen/story/controller/story_controller.dart';
 import 'package:enitproject/app/screen/story/view/story_screen.dart';
 import 'package:enitproject/const/color.dart';
+import 'package:enitproject/service/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -29,7 +30,9 @@ class FavoriteScreen extends GetView<FavoriteController> {
           padding: const EdgeInsets.symmetric(
               horizontal: 15.0
           ),
-          child: Column(
+          child:
+          // Obx(()=> AuthService.to.userModel.value!.favorite_list.contains(StoryService.to.)?
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 30,),
@@ -161,7 +164,7 @@ class FavoriteScreen extends GetView<FavoriteController> {
                                 Get.to(() =>
                                 ///관심목록 리스트랑 이야기 리스트의 인덱스가 달라서 'controller.storykey'로 한번 찾아줌.
                                 StoryScreen(storyIndex: controller.storykey(index),),);
-                                StoryController.to.setOpenPlay(controller.storykey(index),);
+                                StoryService.to.setOpenPlay(controller.storykey(index),);
                               }
                             },
                           );

@@ -39,66 +39,39 @@ class HomeView extends GetView<MapHomeController> {
               ),
             ),
             );
-           print("^^^^^^^^^^^^^^^^^^^^^^^^^^${location.latitude},${location.latitude},$location^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
           },
             icon:const Icon(Icons.my_location, color: Colors.blue,),
           )
         ],
       ),
       /// 위치 권한 받기
-      body: FutureBuilder(
-        future: controller.checkPermission(), // 위치 권한 받아오기
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) { // 데이커를 다 받기전까지
-            return const Center(
-              child: CircularProgressIndicator(),  // 대기중 서클 띄워라
+      /// futurebuilder를 obx로 변경
+      body: Obx(() =>
+      controller.allowPermissionStr.value == '위치 권한이 허가 되었습니다.'?
+      StreamBuilder<Position>(  // 데이터를 여러번 받아올때 사용
+          stream: Geolocator.getPositionStream(),
+          builder: (context, snapshot) {
+            controller.circleColorList(); // rxlist로 색이 담긴 리스트
+            ///핵심기능
+            ///서클 색 변경하고 알림띄우기
+            if(snapshot.hasData) controller.updateMarker2(snapshot.data);
+            return Stack(
+              children: [
+                ///구글맵
+                CustomGoogleMap(
+                    onMapCreated: controller.onMapCreated,
+                    circle: controller.invisibleTableRowSwitchList1),// 서클 색 설정
+                ///이야기 리스트
+                _buildContainer2(),
+              ],
             );
           }
-
-          if (snapshot.data == '위치 권한이 허가 되었습니다.') {
-            return StreamBuilder<Position>(  // 데이터를 여러번 받아올때 사용
-                stream: Geolocator.getPositionStream(),
-                builder: (context, snapshot) {
-                  controller.circleColorList(); // rxlist로 색이 담긴 리스트
-                  ///핵심기능
-                  ///서클 색 변경하고 알림띄우기
-                  if(snapshot.hasData) controller.updateMarker(snapshot.data);
-                  return Stack(
-                      children: [
-                        ///구글맵
-                          CustomGoogleMap(
-                              onMapCreated: controller.onMapCreated,
-                              circle: controller.invisibleTableRowSwitchList1),// 서클 색 설정
-                        ///이야기 리스트
-                        _buildContainer2(),
-                      ],
-                  );
-                }
-            );
-          }
-          return Center(
-            child: Text(snapshot.data),
-          );
-        },
-      ),
+      ):
+      const Center(
+        child: CircularProgressIndicator(),  // 대기중 서클 띄워라
+      )),
     );
   }
-
-
-  //###################################################################################
-  // Widget _buildContainer() {
-  //   return Container(
-  //     margin: EdgeInsets.symmetric(vertical: 20.0),
-  //     height: 150.0,
-  //     child: ListView.builder(
-  //       scrollDirection: Axis.horizontal,
-  //       itemCount: MapHomeController.to.latLngList.length,
-  //       itemBuilder: (BuildContext context, int index) {
-  //         return MapHomeItem(index: index);
-  //       },
-  //     ),
-  //   );
-  // }
 
   /// story list
   Widget _buildContainer2() {
@@ -128,40 +101,4 @@ class HomeView extends GetView<MapHomeController> {
         ));
   }
 
-
-  // handleTimeout(context) {  // 알림 띄우고 다시는 안 띄우는 함수 만들기
-  //   showDialog(context: context,
-  //       barrierDismissible: true,
-  //       builder: (BuildContext context){
-  //         return AlertDialog(
-  //           title: Text('플레이리스트 이름을 입력하세요'),
-  //           content: Container(
-  //             width: 200, height: 70, padding: EdgeInsets.all(10),
-  //             child: Text("이야기를 확인하시겠습니까?"
-  //             ),
-  //           ),
-  //           actions: [
-  //             TextButton(onPressed: (){
-  //               print("호랑이요@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-  //             }, child: Text('확인', style: TextStyle(fontSize: 15, color: Colors.deepPurple[800])))
-  //           ],
-  //         );
-  //       });
-  // }
-
-
-// Widget _buildContainer1() {   스크롤 만들기 실패
-//   return Expanded(
-//     child: DraggableScrollableSheet(
-//     initialChildSize:0.4,
-//       minChildSize: 0.2,
-//       maxChildSize: 0.6,
-//       builder: (context, scrollController){
-//     return SingleChildScrollView(
-//       child: Text("ghfkddl"),
-//     );
-//   }
-//   ),
-//   );
-// }
 }

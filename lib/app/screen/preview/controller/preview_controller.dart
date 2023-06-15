@@ -2,7 +2,6 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:enitproject/app/screen/story/controller/story_controller.dart';
 import 'package:enitproject/model/storylist_model.dart';
 import 'package:enitproject/repository/storylist_network_repository.dart';
-
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
@@ -16,8 +15,8 @@ class PreviewController extends GetxController{
   //데이터베이스에 있는 정보 가져와서 담을 리스트 선언
   RxList<StoryListModel> previewStoryList = RxList<StoryListModel>();
 
-  //story에 있는 컬렉션만큼 boollist 만들어 주는 클래스
-  RxList invisibleTableRowSwitchList = RxList<dynamic>();
+  // //story에 있는 컬렉션만큼 boollist 만들어 주는 클래스
+  // RxList invisibleTableRowSwitchList = RxList<dynamic>();
 
   //오디오 플레이어
   final audioPlayer = AudioPlayer();
@@ -52,46 +51,40 @@ class PreviewController extends GetxController{
     audioPlayer.dispose();
     super.onReady();
   }
+  // /// boollist만들기
+  // void buildInvisibleTableRowSwitch(int switchLength) {
+  //   invisibleTableRowSwitchList = RxList<bool>.generate(switchLength, (int index) => false, growable: true);
+  // }
 
-  void buildInvisibleTableRowSwitch(int switchLength) {
-    invisibleTableRowSwitchList = RxList<bool>.generate(switchLength, (int index) => false, growable: true);
-  }
-
-  void updateLike(String storyListKey, int index) async {
-    await storyListNetworkRepository.updateStoryListLike(storyListKey, true).then((value) async =>
-    {
-      previewStoryList[index].isLike = true,
-      previewStoryList.refresh(),
-      StoryController.to.storyList[index].isLike = true,
-      StoryController.to.storyList.refresh()
-    });
-  }
-  /// 질문2 여기서 => 는 awit이 완료되고 아래 명령어 실행하는건지 궁금합니다.
-  /// 즉 리포짓토리에 먼저 다 넣고 아래 것들 리턴해주는 건지 궁금해요 그럼 DB바꾸고 나서  local바꿔주는 건지
-  void updateUnLike(String storyListKey, int index) async {
-    await storyListNetworkRepository.updateStoryListLike(storyListKey, false).then((value) async =>
-    {
-      previewStoryList[index].isLike = false,
-      previewStoryList.refresh(),
-      StoryController.to.storyList[index].isLike = false,
-      StoryController.to.storyList.refresh()
-    });
-  }
 
   void updatePlay(int index) async{
     String? mp3Path = previewStoryList[index].mp3Path;
     await audioPlayer.play(AssetSource(mp3Path!));
     isPlaying(true);
     isPlaying.refresh();
-    StoryController.to.isPlaying(true);
-    StoryController.to.isPlaying.refresh();
+    StoryService.to.isPlaying(true);
+    StoryService.to.isPlaying.refresh();
   }
 
   void updatePause() async{
     await audioPlayer.pause();
     isPlaying(false);
     isPlaying.refresh();
-    StoryController.to.isPlaying(false);
-    StoryController.to.isPlaying.refresh();
+    StoryService.to.isPlaying(false);
+    StoryService.to.isPlaying.refresh();
+  }
+
+  ///관심목록 리스트랑 이야기 리스트의 인덱스가 달라서
+  ///선택된 리스트 인덱스번째의 키값과 이야기의 키값 대조해서 같은 키값을 가진 이야기리스트의 인덱스를 찾아서
+  ///int 'storykey'로 뺴줌
+  int storykey(int index) {
+    late int key;
+    for (int i = 0; i < StoryService.to.storyList.length; i++) {
+      if (previewStoryList[index].storyPlayListKey ==
+          StoryService.to.storyList[i].storyPlayListKey) {
+        key = i;
+      }
+    }
+    return key;
   }
 }

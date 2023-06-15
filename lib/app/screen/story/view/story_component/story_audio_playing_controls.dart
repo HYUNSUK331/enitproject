@@ -6,7 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 
 
-class PlayingControls extends GetView<StoryController> {
+class PlayingControls extends GetView<StoryService> {
   final bool isPlaying;
   final LoopMode? loopMode;
   final bool isPlaylist;

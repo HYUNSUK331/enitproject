@@ -6,19 +6,20 @@ import 'package:enitproject/const/color.dart';
 import 'package:enitproject/const/const.dart';
 import 'package:enitproject/model/storylist_model.dart';
 import 'package:enitproject/repository/storylist_network_repository.dart';
+import 'package:enitproject/repository/user_repository.dart';
+import 'package:enitproject/service/auth_service.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 
-class StoryController extends GetxController{
-
+class StoryService extends GetxService{
+  ///싱글톤처럼 쓰기위함
+  static StoryService get to => Get.find();
   ///나중에 오디오 패스랑 메타 추가
   late Audio audio;
   final Rx<AudioPlayer> _audioPlayer = AudioPlayer().obs;
-  ///싱글톤처럼 쓰기위함
-  static StoryController get to => Get.find();
 
   ///데이터베이스에 있는 정보 가져와서 담을 리스트 선언
   RxList<StoryListModel> storyList = <StoryListModel>[].obs;
@@ -105,27 +106,27 @@ class StoryController extends GetxController{
       autoStart: false,
     );
 
-    void updatePlay(int index) async {
-      if (isPlaying.value) {
-        _audioPlayer.value.pause();
-        //_assetsAudioPlayer.value.pause();
-      } else {
-        String? mp3Path = storyList[index].mp3Path;
-        await _audioPlayer.value.play(AssetSource(mp3Path!));
-        // await _assetsAudioPlayer.value.open(
-        //   Audio('assets/${mp3Path}'),
-        //   showNotification: true,
-        // );
-
-        BottomPopupPlayerController.to.isPopup(true);
-        storyIndex = index;
-      }
-    }
-
 
     ///하단팝업
     BottomPopupPlayerController.to.isPopup(true);
     storyIndex = index;
+  }
+
+  void updateUserFav(String storyListKey, String userKey) async {
+    if(AuthService.to.userModel.value != null){
+      AuthService.to.userModel.value?.favorite_list.add(storyListKey.toString());
+      AuthService.to.userModel.refresh();
+    }
+    await userRepository.updateFavList(AuthService.to.userModel.value?.favorite_list,userKey);
+  }
+
+  /// user unfav update 하기
+  void updateUserUnFav(String storyListKey, String userKey2) async {
+    if(AuthService.to.userModel.value != null){
+      AuthService.to.userModel.value?.favorite_list.remove(storyListKey.toString());
+      AuthService.to.userModel.refresh();
+    }
+    await userRepository.updateFavList(AuthService.to.userModel.value?.favorite_list,userKey2);
   }
 
 

@@ -50,11 +50,11 @@ class FavoriteController extends GetxController {
   /// 여기서 로컬에잇는 유저와 storylist를 통해 좋아요 표시된 친구들만 가져온다.
   loadMore2() async {
     favStoryList.clear();
-      for (int j = 0; j < StoryController.to.storyList.length; j++) {
-        if (AuthService.to.userModel.value!.favorite_list.contains(StoryController.to.storyList[j].storyPlayListKey)
+      for (int j = 0; j < StoryService.to.storyList.length; j++) {
+        if (AuthService.to.userModel.value!.favorite_list.contains(StoryService.to.storyList[j].storyPlayListKey)
         ) {
               print("222222222222222222222222222222222222222222222222222222222222222222222222222222222222");
-              favStoryList.add(StoryController.to.storyList[j]);
+              favStoryList.add(StoryService.to.storyList[j]);
               favStoryList.refresh();
             }
       }
@@ -71,14 +71,14 @@ class FavoriteController extends GetxController {
         favStoryList.removeAt(index),
 
         ///관심목록 리스트랑 이야기 리스트랑 순서 인덱스 다르니까 키값으로 찾아서 이야기 리스트에서도 좋아요 취소해주기
-        for (int i = 0; i < StoryController.to.storyList.length; i++)
+        for (int i = 0; i < StoryService.to.storyList.length; i++)
           {
-            if (StoryController.to.storyList[i].storyPlayListKey ==
+            if (StoryService.to.storyList[i].storyPlayListKey ==
                 storyListKey)
               {
                 ///이야기 리스트에서 좋아요 취소
-                StoryController.to.storyList[i].isLike = false,
-                StoryController.to.storyList.refresh(),
+                StoryService.to.storyList[i].isLike = false,
+                StoryService.to.storyList.refresh(),
               }
           }
       });
@@ -98,10 +98,10 @@ class FavoriteController extends GetxController {
               '${favStoryList[index].image}'), //can be MetasImage.network
         ),
       );
-      StoryController.to.assetsAudioPlayer.refresh();
+      StoryService.to.assetsAudioPlayer.refresh();
 
       ///오디오 재생
-      await StoryController.to.assetsAudioPlayer.value.open(
+      await StoryService.to.assetsAudioPlayer.value.open(
         audio,
         showNotification: true,
         headPhoneStrategy: HeadPhoneStrategy.pauseOnUnplug,
@@ -118,9 +118,9 @@ class FavoriteController extends GetxController {
     ///int 'storykey'로 뺴줌
     int storykey(int index) {
       late int key;
-      for (int i = 0; i < StoryController.to.storyList.length; i++) {
+      for (int i = 0; i < StoryService.to.storyList.length; i++) {
         if (favStoryList[index].storyPlayListKey ==
-            StoryController.to.storyList[i].storyPlayListKey) {
+            StoryService.to.storyList[i].storyPlayListKey) {
           key = i;
         }
       }

@@ -1,10 +1,10 @@
+import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:enitproject/app/screen/bottom_popup_player/controller/bottom_popup_player_controller.dart';
-import 'package:enitproject/app/screen/map_home/controller/map_home_controller.dart';
 import 'package:enitproject/app/screen/preview/controller/preview_controller.dart';
 import 'package:enitproject/app/screen/story/binding/story_binding.dart';
 import 'package:enitproject/app/screen/story/controller/story_controller.dart';
 import 'package:enitproject/app/screen/story/view/story_screen.dart';
-import 'package:enitproject/app/screen/user/controller/user_controller.dart';
 import 'package:enitproject/const/color.dart';
 import 'package:enitproject/service/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +52,7 @@ class PreviewScreen extends GetView<PreviewController> {
           children: [
             SizedBox(height: 20,),
             Text(
-              '전체 ${StoryController.to.storyList.length}건',
+              '전체 ${StoryService.to.storyList.length}건',
               style: TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.w500
@@ -61,7 +61,7 @@ class PreviewScreen extends GetView<PreviewController> {
             SizedBox(height: 20,),
             Expanded(
               child: ListView.builder(
-                  itemCount: StoryController.to.storyList.length,
+                  itemCount: StoryService.to.storyList.length,
                   itemBuilder: (BuildContext context, int index) {
                     return InkWell(
                       child: Container(
@@ -75,7 +75,7 @@ class PreviewScreen extends GetView<PreviewController> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(10.0),
                                 child: Image.network(
-                                  '${StoryController.to.storyList[index].image}',
+                                  '${StoryService.to.storyList[index].image}',
                                   width: 100, height: 100,
                                   fit: BoxFit.cover,
                                 ),
@@ -88,45 +88,46 @@ class PreviewScreen extends GetView<PreviewController> {
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                                      child: Text('${StoryController.to.storyList[index].addressSearch}',
-                                        style: TextStyle(
+                                      child: Text('${StoryService.to.storyList[index].addressSearch}',
+                                        style: const TextStyle(
                                           fontSize: 13.0,
                                           fontWeight: FontWeight.w500,
                                           color: GREEN_DARK_COLOR,
                                         ),
                                       ),
                                     ),
-                                    SizedBox(height: 5.0,),
+                                    SizedBox(height: 10.0,),
                                     Row(
                                       children: [
                                         Text(
-                                          '${StoryController.to.storyList[index].title}',
-                                          style: TextStyle(
+                                          '${StoryService.to.storyList[index].title}',
+                                          style: const TextStyle(
                                               fontSize: 20.0,
-                                              fontWeight: FontWeight.w500
+                                              fontWeight: FontWeight.w600
                                           ),
                                         ),
                                         SizedBox(width: 5.0,),
-                                        // Obx(() => controller.storyList[index].changeStoryColor == GREEN_BRIGHT_COLOR?
-                                        //   Badge(
-                                        //     badgeStyle: BadgeStyle(
-                                        //       badgeColor: GREEN_BRIGHT_COLOR,
-                                        //     ),
-                                        //     showBadge: true,
-                                        //   )
-                                        //     :
-                                        // Badge(
-                                        //   badgeStyle: BadgeStyle(
-                                        //     badgeColor: LIGHT_YELLOW_COLOR,
-                                        //   ),
-                                        //   showBadge: true,
-                                        // ),
-                                        // ),
+                                        Obx(() =>
+                                        AuthService.to.userModel.value!.circle_list.contains(StoryService.to.storyList[index].storyPlayListKey) ?
+                                        const badges.Badge(
+                                          badgeStyle: BadgeStyle(
+                                            badgeColor: GREEN_BRIGHT_COLOR,
+                                          ),
+                                          showBadge: true,
+                                        )
+                                            :
+                                        const badges.Badge(
+                                          badgeStyle: BadgeStyle(
+                                            badgeColor: LIGHT_YELLOW_COLOR,
+                                          ),
+                                          showBadge: true,
+                                        ),
+                                        )
                                       ],
                                     ),
                                     SizedBox(height: 10.0,),
                                     Text(
-                                      '${StoryController.to.storyList[index].addressDetail}',
+                                      '${StoryService.to.storyList[index].addressDetail}',
                                       style: TextStyle(
                                         fontSize: 15.0,
                                       ),
@@ -135,12 +136,12 @@ class PreviewScreen extends GetView<PreviewController> {
                                 ),
                               ),
                               SizedBox(width: 5,),
-                              Obx(() => StoryController.to.storyList[index].changeStoryColor == GREEN_BRIGHT_COLOR?
+                              Obx(() => StoryService.to.storyList[index].changeStoryColor == GREEN_BRIGHT_COLOR?
                                 IconButton(
                                   onPressed: () async{
                                     // StoryController.to.updatePlay(index);
                                   },
-                                  icon: Obx(() => StoryController.to.isPlaying.value?
+                                  icon: Obx(() => StoryService.to.isPlaying.value?
                                    Icon(
                                     Icons.headphones,
                                     color: GREEN_MID_COLOR,
@@ -156,10 +157,10 @@ class PreviewScreen extends GetView<PreviewController> {
                                 SizedBox.shrink(),
                               ),
                               /// 좋아요 기능
-                              Obx(() => AuthService.to.userModel.value!.favorite_list.contains(StoryController.to.storyList[index].storyPlayListKey)?  /// isLike 바라보다가 변경되면 아래 부분만 변경
+                              Obx(() => AuthService.to.userModel.value!.favorite_list.contains(StoryService.to.storyList[index].storyPlayListKey)?  /// isLike 바라보다가 변경되면 아래 부분만 변경
                                 IconButton(
                                   onPressed: () => {
-                                    UserController.to.updateUserUnFav('${StoryController.to.storyList[index].storyPlayListKey}', ('${AuthService.to.userModel.value?.userKey}'))
+                                    StoryService.to.updateUserUnFav('${StoryService.to.storyList[index].storyPlayListKey}', ('${AuthService.to.userModel.value?.userKey}'))
                                   },
                                   icon: SvgPicture.asset('assets/icon/heart_green.svg',
                                     color: GREEN_MID_COLOR,),
@@ -167,7 +168,7 @@ class PreviewScreen extends GetView<PreviewController> {
                                   :
                                 IconButton(
                                   onPressed: ()=>{
-                                    UserController.to.updateUserFav('${StoryController.to.storyList[index].storyPlayListKey}', ('${AuthService.to.userModel.value?.userKey}'))
+                                    StoryService.to.updateUserFav('${StoryService.to.storyList[index].storyPlayListKey}', ('${AuthService.to.userModel.value?.userKey}'))
                                   },
                                   icon: SvgPicture.asset('assets/icon/heart_gray_line.svg',
                                     color: Colors.grey,),
@@ -178,8 +179,8 @@ class PreviewScreen extends GetView<PreviewController> {
                           ),
                         ),
                       ),
-                      onTap: (){
-                        if(MapHomeController.to.latLngList[index].circleColor == false) {
+                      onTap: () {
+                        if(AuthService.to.userModel.value!.circle_list.contains(StoryService.to.storyList[index].storyPlayListKey)) {
                           Get.to(() => StoryScreen(storyIndex: index,), binding: StoryBinding(storyIndex: index,));
                         }
                       },

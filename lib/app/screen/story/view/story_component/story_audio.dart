@@ -6,7 +6,7 @@ import 'package:enitproject/app/screen/story/view/story_component/story_audio_po
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 
-class StoryAudio extends GetView<StoryController>{
+class StoryAudio extends GetView<StoryService>{
   final int storyIndex;
   const StoryAudio({
     required this.storyIndex,

@@ -1,5 +1,4 @@
 import 'package:enitproject/app/screen/favorite_list/binding/favorite_binding.dart';
-import 'package:enitproject/app/screen/favorite_list/view/favorite_screen.dart';
 import 'package:enitproject/app/screen/favorite_list/view/favorite_view.dart';
 import 'package:enitproject/app/screen/login/bindings/login_binding.dart';
 import 'package:enitproject/app/screen/login/view/login_view.dart';

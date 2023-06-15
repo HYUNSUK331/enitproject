@@ -2,7 +2,6 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:enitproject/app/screen/story/controller/story_controller.dart';
 import 'package:enitproject/app/screen/story/view/story_component/story_audio_playing_controls.dart';
 import 'package:enitproject/app/screen/story/view/story_component/story_audio_position_seek.dart';
-import 'package:enitproject/app/screen/user/controller/user_controller.dart';
 import 'package:enitproject/const/color.dart';
 import 'package:enitproject/service/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,7 @@ import 'package:get/get_state_manager/src/simple/get_view.dart';
 import '../../bottom_popup_player/controller/bottom_popup_player_controller.dart';
 import '../../bottom_popup_player/view/bottom_popup_player_screen.dart';
 
-class StoryScreen extends GetView<StoryController> {
+class StoryScreen extends GetView<StoryService> {
   final int storyIndex;
 
   const StoryScreen({required this.storyIndex, Key? key}) : super(key: key);
@@ -43,14 +42,14 @@ class StoryScreen extends GetView<StoryController> {
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Obx(() => AuthService.to.userModel.value!.favorite_list
-                      .contains(StoryController
+                      .contains(StoryService
                           .to.storyList[storyIndex].storyPlayListKey)
                   ?
-                  /// isLike 바라보다가 변경되면 아래 부분만 변경
+                  /// favorite_list 바라보다가 변경되면 아래 부분만 변경
                   IconButton(
                       onPressed: () => {
-                        UserController.to.updateUserUnFav(
-                            '${StoryController.to.storyList[storyIndex].storyPlayListKey}',
+                        StoryService.to.updateUserUnFav(
+                            '${StoryService.to.storyList[storyIndex].storyPlayListKey}',
                             ('${AuthService.to.userModel.value?.userKey}'))
                       },
                       icon: SvgPicture.asset(
@@ -60,8 +59,8 @@ class StoryScreen extends GetView<StoryController> {
                     )
                   : IconButton(
                       onPressed: () => {
-                            UserController.to.updateUserFav(
-                                '${StoryController.to.storyList[storyIndex].storyPlayListKey}',
+                        StoryService.to.updateUserFav(
+                                '${StoryService.to.storyList[storyIndex].storyPlayListKey}',
                                 ('${AuthService.to.userModel.value?.userKey}'))
                           },
                       icon: SvgPicture.asset(

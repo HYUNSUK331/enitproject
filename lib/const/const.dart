@@ -22,7 +22,7 @@ const KEY_USER_EMAIL = 'email';
 const KEY_FAVORITE_LIST = "favorite_list";
 const KEY_USER_NAME = 'name';
 const KEY_PHONE_NUM = 'phone_num';
-
+const KEY_CIRCLE_LIST = 'circle_list';
 
 late int storyIndex;
 

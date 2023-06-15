@@ -24,8 +24,6 @@ class CustomGoogleMap extends GetView<MapHomeController> {
 
   @override
   Widget build(BuildContext context) {
-    //if(){};
-
     final Set<Marker> markers = new Set();
     Set<Marker> getmarkers() { //markers to place on map
 

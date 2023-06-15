@@ -58,8 +58,7 @@ class AuthService extends GetxService {
 
     EasyLoading.dismiss();
     isLoggedIn(true);
-    AuthService.to.userModel.value =
-        await userRepository.getUserModel(authResult.user!.uid);
+    AuthService.to.userModel.value = await userRepository.getUserModel(authResult.user!.uid);
     print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh${AuthService.to.userModel.value}");
     return true;
   }
@@ -88,14 +87,11 @@ class AuthService extends GetxService {
       // Once signed in, return the UserCredential
       var value = await FirebaseAuth.instance.signInWithCredential(credential);
       isLoggedIn(true); // 로그인 했다!!!
-      await userRepository.googleAttemptCreateUser(
+      AuthService.to.userModel.value = await userRepository.attemptCreateUser(
         value.user?.uid ?? '',
         googleUser.email ?? '',
-        googleUser.displayName ?? '',
+          googleUser.displayName ?? ''
       );
-      AuthService.to.userModel.value =
-          await userRepository.getUserModel(value.user!.uid);
-
       EasyLoading.dismiss();
       // Get.to(()=> Tabs());
 
@@ -111,7 +107,7 @@ class AuthService extends GetxService {
   /// 회원가입 관련
   /// 여기 순서가 너무 중요하다!! auth 인증되는 곳을 집중해서 봐야된다.
   Future<bool> signup(String email, String pwd, String pwdCk, String name,
-      String phoneNum) async {
+      ) async {
     EasyLoading.show();
     String _message = "";
 
@@ -119,7 +115,7 @@ class AuthService extends GetxService {
     final validAlphabet = RegExp(r'[a-zA-Z]'); // 영어
     final validSpecial = RegExp(r'[!@#$%^&*(),.?":{}|<>]'); // 특수문자
     final validNull = RegExp(r"\s+"); //공백
-    final validPhoneNum = RegExp(r"^010-?([0-9]{4})-?([0-9]{4})$");  // 전화번호
+    // final validPhoneNum = RegExp(r"^010-?([0-9]{4})-?([0-9]{4})$");  // 전화번호
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     final RegExp emailRegExp = RegExp(pattern.toString()); // 이메일 패턴
@@ -244,17 +240,17 @@ class AuthService extends GetxService {
 
     /// 전화번호 검증
     /// -포함
-    else if (!validPhoneNum.hasMatch(phoneNum)) {
-      EasyLoading.dismiss();
-      Get.snackbar(
-        'ALERT',
-        '01012345678 형식이어야 합니다',
-        snackPosition: SnackPosition.BOTTOM,
-        forwardAnimationCurve: Curves.elasticInOut,
-        reverseAnimationCurve: Curves.easeOut,
-      );
-      return false;
-    }
+    // else if (!validPhoneNum.hasMatch(phoneNum)) {
+    //   EasyLoading.dismiss();
+    //   Get.snackbar(
+    //     'ALERT',
+    //     '01012345678 형식이어야 합니다',
+    //     snackPosition: SnackPosition.BOTTOM,
+    //     forwardAnimationCurve: Curves.elasticInOut,
+    //     reverseAnimationCurve: Curves.easeOut,
+    //   );
+    //   return false;
+    // }
 
     /// auth에 저장하는 과정
     else {
@@ -290,10 +286,8 @@ class AuthService extends GetxService {
       /// 모든 과정을 통과하면 true를 반환
       EasyLoading.dismiss();
       isLoggedIn(true);
-      await userRepository.attemptCreateUser(
-          authResult.user!.uid, email, name, phoneNum);
-      AuthService.to.userModel.value =
-          await userRepository.getUserModel(authResult.user!.uid);
+      AuthService.to.userModel.value = await userRepository.attemptCreateUser(
+          authResult.user!.uid, email, name);
 
       return true;
     }

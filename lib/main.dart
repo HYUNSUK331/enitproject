@@ -1,5 +1,6 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:enitproject/app/routes/app_pages.dart';
+import 'package:enitproject/app/screen/story/controller/story_controller.dart';
 import 'package:enitproject/const/const.dart';
 import 'package:enitproject/firebase_options.dart';
 import 'package:enitproject/service/auth_service.dart';
@@ -33,6 +34,7 @@ Future<void> main() async{
       initialBinding: BindingsBuilder(() {  // 초기화 하면서 서비스를 가져온다.
           Get.put(SplashService());
           Get.put(AuthService());
+          Get.put(StoryService());
         },
       ),
       builder: EasyLoading.init(),
