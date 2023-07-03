@@ -6,9 +6,6 @@ import 'package:enitproject/model/storylist_model.dart';
 import 'package:enitproject/repository/storylist_network_repository.dart';
 import 'package:enitproject/service/auth_service.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 class FavoriteController extends GetxController {
   ///나중에 오디오 패스랑 메타 추가
@@ -31,10 +28,6 @@ class FavoriteController extends GetxController {
     super.onInit();
   }
 
-  @override
-  void onReady() async {
-    super.onReady();
-  }
 
   /// 질문2.
   /// 데이터 가져올때 전부 가져오는게 비용이 많이 발생하는지?
@@ -51,9 +44,8 @@ class FavoriteController extends GetxController {
   loadMore2() async {
     favStoryList.clear();
       for (int j = 0; j < StoryService.to.storyList.length; j++) {
-        if (AuthService.to.userModel.value!.favorite_list.contains(StoryService.to.storyList[j].storyPlayListKey)
+        if (AuthService.to.userModel.value!.favoriteList.contains(StoryService.to.storyList[j].storyPlayListKey)
         ) {
-              print("222222222222222222222222222222222222222222222222222222222222222222222222222222222222");
               favStoryList.add(StoryService.to.storyList[j]);
               favStoryList.refresh();
             }
@@ -88,7 +80,7 @@ class FavoriteController extends GetxController {
     void setOpenPlay(int index) async {
       String? mp3Path = favStoryList[index].mp3Path;
       audio = Audio(
-        'assets/${mp3Path}',
+        'assets/$mp3Path',
 
         ///백그라운드랑 상단 바 안에 표시해줄 데이터 넣는 것
         metas: Metas(

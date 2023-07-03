@@ -1,9 +1,5 @@
 import 'package:enitproject/app/routes/app_pages.dart';
 import 'package:enitproject/app/screen/login/controller/login_controller.dart';
-import 'package:enitproject/app/screen/signup/bindings/signup_binding.dart';
-import 'package:enitproject/app/screen/signup/view/signup_view.dart';
-import 'package:enitproject/app/screen/tab/binding/tabs_binding.dart';
-import 'package:enitproject/app/screen/tab/view/tabs_screen.dart';
 import 'package:enitproject/service/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -38,7 +34,6 @@ class LoginView extends GetView<LoginController> {
                         ? Get.rootDelegate.toNamed(Routes.TAB)  //로그인 되면 TabsView로 이동 아니면 error 띄우기
                         : ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("error"), duration: Duration(milliseconds: 1000)))
                   });
-              print("(((((((((((((((((((((((((((${AuthService.to.userModel.value!.userKey.toString()}))))))))))))))))))))");
             },
             child: const Text('로그인'),
           ),

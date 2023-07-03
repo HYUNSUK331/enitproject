@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapHomeScreen extends StatefulWidget {
@@ -14,7 +13,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
   bool choolCheckDone = false;
   GoogleMapController? mapController;
 
-  static final LatLng companyLatLng =
+  static const LatLng companyLatLng =
   LatLng(33.49766527106121, 126.53094118653355);    // 이게 이야기의 좌표!! 우리가 작성할 필요없고 DB에서 가져오는것
 
   Future<CameraPosition> getposition1()async{
@@ -28,27 +27,27 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
   }
 
 
-  static final CameraPosition initialPosition = CameraPosition(  //지도 위치 초기화 및 우리가 바라볼 곳
+  static const CameraPosition initialPosition = CameraPosition(  //지도 위치 초기화 및 우리가 바라볼 곳
     target: companyLatLng,
     zoom: 15,
   );
-  static final double okDistence = 50 ;     //원 사이즈 이거 const에 넣기
+  static const double okDistence = 50 ;     //원 사이즈 이거 const에 넣기
 
-  static final Circle withinDistanceCircle = Circle(circleId: CircleId('withinDistanceCircle'),
+  static final Circle withinDistanceCircle = Circle(circleId: const CircleId('withinDistanceCircle'),
     center: companyLatLng,                    // 이야기 1 좌표 DB에서 가져오기
     fillColor: Colors.blue.withOpacity(0.2),  // 진하기
     radius: okDistence,                         // 반지름
     strokeColor: Colors.blue,                 // 라인 색 const에넣어두기
     strokeWidth: 1,                           // 라인 두께
   );
-  static final Circle notWithinDistanceCircle = Circle(circleId: CircleId('norWithinDistanceCircle'),
+  static final Circle notWithinDistanceCircle = Circle(circleId: const CircleId('norWithinDistanceCircle'),
     center: companyLatLng,                    // 이야기 1 좌표 DB에서 가져오기
     fillColor: Colors.red.withOpacity(0.2),  // 진하기
     radius: okDistence,                         // 반지름
     strokeColor: Colors.red,                 // 라인 색 const에넣어두기
     strokeWidth: 1,                           // 라인 두께
   );
-  static final Circle checkDoneCircle = Circle(circleId: CircleId('checkDoneCircle'),
+  static final Circle checkDoneCircle = Circle(circleId: const CircleId('checkDoneCircle'),
     center: companyLatLng,                    // 이야기 1 좌표 DB에서 가져오기ㅠ
     fillColor: Colors.green.withOpacity(0.2),  // 진하기
     radius: okDistence,                         // 반지름
@@ -56,11 +55,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
     strokeWidth: 1,                           // 라인 두께
   );
 
-
-
-
-
-  static final Marker maker = Marker(
+  static const Marker maker = Marker(
     markerId: MarkerId('marker'),
     position: companyLatLng,  //
   );
@@ -74,7 +69,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
         future: checkPermission(),
         builder: (BuildContext context, AsyncSnapshot snapshot){
           if(snapshot.connectionState == ConnectionState.waiting){
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -88,7 +83,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
 
                   if(snapshot.hasData){
                     final start = snapshot.data!;
-                    final end = companyLatLng;
+                    const end = companyLatLng;
 
                     final distance = Geolocator.distanceBetween(start.latitude, start.longitude, end.latitude, end.longitude);
                     if(distance < okDistence){
@@ -141,7 +136,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
 
   AppBar renderAppBar() {
     return AppBar(
-      title: Text(
+      title: const Text(
           'JJurang',
           style: TextStyle(
             color: Colors.blue,
@@ -166,7 +161,7 @@ class _MapHomeScreenState extends State<MapHomeScreen> {
           ),
           );
         },
-          icon:Icon(Icons.my_location,
+          icon:const Icon(Icons.my_location,
             color: Colors.blue,
           ),
         )
@@ -193,8 +188,8 @@ class _CustomGoogleMap extends StatelessWidget {  // 구글맵  이거 따로 �
         initialCameraPosition: initialPosition,
         myLocationEnabled: true,
         myLocationButtonEnabled: false,
-        circles: Set.from([circle]),
-        markers: Set.from([marker]),
+        circles: {circle},
+        markers: {marker},
         onMapCreated: onMapCreated,
       ),
     );

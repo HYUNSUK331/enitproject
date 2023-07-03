@@ -2,10 +2,8 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:enitproject/app/screen/story/controller/story_controller.dart';
 import 'package:enitproject/model/storylist_model.dart';
 import 'package:enitproject/repository/storylist_network_repository.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 class PreviewController extends GetxController{
 
@@ -14,7 +12,6 @@ class PreviewController extends GetxController{
 
   //데이터베이스에 있는 정보 가져와서 담을 리스트 선언
   RxList<StoryListModel> previewStoryList = RxList<StoryListModel>();
-
   // //story에 있는 컬렉션만큼 boollist 만들어 주는 클래스
   // RxList invisibleTableRowSwitchList = RxList<dynamic>();
 
@@ -87,4 +84,5 @@ class PreviewController extends GetxController{
     }
     return key;
   }
+
 }

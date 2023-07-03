@@ -1,5 +1,4 @@
 import 'package:enitproject/const/color.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PositionSeekWidget extends StatefulWidget {
@@ -7,11 +6,11 @@ class PositionSeekWidget extends StatefulWidget {
   final Duration duration;
   final Function(Duration) seekTo;
 
-  const PositionSeekWidget({
+  const PositionSeekWidget({Key? key,
     required this.currentPosition,
     required this.duration,
     required this.seekTo,
-  });
+  }) : super(key: key);
 
   @override
   _PositionSeekWidgetState createState() => _PositionSeekWidgetState();
@@ -58,7 +57,7 @@ class _PositionSeekWidgetState extends State<PositionSeekWidget> {
               min: 0,
               max: widget.duration.inMilliseconds.toDouble(),
               value: percent * widget.duration.inMilliseconds.toDouble(),
-              inactiveColor: Color(0xFFEFEFEF),
+              inactiveColor: const Color(0xFFEFEFEF),
               activeColor: GREEN_MID_COLOR,
               onChangeEnd: (newValue) {
                 setState(() {

@@ -10,7 +10,7 @@ import 'package:enitproject/app/screen/preview/bindings/preview_binding.dart';
 import 'package:enitproject/app/screen/preview/view/preview_screen.dart';
 import 'package:enitproject/app/screen/root/bindings/root_binding.dart';
 import 'package:enitproject/app/screen/root/view/root_screen.dart';
-import 'package:enitproject/app/screen/signup/bindings/signup_binding.dart';
+import 'package:enitproject/app/screen/signup/binding/signup_binding.dart';
 import 'package:enitproject/app/screen/signup/view/signup_view.dart';
 
 import 'package:enitproject/app/screen/tab/binding/tabs_binding.dart';

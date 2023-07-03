@@ -2,7 +2,6 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:enitproject/app/screen/story/controller/story_controller.dart';
 import 'package:enitproject/app/screen/story/view/story_component/story_audio_playing_controls.dart';
 import 'package:enitproject/app/screen/story/view/story_component/story_audio_position_seek.dart';
-
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 
@@ -20,9 +19,8 @@ class StoryAudio extends GetView<StoryService>{
         controller.assetsAudioPlayer.value.builderRealtimePlayingInfos(
             builder: (context, RealtimePlayingInfos? infos) {
               if (infos == null) {
-                return SizedBox();
+                return const SizedBox();
               }
-              //print('infos: $infos');
               return Column(
                 children: [
                   PositionSeekWidget(

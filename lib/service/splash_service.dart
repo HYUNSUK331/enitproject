@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:async/async.dart';
-import 'package:enitproject/repository/storylist_network_repository.dart';
 import 'package:enitproject/repository/user_repository.dart';
 import 'package:enitproject/service/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,20 +17,9 @@ class SplashService extends GetxService {
 
   // rebuild가 되지 않아야 하는 함수 작성
   Future<void> _initFunction() async {
-    print("COME");
     AuthService.to.isLoggedIn(FirebaseAuth.instance.currentUser!=null);  // AuthService는 로그인 인증을 하는 과정 / 유저가 null이 아니라면
     if(AuthService.to.isLoggedIn.value) {  //로그인이 되었는지 확인하고 확인되면 DB에서 유저 정보가져오기
-      //
-      // Future.wait([
-      //   userRepository.getUserModel(FirebaseAuth.instance.currentUser!.uid),
-      //   storyListNetworkRepository.getStoryListModel()
-      // ]);
-      //
       AuthService.to.userModel.value = await userRepository.getUserModel(FirebaseAuth.instance.currentUser!.uid);
-      // AuthService.toadsfasd.vlue = await storyListNetworkRepository.getStoryListModel();
-
-
-
     }
   }
 }

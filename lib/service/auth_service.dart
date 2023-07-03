@@ -27,25 +27,24 @@ class AuthService extends GetxService {
       password: pwd,
     )
         .catchError((error) {
-      String _message = "";
+      String message = "";
       switch (error.code.toString()) {
         case 'weak-password':
-          _message = "5자리 이상 패스워드를 입력해주세요.";
+          message = "5자리 이상 패스워드를 입력해주세요.";
           break;
         case 'invalid-email':
-          _message = "이메일 형식이 다릅니다. 확인 후 다시 시도해주세요.";
+          message = "이메일 형식이 다릅니다. 확인 후 다시 시도해주세요.";
           break;
         case 'email-already-in-use':
-          _message = "이미 가입된 이메일 주소 입니다. 확인 후 다시 시도해주세요.";
+          message = "이미 가입된 이메일 주소 입니다. 확인 후 다시 시도해주세요.";
           break;
         default:
-          _message = error.code.toString();
+          message = error.code.toString();
       }
 
-      print(_message);
       Get.snackbar(
         'ALERT',
-        _message,
+        message,
         snackPosition: SnackPosition.BOTTOM,
         forwardAnimationCurve: Curves.elasticInOut,
         reverseAnimationCurve: Curves.easeOut,
@@ -54,12 +53,10 @@ class AuthService extends GetxService {
       EasyLoading.dismiss();
       return false;
     });
-    print(authResult);
 
     EasyLoading.dismiss();
     isLoggedIn(true);
     AuthService.to.userModel.value = await userRepository.getUserModel(authResult.user!.uid);
-    print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh${AuthService.to.userModel.value}");
     return true;
   }
 
@@ -72,19 +69,12 @@ class AuthService extends GetxService {
         EasyLoading.dismiss();
         return false;
       }
-      // Obtain the auth details from the request
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
-      // if (googleAuth == null) {
-      //   EasyLoading.dismiss();
-      //   return false;
-      // }
-      // Create a new credential
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      // Once signed in, return the UserCredential
       var value = await FirebaseAuth.instance.signInWithCredential(credential);
       isLoggedIn(true); // 로그인 했다!!!
       AuthService.to.userModel.value = await userRepository.attemptCreateUser(
@@ -98,10 +88,94 @@ class AuthService extends GetxService {
       return true;
     } catch (e) {
       EasyLoading.dismiss();
-      print("error");
-      print(e);
       return false;
     }
+  }
+
+  Future<bool> update(String email, String pwd, String pwdCk, String name,
+      ) async {
+
+    EasyLoading.show();
+    String message = "";
+
+    final validSpecial = RegExp(r'[!@#$%^&*(),.?":{}|<>]'); // 특수문자
+    final validNull = RegExp(r"\s+"); //공백
+
+    if (name.isEmpty) {
+      EasyLoading.dismiss();
+      Get.snackbar(
+        'ALERT',
+        '빈칸은 없어야 합니다',
+        snackPosition: SnackPosition.BOTTOM,
+        forwardAnimationCurve: Curves.elasticInOut,
+        reverseAnimationCurve: Curves.easeOut,
+      );
+      return false;
+    }
+    /// Name 조건
+    /// 특수문자 조건
+    else if (validSpecial.hasMatch(name)) {
+      EasyLoading.dismiss();
+      Get.snackbar(
+        'ALERT',
+        '특수문자는 불가능합니다.',
+        snackPosition: SnackPosition.BOTTOM,
+        forwardAnimationCurve: Curves.elasticInOut,
+        reverseAnimationCurve: Curves.easeOut,
+      );
+      return false;
+    }
+
+    ///공백 조건
+    else if (validNull.hasMatch(name)) {
+      EasyLoading.dismiss();
+      Get.snackbar(
+        'ALERT',
+        '공백은 불가능합니다.',
+        snackPosition: SnackPosition.BOTTOM,
+        forwardAnimationCurve: Curves.elasticInOut,
+        reverseAnimationCurve: Curves.easeOut,
+      );
+      return false;
+    }
+    else {
+      UserCredential authResult = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: pwd)
+          .catchError((error) {
+        //에러가 생길때만 들어온다. / 여기 문제 없이 지나가면 auth에 등록된다.
+        switch (error.code.toString()) {
+          case 'weak-password':
+            message = "5자리 이상 패스워드를 입력해주세요.";
+            break;
+          case 'invalid-email':
+            message = "이메일 형식이 다릅니다. 확인 후 다시 시도해주세요.";
+            break;
+          case 'email-already-in-use':
+            message = "이미 가입된 이메일 주소 입니다. 확인 후 다시 시도해주세요.";
+            break;
+          default:
+            message = error.code.toString();
+        }
+        EasyLoading.dismiss();
+        Get.snackbar(
+          'ALERT',
+          message,
+          snackPosition: SnackPosition.BOTTOM,
+          forwardAnimationCurve: Curves.elasticInOut,
+          reverseAnimationCurve: Curves.easeOut,
+        );
+        return false;
+      });
+
+      /// 모든 과정을 통과하면 true를 반환
+      EasyLoading.dismiss();
+      isLoggedIn(true);
+      AuthService.to.userModel.value = await userRepository.attemptCreateUser(
+          authResult.user!.uid, email, name);
+
+      return true;
+    }
+
   }
 
   /// 회원가입 관련
@@ -109,7 +183,7 @@ class AuthService extends GetxService {
   Future<bool> signup(String email, String pwd, String pwdCk, String name,
       ) async {
     EasyLoading.show();
-    String _message = "";
+    String message = "";
 
     final validNumbers = RegExp(r'(\d+)'); // 숫자만
     final validAlphabet = RegExp(r'[a-zA-Z]'); // 영어
@@ -260,22 +334,21 @@ class AuthService extends GetxService {
         //에러가 생길때만 들어온다. / 여기 문제 없이 지나가면 auth에 등록된다.
         switch (error.code.toString()) {
           case 'weak-password':
-            _message = "5자리 이상 패스워드를 입력해주세요.";
+            message = "5자리 이상 패스워드를 입력해주세요.";
             break;
           case 'invalid-email':
-            _message = "이메일 형식이 다릅니다. 확인 후 다시 시도해주세요.";
+            message = "이메일 형식이 다릅니다. 확인 후 다시 시도해주세요.";
             break;
           case 'email-already-in-use':
-            _message = "이미 가입된 이메일 주소 입니다. 확인 후 다시 시도해주세요.";
+            message = "이미 가입된 이메일 주소 입니다. 확인 후 다시 시도해주세요.";
             break;
           default:
-            _message = error.code.toString();
+            message = error.code.toString();
         }
-        print(_message);
         EasyLoading.dismiss();
         Get.snackbar(
           'ALERT',
-          _message,
+          message,
           snackPosition: SnackPosition.BOTTOM,
           forwardAnimationCurve: Curves.elasticInOut,
           reverseAnimationCurve: Curves.easeOut,
@@ -293,19 +366,18 @@ class AuthService extends GetxService {
     }
   }
 
+  /// 로그아웃
   Future<void> logout() async {
     await FirebaseAuth.instance.signOut();
     isLoggedIn(false);
   }
 
   /// 회원탈퇴
-  Future<void> withdrawal(
-      {required BuildContext context,
-      required String email,
-      required String password}) async {
+  Future<bool> withdrawal(
+      String email, String pwd,) async {
     UserCredential authResult = await FirebaseAuth.instance
         .signInWithEmailAndPassword(
-            email: email.trim(), password: password.trim())
+            email: email.trim(), password: pwd.trim())
         .catchError(
       (error) {
         String _message = "";
@@ -323,7 +395,6 @@ class AuthService extends GetxService {
             _message = '비밀번호를 확인해주세요.';
             break;
         }
-        print(_message);
       },
     );
 
@@ -331,10 +402,13 @@ class AuthService extends GetxService {
       SnackBar snackBar = const SnackBar(
         content: Text('Please try again later!'),
       );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return false;
     } else {
-      // await userRepository.deleteUserModel(userKey: AuthService.to.userModel.value!.userKey); //db delete
-      // await FirebaseAuth.instance.currentUser?.delete();//auth delete
+      Get.back();
+      isLoggedIn(false);
+      await userRepository.deleteUserModel(AuthService.to.userModel.value!.userKey.toString()); //db delete
+      await FirebaseAuth.instance.currentUser?.delete();//auth delete
+      return true;
     }
   }
 }

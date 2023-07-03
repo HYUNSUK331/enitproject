@@ -1,4 +1,6 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:enitproject/app/routes/app_pages.dart';
+import 'package:enitproject/app/screen/map_home/controller/map_home_controller.dart';
 import 'package:enitproject/app/screen/story/controller/story_controller.dart';
 import 'package:enitproject/app/screen/story/view/story_component/story_audio_playing_controls.dart';
 import 'package:enitproject/app/screen/story/view/story_component/story_audio_position_seek.dart';
@@ -7,10 +9,7 @@ import 'package:enitproject/service/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
-import '../../bottom_popup_player/controller/bottom_popup_player_controller.dart';
-import '../../bottom_popup_player/view/bottom_popup_player_screen.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class StoryScreen extends GetView<StoryService> {
   final int storyIndex;
@@ -30,7 +29,7 @@ class StoryScreen extends GetView<StoryService> {
               horizontal: 10.0,
             ),
             child: IconButton(
-              icon: Icon(Icons.arrow_back_ios),
+              icon: const Icon(Icons.arrow_back_ios),
               color: Colors.black,
               iconSize: 35.0,
               onPressed: () {
@@ -41,7 +40,7 @@ class StoryScreen extends GetView<StoryService> {
           actions: [
             Padding(
               padding: const EdgeInsets.all(10.0),
-              child: Obx(() => AuthService.to.userModel.value!.favorite_list
+              child: Obx(() => AuthService.to.userModel.value!.favoriteList
                       .contains(StoryService
                           .to.storyList[storyIndex].storyPlayListKey)
                   ?
@@ -53,8 +52,7 @@ class StoryScreen extends GetView<StoryService> {
                             ('${AuthService.to.userModel.value?.userKey}'))
                       },
                       icon: SvgPicture.asset(
-                        'assets/icon/heart_green.svg',
-                        color: GREEN_MID_COLOR,
+                        'assets/icon/heart_green.svg',color: GREEN_MID_COLOR
                       ),
                     )
                   : IconButton(
@@ -64,8 +62,7 @@ class StoryScreen extends GetView<StoryService> {
                                 ('${AuthService.to.userModel.value?.userKey}'))
                           },
                       icon: SvgPicture.asset(
-                        'assets/icon/heart_gray_line.svg',
-                        color: Colors.grey,
+                        'assets/icon/heart_gray_line.svg',color: GREEN_MID_COLOR,
                       ),
                       padding: EdgeInsets.zero)),
             )
@@ -77,7 +74,7 @@ class StoryScreen extends GetView<StoryService> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 20.0,
                   ),
                   Container(
@@ -85,12 +82,12 @@ class StoryScreen extends GetView<StoryService> {
                       children: [
                         Text(
                           '${controller.storyList[storyIndex].title}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 40.0,
                             fontWeight: FontWeight.w800,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10.0,
                         ),
                         Row(
@@ -98,33 +95,46 @@ class StoryScreen extends GetView<StoryService> {
                           children: [
                             Text(
                               '${controller.storyList[storyIndex].addressDetail}',
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 16.0, fontWeight: FontWeight.w500),
                             ),
                             TextButton(
-                              child: Text(
-                                '지도보기',
+                              child: const Text(
+                                '지도로 돌아가기',
                                 style: TextStyle(
                                   fontSize: 15.0,
                                   color: GREEN_BRIGHT_COLOR,
                                 ),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                Get.rootDelegate.offAndToNamed(Routes.HOME);
+                                MapHomeController.to.mapController!.animateCamera(
+                                  CameraUpdate.newLatLng( // story 클릭 시 그 위치로 이동시키기
+                                    LatLng(controller.storyList[storyIndex].latitude!.toDouble(), controller.storyList[storyIndex].longitude!.toDouble()
+                                    ),
+                                  ),
+                                );
+                                Get.back();
+                              },
                             )
                           ],
                         )
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15.0,
                   ),
-                  Image.network(
-                    '${controller.storyList[storyIndex].image}',
-                    width: double.infinity,
-                    fit: BoxFit.contain,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(15.0),
+                    child: Image.network(
+                      '${controller.storyList[storyIndex].image}',
+                      width: double.infinity,
+                      fit: BoxFit.contain,
+
+                    ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15.0,
                   ),
 
@@ -133,9 +143,8 @@ class StoryScreen extends GetView<StoryService> {
                       .builderRealtimePlayingInfos(
                       builder: (context, RealtimePlayingInfos? infos) {
                         if (infos == null) {
-                          return SizedBox();
+                          return const SizedBox();
                         }
-                        //print('infos: $infos');
                         return Column(
                           children: [
                             ///오디오바 위젯
@@ -160,7 +169,7 @@ class StoryScreen extends GetView<StoryService> {
                             return PlayingControls(
                               loopMode: loopMode,
                               isPlaying: isPlaying,
-                              isPlaylist: true,
+                              isPlaylist: false,
                               // onStop: () {
                               //   controller.assetsAudioPlayer.value.stop();
                               // },
@@ -170,18 +179,20 @@ class StoryScreen extends GetView<StoryService> {
                               onPlay: () {
                                 controller.assetsAudioPlayer.value
                                     .playOrPause();
+                                print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@$isPlaying");
                               },
+
                             );
                           });
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20.0,
                   ),
                   Container(
                     width: double.infinity,
                     height: 360,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(40),
                             topRight: Radius.circular(40)),
@@ -192,31 +203,20 @@ class StoryScreen extends GetView<StoryService> {
                       ///글 내용
                       child: Text(
                         '${controller.storyList[storyIndex].script}',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 15.0,
                           color: Colors.white,
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 110,
-
-
                   ),
                 ],
               ),
             ),
           ),
-          Obx(() => BottomPopupPlayerController.to.isPopup.value
-              ? Positioned(
-                  bottom: 12,
-                  left: 10,
-                  right: 10,
-                  child: BottomPopupPlayer(
-                    storyIndex: storyIndex,
-                  ))
-              : SizedBox.shrink()),
         ]),
       ),
     );

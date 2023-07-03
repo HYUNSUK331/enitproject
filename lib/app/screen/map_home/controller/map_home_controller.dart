@@ -3,10 +3,9 @@ import 'package:enitproject/repository/user_repository.dart';
 import 'package:enitproject/service/auth_service.dart';
 import 'package:enitproject/utils/notification.dart';
 import 'package:enitproject/const/color.dart';
-import 'package:enitproject/model/storylist_model.dart';
-import 'package:enitproject/repository/storylist_network_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -16,21 +15,26 @@ class MapHomeController extends GetxController{
 
   static MapHomeController get to => Get.find();
 
-  RxList<StoryListModel> latLngList = <StoryListModel>[].obs;  // 내용은 story의 모든 내용이 있지만 letlng만 가져와 사용할꺼니까 이름은 letlngList
+  ///커스텀 마커를 위한것
+  BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
+
+  // RxList<StoryListModel> latLngList = <StoryListModel>[].obs;  // 내용은 story의 모든 내용이 있지만 letlng만 가져와 사용할꺼니까 이름은 letlngList
    Rx<double> initSize = 1.0.obs;  // 이게 변하는 시점에 초기화 필요
 
   bool boolCheck = true;
   RxList invisibleTableRowSwitchList1 = RxList<dynamic>();
   RxnString allowPermissionStr = RxnString('');
-
+  RxBool isPinColorCheck = RxBool(false);
 
   void circleColorList() {  // 색을 담아줄 rxlist
-    invisibleTableRowSwitchList1 = RxList<Color>.generate(latLngList.length, (int index) => Colors.black);
+    invisibleTableRowSwitchList1 = RxList<Color>.generate(StoryService.to.storyList.length, (int index) => Colors.black);
   }
 
   /// 초기화
   @override
   void onInit() async{
+    ///수정필요 1 여기서 초기화
+    // addCustomIcon();
     EasyLoading.show();
     await loadMore();
     EasyLoading.dismiss();
@@ -39,20 +43,23 @@ class MapHomeController extends GetxController{
 
   loadMore() async{
     await Future.wait([
-      storyListNetworkRepository.getStoryListModel().then((value) => {  // DB에서 위도 경도 받아올때 사용하기
-        latLngList(value)
-      }),
       checkPermission().then((value) => {
         allowPermissionStr.value = value
       })
     ]);
   }
 
-
-
+///수정필요 1 이미지 pin_green, pin_yellow을 png파일로 받아오자
+  // addCustomIcon(){
+  //   BitmapDescriptor.fromAssetImage(const ImageConfiguration(),
+  //       'assets/icon/map_pin.png',).then(
+  //           (icon){
+  //         markerIcon = icon;
+  //       });
+  // }
   void updateMarker2(data){
-    for (int i = 0; i < MapHomeController.to.latLngList.length; i++) {  // 이야기의 수만큼 반복한다.
-      LatLng storyLat = LatLng(MapHomeController.to.latLngList[i].latitude ?? 0.0, MapHomeController.to.latLngList[i].longitude ?? 0.0); // 이야기가 있는 좌표
+    for (int i = 0; i < StoryService.to.storyList.length; i++) {  // 이야기의 수만큼 반복한다.
+      LatLng storyLat = LatLng(StoryService.to.storyList[i].latitude ?? 0.0, StoryService.to.storyList[i].longitude ?? 0.0); // 이야기가 있는 좌표
 
       final start = data;  //내 위치
       final end = storyLat;  // 이야기 위치
@@ -63,32 +70,31 @@ class MapHomeController extends GetxController{
 
       if (distance < 40) { // 범위에 들어오면!
         // 여기서 로컬 list에서 bool 값 확인하고 노란색이면 아래 실행
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
         /// 여기서 리스트에 storykey를 넣어줘
         invisibleTableRowSwitchList1[i] = GREEN_BRIGHT_COLOR; // 초록색으로 변경해줘
         StoryService.to.changeTrueBadgeColor(i); // 처음에 DB에서 가져와 로컬에 저장한 리스트 -> 이 릿리스트도 초록색으로 변경해주기
+        boolCheck = true;  ///
 
         /// 원에 들어오면 알림 띄우기
         if (boolCheck == true &&
-            !AuthService.to.userModel.value!.circle_list.contains(MapHomeController.to.latLngList[i].storyPlayListKey)) { // 이건 한번만나오게 설정 완료
+            !AuthService.to.userModel.value!.circleList.contains(StoryService.to.storyList[i].storyPlayListKey)) { // 이건 한번만나오게 설정 완료
           NotificationUtils.initNotification(i); // 여기 넣으면 원에 들어올 때 알람
           NotificationUtils.showNotification(StoryService.to.storyList[i].title.toString()); // 알림 보여주는 메인
-          boolCheck = false;  // 다시 들어오면 알림 안 뜨게 하기
+          boolCheck = false;  // 들어와있는 동안 알림 계속 나오는거 막기
           if(AuthService.to.userModel.value != null){
-            AuthService.to.userModel.value?.circle_list.add(MapHomeController.to.latLngList[i].storyPlayListKey.toString());
+            AuthService.to.userModel.value?.circleList.add(StoryService.to.storyList[i].storyPlayListKey.toString());
             AuthService.to.userModel.refresh();
           }
-          userRepository.updateCircleColor2(AuthService.to.userModel.value?.circle_list, '${AuthService.to.userModel.value?.userKey}');
+          userRepository.updateCircleColor2(AuthService.to.userModel.value?.circleList, '${AuthService.to.userModel.value?.userKey}');
 
         }
 
 
-      } else if (AuthService.to.userModel.value!.circle_list.contains(MapHomeController.to.latLngList[i].storyPlayListKey)) {
-        print("###############################");
+      } else if (AuthService.to.userModel.value!.circleList.contains(StoryService.to.storyList[i].storyPlayListKey)) {
         invisibleTableRowSwitchList1[i] =
             LIGHT_BLUE_COLOR;
       }
-      else { // list에 나온 색깔 보여주기!! yellow or blue
+      else { /// list에 나온 색깔 보여주기!! yellow or blue
         print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         invisibleTableRowSwitchList1[i] =
             LIGHT_YELLOW_COLOR;

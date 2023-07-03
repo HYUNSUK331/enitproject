@@ -17,7 +17,7 @@ class PlayingControls extends GetView<StoryService> {
   final Function()? onStop;
 
   ///근데 이것도 예시 가져다 복붙해서 왜 이렇게 해야하는지는 모르겠음...
-  PlayingControls({
+  const PlayingControls({Key? key,
     required this.isPlaying,
     this.isPlaylist = false,
     this.loopMode,
@@ -26,42 +26,7 @@ class PlayingControls extends GetView<StoryService> {
     required this.onPlay,
     this.onNext,
     this.onStop,
-  });
-
-  // Widget _loopIcon(BuildContext context) {
-  //   final iconSize = 34.0;
-  //   if (loopMode == LoopMode.none) {
-  //     return Icon(
-  //       Icons.loop,
-  //       size: iconSize,
-  //       color: Colors.grey,
-  //     );
-  //   } else if (loopMode == LoopMode.playlist) {
-  //     return Icon(
-  //       Icons.loop,
-  //       size: iconSize,
-  //       color: Colors.black,
-  //     );
-  //   } else {
-  //     //single
-  //     return Stack(
-  //       alignment: Alignment.center,
-  //       children: [
-  //         Icon(
-  //           Icons.loop,
-  //           size: iconSize,
-  //           color: Colors.black,
-  //         ),
-  //         Center(
-  //           child: Text(
-  //             '1',
-  //             style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-  //           ),
-  //         ),
-  //       ],
-  //     );
-  //   }
-  // }
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -74,10 +39,13 @@ class PlayingControls extends GetView<StoryService> {
           onPressed: onPlay,
           icon:
           isPlaying
-              ? SvgPicture.asset('assets/icon/pause_green.svg',color: GREEN_MID_COLOR,)
-              : SvgPicture.asset('assets/icon/play_green.svg',color: GREEN_MID_COLOR,),
+              ? SvgPicture.asset('assets/icon/home.svg',color: GREEN_MID_COLOR)
+              : SvgPicture.asset('assets/icon/play_green.svg',color: GREEN_MID_COLOR),
         ),
       ],
     );
   }
 }
+
+// ('assets/icon/pause_green.svg',color: GREEN_MID_COLOR)
+// ('assets/icon/play_green.svg',color: GREEN_MID_COLOR)

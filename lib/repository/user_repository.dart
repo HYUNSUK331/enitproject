@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:enitproject/const/const.dart';
 import 'package:enitproject/model/user_model.dart';
@@ -73,7 +71,7 @@ class UserRepository {
 
     /// 트랜잭션
     // 유저 프로필 이름 수정
-    void updatePlayListTitle(String userKey, String name) {
+    void updateUserName(String userKey, String name) {
       _firebase.collection(COLLECTION_USER)
           .doc(userKey)
           .update({

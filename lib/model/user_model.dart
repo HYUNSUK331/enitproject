@@ -7,18 +7,18 @@ class UserModel {
   String? userKey;
   String? email;
   String? name;
-  String? phone_num;
-  List<dynamic> favorite_list;  /// 여기 List안에 dynamic말고 String을 두면 DB와 연결이 안됬다.
+  String? phoneNum;
+  List<dynamic> favoriteList;  /// 여기 List안에 dynamic말고 String을 두면 DB와 연결이 안됬다.
   String? storyPlayListKey;
-  List<dynamic> circle_list;
+  List<dynamic> circleList;
 
   UserModel.fromMap(Map<String, dynamic> map)
       : userKey = map[KEY_USER_KEY],
         email = map[KEY_USER_EMAIL],
         name = map[KEY_USER_NAME],
-        favorite_list = map[KEY_FAVORITE_LIST],
-        phone_num = map[KEY_PHONE_NUM],
-        circle_list = map[KEY_CIRCLE_LIST];
+        favoriteList = map[KEY_FAVORITE_LIST],
+        phoneNum = map[KEY_PHONE_NUM],
+        circleList = map[KEY_CIRCLE_LIST];
 
   UserModel.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data()! as Map<String, dynamic>);
