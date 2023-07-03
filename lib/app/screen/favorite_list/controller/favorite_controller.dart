@@ -6,9 +6,6 @@ import 'package:enitproject/model/storylist_model.dart';
 import 'package:enitproject/repository/storylist_network_repository.dart';
 import 'package:enitproject/service/auth_service.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 class FavoriteController extends GetxController {
   ///나중에 오디오 패스랑 메타 추가
@@ -31,10 +28,6 @@ class FavoriteController extends GetxController {
     super.onInit();
   }
 
-  @override
-  void onReady() async {
-    super.onReady();
-  }
 
   /// 질문2.
   /// 데이터 가져올때 전부 가져오는게 비용이 많이 발생하는지?
@@ -50,11 +43,10 @@ class FavoriteController extends GetxController {
   /// 여기서 로컬에잇는 유저와 storylist를 통해 좋아요 표시된 친구들만 가져온다.
   loadMore2() async {
     favStoryList.clear();
-      for (int j = 0; j < StoryController.to.storyList.length; j++) {
-        if (AuthService.to.userModel.value!.favorite_list.contains(StoryController.to.storyList[j].storyPlayListKey)
+      for (int j = 0; j < StoryService.to.storyList.length; j++) {
+        if (AuthService.to.userModel.value!.favoriteList.contains(StoryService.to.storyList[j].storyPlayListKey)
         ) {
-              print("222222222222222222222222222222222222222222222222222222222222222222222222222222222222");
-              favStoryList.add(StoryController.to.storyList[j]);
+              favStoryList.add(StoryService.to.storyList[j]);
               favStoryList.refresh();
             }
       }
@@ -71,14 +63,14 @@ class FavoriteController extends GetxController {
         favStoryList.removeAt(index),
 
         ///관심목록 리스트랑 이야기 리스트랑 순서 인덱스 다르니까 키값으로 찾아서 이야기 리스트에서도 좋아요 취소해주기
-        for (int i = 0; i < StoryController.to.storyList.length; i++)
+        for (int i = 0; i < StoryService.to.storyList.length; i++)
           {
-            if (StoryController.to.storyList[i].storyPlayListKey ==
+            if (StoryService.to.storyList[i].storyPlayListKey ==
                 storyListKey)
               {
                 ///이야기 리스트에서 좋아요 취소
-                StoryController.to.storyList[i].isLike = false,
-                StoryController.to.storyList.refresh(),
+                StoryService.to.storyList[i].isLike = false,
+                StoryService.to.storyList.refresh(),
               }
           }
       });
@@ -88,7 +80,7 @@ class FavoriteController extends GetxController {
     void setOpenPlay(int index) async {
       String? mp3Path = favStoryList[index].mp3Path;
       audio = Audio(
-        'assets/${mp3Path}',
+        'assets/$mp3Path',
 
         ///백그라운드랑 상단 바 안에 표시해줄 데이터 넣는 것
         metas: Metas(
@@ -98,10 +90,10 @@ class FavoriteController extends GetxController {
               '${favStoryList[index].image}'), //can be MetasImage.network
         ),
       );
-      StoryController.to.assetsAudioPlayer.refresh();
+      StoryService.to.assetsAudioPlayer.refresh();
 
       ///오디오 재생
-      await StoryController.to.assetsAudioPlayer.value.open(
+      await StoryService.to.assetsAudioPlayer.value.open(
         audio,
         showNotification: true,
         headPhoneStrategy: HeadPhoneStrategy.pauseOnUnplug,
@@ -118,9 +110,9 @@ class FavoriteController extends GetxController {
     ///int 'storykey'로 뺴줌
     int storykey(int index) {
       late int key;
-      for (int i = 0; i < StoryController.to.storyList.length; i++) {
+      for (int i = 0; i < StoryService.to.storyList.length; i++) {
         if (favStoryList[index].storyPlayListKey ==
-            StoryController.to.storyList[i].storyPlayListKey) {
+            StoryService.to.storyList[i].storyPlayListKey) {
           key = i;
         }
       }

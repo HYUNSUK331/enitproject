@@ -1,9 +1,7 @@
+import 'package:enitproject/app/routes/app_pages.dart';
 import 'package:enitproject/app/screen/signup/controller/signup_controller.dart';
-import 'package:enitproject/app/screen/tab/binding/tabs_binding.dart';
-import 'package:enitproject/app/screen/tab/view/tabs_screen.dart';
 import 'package:enitproject/service/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class SignupView extends GetView<SignupController> {
@@ -11,34 +9,29 @@ class SignupView extends GetView<SignupController> {
 
   @override
   Widget build(BuildContext context) {
-    final _enailFormKey = GlobalKey<FormState>();
-    final _passwordFormKey = GlobalKey<FormState>();
-    final _nameFormKey = GlobalKey<FormState>();
-    final _passwordCheckFormKey = GlobalKey<FormState>();
-    final _phoneNumFormKey = GlobalKey<FormState>();
-    // final riKey1 = const Key('__RIKEY1__');
-    // final riKey2 = const Key('__RIKEY2__');
-    // final riKey3 = const Key('__RIKEY3__');
-    // final riKey4 = const Key('__RIKEY4__');
-    // final riKey5 = const Key('__RIKEY5__');
-
+    final emailFormKey = GlobalKey<FormState>();
+    final passwordFormKey = GlobalKey<FormState>();
+    final nameFormKey = GlobalKey<FormState>();
+    final passwordCheckFormKey = GlobalKey<FormState>();
 
     final validNumbers = RegExp(r'(\d+)');  //숫자
     final validAlphabet = RegExp(r'[a-zA-Z]');  //영어
     final validSpecial = RegExp(r'[!@#$%^&*(),.?":{}|<>]'); // 특수문자
     final validNull = RegExp(r"\s+");  //공백
-    final validPhoneNum = RegExp(r"^010-?([0-9]{4})-?([0-9]{4})$"); // 전화번호
+    // final validPhoneNum = RegExp(r"^010-?([0-9]{4})-?([0-9]{4})$"); // 전화번호
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     final RegExp emailRegExp = RegExp(pattern.toString());  // 이메일 형식
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leading: BackButton(onPressed: ()=>{ Get.rootDelegate.popRoute()},),
+      ),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         children: [
           Form(
-            key: _enailFormKey,
+            key: emailFormKey,
             child: TextFormField(
               keyboardType: TextInputType.emailAddress,
               controller: controller.signupEmailController,
@@ -48,6 +41,7 @@ class SignupView extends GetView<SignupController> {
                 } else if (!emailRegExp.hasMatch(value.toString())) {
                   return '이메일 형식이 잘못되었습니다';
                 }
+                return null;
               },
               decoration: const InputDecoration(
                 label: Text('Email'),
@@ -59,11 +53,11 @@ class SignupView extends GetView<SignupController> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20.0,
           ),
           Form(
-            key: _nameFormKey,
+            key: nameFormKey,
             child: TextFormField(
               controller: controller.signupNameController,
               validator: (value) {
@@ -74,6 +68,7 @@ class SignupView extends GetView<SignupController> {
                 } else if (validNull.hasMatch(value.toString())) {
                   return '공백은 불가능 합니다';
                 }
+                return null;
               },
               decoration: const InputDecoration(
                 label: Text('Name'),
@@ -85,11 +80,11 @@ class SignupView extends GetView<SignupController> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20.0,
           ),
           Form(
-            key: _passwordFormKey,
+            key: passwordFormKey,
             child: TextFormField(
               controller: controller.signupPasswordController,
               validator: (value) {
@@ -106,6 +101,7 @@ class SignupView extends GetView<SignupController> {
                 else if (validNull.hasMatch(value.toString())) {
                   return '공백은 불가능 합니다.';
                 }
+                return null;
               },
               obscureText: true,
               // *로 바꿔주기
@@ -126,11 +122,11 @@ class SignupView extends GetView<SignupController> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20.0,
           ),
           Form(
-            key: _passwordCheckFormKey,
+            key: passwordCheckFormKey,
             child: TextFormField(
               obscureText: true,
               controller: controller.signupPasswordCheckController,
@@ -138,6 +134,7 @@ class SignupView extends GetView<SignupController> {
                 if (value != controller.signupPasswordController.text) {
                   return '비밀번호가 일치 하지 않습니다.';
                 }
+                return null;
               },
               maxLength: 15,
               decoration: const InputDecoration(
@@ -150,115 +147,48 @@ class SignupView extends GetView<SignupController> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20.0,
           ),
-          Form(
-            key: _phoneNumFormKey,
-            child: TextFormField(
-              controller: controller.signupPhoneNumController,
-              validator: (value){
-                if(!validPhoneNum.hasMatch(value.toString())){
-                  return '01012345678 형식으로 작성해주세요';
-                }
-              },
-              decoration: const InputDecoration(
-                label: Text('PhoneNumber(- 없이)'),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.orange,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 20.0,
-          ),
+
           TextButton(
             //
             onPressed: () async {
               /// Email 입력오류 창
-              final formKeyState = _enailFormKey.currentState!;
+              final formKeyState = emailFormKey.currentState!;
               if (formKeyState.validate()) {
                 formKeyState.save();
               }
               /// pwd 입력오류 창
-              final formKeyState1 = _nameFormKey.currentState!;
+              final formKeyState1 = nameFormKey.currentState!;
               if (formKeyState1.validate()) {
                 formKeyState1.save();
               }
               /// pwd 입력오류 창
-              final formKeyState2 = _passwordFormKey.currentState!;
+              final formKeyState2 = passwordFormKey.currentState!;
               if (formKeyState2.validate()) {
                 formKeyState2.save();
               }
               /// pwd 입력오류 창
-              final formKeyState3 = _passwordCheckFormKey.currentState!;
+              final formKeyState3 = passwordCheckFormKey.currentState!;
               if (formKeyState3.validate()) {
                 formKeyState3.save();
               }
-              /// pwd 입력오류 창
-              final formKeyState4 = _phoneNumFormKey.currentState!;
-              if (formKeyState4.validate()) {
-                formKeyState4.save();
-              }
+              // /// pwd 입력오류 창
+              // final formKeyState4 = _phoneNumFormKey.currentState!;
+              // if (formKeyState4.validate()) {
+              //   formKeyState4.save();
+              // }
               AuthService.to
                   .signup(
                       controller.signupEmailController.text,
                       controller.signupPasswordController.text,
                       controller.signupPasswordCheckController.text,
-                      controller.signupNameController.text,
-                      controller.signupPhoneNumController.text)
+                      controller.signupNameController.text)
+                      // controller.signupPhoneNumController.text)
                   .then((value) => {
                         value
-                            ? showDialog(
-                                context: context,
-                                barrierDismissible: false, // 다른 화면 터치 X
-                                builder: (context) {
-                                  ///모달창
-                                  print(
-                                      '##########################################$value');
-                                  return AlertDialog(
-                                    title: Column(
-                                      children: <Widget>[
-                                        new Text("회원가입 완료"), // 타이틀
-                                      ],
-                                    ),
-                                    //
-                                    content: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(
-                                          "${controller.signupNameController.text}님 회원 가입을 축하드립니다.", // 메세지
-                                        ),
-                                      ],
-                                    ),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        child: Text("확인"),
-                                        onPressed: () {
-                                          controller.signupPasswordController
-                                              .clear();
-                                          controller.signupNameController
-                                              .clear();
-                                          controller.signupPhoneNumController
-                                              .clear();
-                                          controller
-                                              .signupPasswordCheckController
-                                              .clear();
-                                          controller.signupEmailController
-                                              .clear();
-                                          Get.to(() => const TabsView(),
-                                              binding:
-                                                  TabsBinding()); //누르면 메인화면으로 이동
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                })
+                        ? showDialog1()
                             : {} //로그인 실패하면 아무것도 안하기
                       });
             },
@@ -268,4 +198,47 @@ class SignupView extends GetView<SignupController> {
       ),
     );
   }
+  void showDialog1() {
+    Get.dialog(
+      AlertDialog(
+        title: const Column(
+          children: <Widget>[
+            Text("회원가입 완료"), // 타이틀
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment:
+          CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              "${controller.signupNameController.text}님 회원 가입을 축하드립니다.", // 메세지
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: (){
+              controller.signupPasswordController
+                  .clear();
+              controller.signupNameController
+                  .clear();
+              // controller.signupPhoneNumController
+              //     .clear();
+              controller
+                  .signupPasswordCheckController
+                  .clear();
+              controller.signupEmailController
+                  .clear();
+              Get.rootDelegate.toNamed(Routes.TAB);
+              Get.back();  /// 사용하지 않으면 dialog창 안 닫힌다.
+            },
+            child: const Text('cancel'),
+          ),
+        ],
+      ),
+      barrierDismissible: true
+    );
+  }
+
 }

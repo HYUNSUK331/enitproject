@@ -10,9 +10,9 @@ class StoryRepository {
     List<StoryListModel> resultStoryList = [];
     QuerySnapshot querySnapshot = await playListCollRef.get();
 
-    querySnapshot.docs.forEach((element) {
+    for (var element in querySnapshot.docs) {
       resultStoryList.add(StoryListModel.fromSnapshot(element));
-    });
+    }
     return resultStoryList;
   }
 
@@ -23,9 +23,9 @@ class StoryRepository {
     List<StoryListModel> resultPlayList = [];
     QuerySnapshot querySnapshot = await playListCollRef.get();
 
-    querySnapshot.docs.forEach((element) {
+    for (var element in querySnapshot.docs) {
       resultPlayList.add(StoryListModel.fromSnapshot(element));
-    });
+    }
     return resultPlayList;
   }
 }
