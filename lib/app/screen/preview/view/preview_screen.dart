@@ -85,16 +85,13 @@ class PreviewScreen extends GetView<PreviewController> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                                        child: Text('${StoryService.to.storyList[index].addressSearch}',
+                                      Text('${StoryService.to.storyList[index].addressSearch}',
                                           style: const TextStyle(
                                             fontSize: 13.0,
                                             fontWeight: FontWeight.w500,
                                             color: GREEN_DARK_COLOR,
                                           ),
                                         ),
-                                      ),
                                       const SizedBox(height: 10.0,),
                                       Row(
                                         children: [

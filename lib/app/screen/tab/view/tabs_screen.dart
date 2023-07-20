@@ -44,9 +44,9 @@ class TabsView extends GetView<TabsController> {
                     icon: SvgPicture.asset('assets/icon/home_line.svg'),
                     activeIcon: SvgPicture.asset('assets/icon/home.svg'),
                     label: 'HOME',),
-                  const BottomNavigationBarItem(
-                      activeIcon:Icon(Icons.list_alt_outlined, color: Colors.black87,), /// 수정필요 2 일단은 목록 이이콘 필요 추후 검색으로 변경
-                      icon: Icon(Icons.list_alt_outlined, color: Colors.grey,),
+                  BottomNavigationBarItem(
+                      icon: SvgPicture.asset('assets/icon/board_line.svg'),
+                      activeIcon: SvgPicture.asset('assets/icon/board.svg'), /// 수정필요 2 일단은 목록 이이콘 필요 추후 검색으로 변경
                       label: '이야기 목록'),
                   BottomNavigationBarItem(
                       icon: SvgPicture.asset('assets/icon/heart_black_line.svg'),

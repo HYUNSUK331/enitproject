@@ -46,7 +46,7 @@ class CustomGoogleMap extends GetView<MapHomeController> {
               }
             }// 타이틀만 보여 줄꺼면 잘보이게 꾸미기 필요
           ),
-          icon: BitmapDescriptor.defaultMarker, //Icon for Marker
+          icon: controller.markerIconYellow
         ));
         }else{
           markers.add(Marker(
@@ -62,7 +62,7 @@ class CustomGoogleMap extends GetView<MapHomeController> {
                 }// 타이틀만 보여 줄꺼면 잘보이게 꾸미기 필요
             ),
             /// 수정필요 1
-            icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue), //Icon for Marker
+            icon: controller.markerIconBlue, //Icon for Marker
           ));
 
         }

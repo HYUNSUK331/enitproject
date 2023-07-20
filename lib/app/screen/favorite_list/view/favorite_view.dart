@@ -99,7 +99,7 @@ class FavoriteView extends GetView<FavoriteController> {
                                           ///검색용 주소
                                           Text('${controller.favStoryList[index].addressSearch}',
                                             style: const TextStyle(
-                                              fontSize: 12.0,
+                                              fontSize: 13.0,
                                               fontWeight: FontWeight.w500,
                                               color: GREEN_DARK_COLOR,
                                             ),
@@ -134,12 +134,12 @@ class FavoriteView extends GetView<FavoriteController> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 5.0,),
+                                          const SizedBox(height: 10.0,),
                                           ///상세주소
                                           Text(
                                             '${controller.favStoryList[index].addressDetail}',
                                             style: const TextStyle(
-                                              fontSize: 13.0,
+                                              fontSize: 15.0,
                                             ),
                                           )
                                         ],
