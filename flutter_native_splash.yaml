@@ -1,4 +1,6 @@
-# 로고 설정
+# 로고 설정 로딩화면 이미지 설정
+# flutter pub run flutter_native_splash:remove
+# flutter pub run flutter_native_splash:create
 flutter_native_splash:
-  color: "#07BEB8"
+  color: "#CC33CC"
   image: assets/story/pin.png

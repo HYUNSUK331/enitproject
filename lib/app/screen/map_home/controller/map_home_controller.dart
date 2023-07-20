@@ -16,7 +16,8 @@ class MapHomeController extends GetxController{
   static MapHomeController get to => Get.find();
 
   ///커스텀 마커를 위한것
-  BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor markerIconYellow = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor markerIconBlue = BitmapDescriptor.defaultMarker;
 
   // RxList<StoryListModel> latLngList = <StoryListModel>[].obs;  // 내용은 story의 모든 내용이 있지만 letlng만 가져와 사용할꺼니까 이름은 letlngList
    Rx<double> initSize = 1.0.obs;  // 이게 변하는 시점에 초기화 필요
@@ -34,7 +35,8 @@ class MapHomeController extends GetxController{
   @override
   void onInit() async{
     ///수정필요 1 여기서 초기화
-    // addCustomIcon();
+    addCustomIcon();
+    addCustomIcon2();
     EasyLoading.show();
     await loadMore();
     EasyLoading.dismiss();
@@ -50,13 +52,21 @@ class MapHomeController extends GetxController{
   }
 
 ///수정필요 1 이미지 pin_green, pin_yellow을 png파일로 받아오자
-  // addCustomIcon(){
-  //   BitmapDescriptor.fromAssetImage(const ImageConfiguration(),
-  //       'assets/icon/map_pin.png',).then(
-  //           (icon){
-  //         markerIcon = icon;
-  //       });
-  // }
+  addCustomIcon(){
+    BitmapDescriptor.fromAssetImage(const ImageConfiguration(),
+        'assets/icon/pin_y_3.png',).then(
+            (icon){
+          markerIconYellow = icon;
+        });
+  }
+  addCustomIcon2(){
+    BitmapDescriptor.fromAssetImage(const ImageConfiguration(),
+      'assets/icon/pin_b_3.png',).then(
+            (icon){
+          markerIconBlue = icon;
+        });
+  }
+
   void updateMarker2(data){
     for (int i = 0; i < StoryService.to.storyList.length; i++) {  // 이야기의 수만큼 반복한다.
       LatLng storyLat = LatLng(StoryService.to.storyList[i].latitude ?? 0.0, StoryService.to.storyList[i].longitude ?? 0.0); // 이야기가 있는 좌표

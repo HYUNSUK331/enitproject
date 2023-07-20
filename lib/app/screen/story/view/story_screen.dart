@@ -189,23 +189,24 @@ class StoryScreen extends GetView<StoryService> {
                   const SizedBox(
                     height: 20.0,
                   ),
-                  Container(
-                    width: double.infinity,
-                    height: 360,
-                    decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(40),
-                            topRight: Radius.circular(40)),
-                        color: GREEN_MID_COLOR),
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 30, 20, 110),
+                  SingleChildScrollView(
+                    child: Container(
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(40),
+                              topRight: Radius.circular(40)),
+                          color: GREEN_MID_COLOR),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 30, 20, 30),
 
-                      ///글 내용
-                      child: Text(
-                        '${controller.storyList[storyIndex].script}',
-                        style: const TextStyle(
-                          fontSize: 15.0,
-                          color: Colors.white,
+                        ///글 내용
+                        child: Text(
+                          '${controller.storyList[storyIndex].script}',
+                          style: const TextStyle(
+                            fontSize: 15.0,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),

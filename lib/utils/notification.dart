@@ -14,7 +14,7 @@ class NotificationUtils{
   static initNotification(int storyNum) async {
 
     //안드로이드용 아이콘파일 이름
-    var androidSetting = AndroidInitializationSettings('app_icon');
+    var androidSetting = const AndroidInitializationSettings('app_icon');
 
     //ios에서 앱 사용시 유저에게 권한 허가하는 과정
     var iosSetting = DarwinInitializationSettings(
@@ -57,7 +57,7 @@ class NotificationUtils{
       presentBadge: true,
       presentSound: true,
     );
-
+ /// 알람 이미지 설정
     // 알림 id, 제목, 내용 맘대로 채우기
     notifications.show(
         1,
